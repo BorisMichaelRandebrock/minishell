@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/01/31 18:05:13 by fmontser         ###   ########.fr        #
+#    Updated: 2024/01/31 18:25:55 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC_DIR			:= src/
 OBJ_DIR			:= obj/
 BIN_DIR			:= bin/
 NAME			:= minishell
-HDRS 			:= minishell.h
+HDRS 			:=
 SRCS 			:= main.c
 OBJS			:= $(SRCS:.c=.o)
 
@@ -47,7 +47,7 @@ vpath % $(BIN_DIR)
 
 all: $(NAME) $(LIBFT)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(LIBFT)
 	@mkdir -p $(BIN_DIR)
 	@$(CC) $(addprefix $(OBJ_DIR),$(OBJS)) $(LIBFT) -o $(BIN_DIR)$(NAME) $(STD_LIBS)
 	@echo "$(COLOR_GREEN)write file: $(BIN_DIR)$(NAME)$(COLOR_END)"
@@ -68,9 +68,11 @@ tleaks: all
 
 clean:
 	@$(foreach item,$(CLEAN_TARGETS),echo "$(COLOR_RED)delete file: $(item)$(COLOR_END)"; rm $(item);)
+	@make clean -C $(LIBFT_DIR)
 
 fclean: clean
 	@$(foreach item,$(FCLEAN_TARGETS),echo "$(COLOR_RED)delete file: $(item)$(COLOR_END)"; rm $(item);)
+	@make fclean -C $(LIBFT_DIR)
 
 re: fclean all
 
