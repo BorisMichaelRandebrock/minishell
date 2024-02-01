@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   prompt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/01 16:57:55 by brandebr         ###   ########.fr       */
+/*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
+/*   Updated: 2024/02/01 16:39:58 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "prompt.h"
-#include "shell.h"
+#ifndef PROMPT_H
+#define PROMPT_H
 
-int	main(void)
+typedef struct s_prompt
 {
-	t_shell		shell;
-	t_prompt	prompt;
+	char *input;
+	void (*destructor)();
+	void (*prompt)();
+} t_prompt;
 
-	shell = new_shell();
-	prompt = new_prompt();
-	shell.input = prompt.prompt;
-	return (0);
-}
+t_prompt new_prompt(void);
+
+#endif
