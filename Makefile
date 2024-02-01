@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/01/31 18:25:55 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/01 15:51:37 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ LIBFT			:= src/libft/lib/libft.a
 CC				:= gcc
 PERF_FLAGS		:= #-O3
 CC_FLAGS		:= -Wall -Werror -Wextra -g -c $(PERF_FLAGS)
-STD_LIBS		:= -lpthread
+STD_LIBS		:= -lreadline
 TEST_LEAKS		:= leaks -atExit --
 
 CLEAN_TARGETS	= $(wildcard $(addprefix $(OBJ_DIR), $(OBJS)))
@@ -77,3 +77,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+#TODO retirar .vscode de git

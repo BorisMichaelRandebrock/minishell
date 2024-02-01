@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   shell2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/01/31 18:20:35 by fmontser         ###   ########.fr       */
+/*   Created: 2024/02/01 15:18:08 by fmontser          #+#    #+#             */
+/*   Updated: 2024/02/01 15:26:33 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "shell.h"
 
-int	main(void)
+t_shell	new_shell()
 {
-	printf("Hello minime!");
-	return (0);
+	t_shell	_shell;
+
+	_constructor(&_shell);
+	return (_shell);
 }
