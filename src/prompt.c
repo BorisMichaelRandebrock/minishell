@@ -1,25 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/01 16:57:55 by brandebr         ###   ########.fr       */
+/*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
+/*   Updated: 2024/02/01 16:52:15 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "prompt.h"
-#include "shell.h"
+#include <readline/readline.h>
+#include <stdio.h>
 
-int	main(void)
+static void	_destructor(void)
 {
-	t_shell		shell;
-	t_prompt	prompt;
+	// TODO implement destroyer if needed
+}
+static void	_pronpt(void)
+{
+	// TODO implement prompt when needed
+}
 
-	shell = new_shell();
-	prompt = new_prompt();
-	shell.input = prompt.prompt;
-	return (0);
+t_prompt	new_prompt(void)
+{
+	t_prompt	_prompt;
+
+	_prompt.input = NULL;
+	_prompt.destructor = _destructor;
+	_prompt.prompt = _pronpt;
+	return (_prompt);
 }
