@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 13:51:07 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/01 16:55:09 by brandebr         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:51:54 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,9 @@
 
 typedef struct s_shell
 {
-	char				*input;
 	struct sigaction	sig_action;
-	void				(*sig_handler)();
-	void				(*destructor)();
-	void				(*pfork)();
+	void				(*m_destructor)();
+	void				(*m_plaunch)();
 
 }						t_shell;
 

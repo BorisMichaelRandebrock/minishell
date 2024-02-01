@@ -6,17 +6,22 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/01 15:52:08 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:13:03 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-#include <unistd.h>
+#include "process.h"
+#include <unistd.h> //TODO check
 
-static void _plaunch()
+static void _plaunch(t_process proc)
 {
+	(void)proc;
 	/*
 	//TODO fork shell/prompt?? then execute execve on new process
+
+	#include <sys/wait.h>
+	pid_t waitpid(pid_t pid, int *status, int options);
 
 	//int execve(const char *path, char *const argv[], char *const envp[]);
 
@@ -42,20 +47,24 @@ static void _destructor()
 
 static void _sig_handler(int signal, siginfo_t *info, void *context)
 {
+	(void)signal;
+	(void)info;
+	(void)context;
+
 	//TODO implement action on signal recieved
 }
 
 
 t_shell	new_shell()
 {
-	t_shell	_shell;
+	t_shell	new;
 	struct sigaction _sig_action;
 
 	_sig_action.__sigaction_u.__sa_sigaction = _sig_handler;
-	_shell.sig_action = _sig_action;
-	_shell.sig_handler = _sig_handler;
-	_shell.destructor = _destructor;
+	new.sig_action = _sig_action;
+	new.m_destructor = _destructor;
+	new.m_plaunch = _plaunch;
 	//TODO register event on signal...
 	//sigaction(SIGUSR1, &_sig_action, NULL);
-	return (_shell);
+	return (new);
 }

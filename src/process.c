@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.h                                           :+:      :+:    :+:   */
+/*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/01 17:49:53 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:53:18 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PROMPT_H
-#define PROMPT_H
+#include "process.h"
 
-typedef struct s_prompt
+static void	_destructor(void)
 {
-	char *input;
-	void (*m_destructor)();
-	void (*m_prompt)();
-} t_prompt;
+	// TODO implement destroyer if needed
+}
 
-t_prompt new_prompt(void);
+static void	_process(void)
+{
+	// TODO implement process when needed
+}
 
-#endif
+t_process	new_process(void)
+{
+	t_process	new;
+
+	new.m_destructor = _destructor;
+	new.m_process =  _process;
+	return (new);
+}
