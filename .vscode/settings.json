@@ -1,6 +1,10 @@
 {
 	"files.associations": {
+		"*.js": "javascriptreact",
+		"*.hbs": "handlebars",
+		"*.c": "c",
 		"shell.h": "c",
-		"parser.h": "c"
+		"parser.h": "c",
+		"libft.h": "c"
 	}
 }
