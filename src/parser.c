@@ -1,25 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.h                                           :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/01 17:49:53 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:10:30 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PROMPT_H
-#define PROMPT_H
+#include "parser.h"
+#include "process.h"
+#include "prompt.h"
+#include <readline/readline.h>
+#include <stdbool.h>
 
-typedef struct s_prompt
+static void	_destructor(void)
 {
-	char *input;
-	void (*m_destructor)();
-	void (*m_prompt)();
-} t_prompt;
+	// TODO implement destroyer if needed
+}
 
-t_prompt new_prompt(void);
+static bool	_check_args(t_prompt prompt)
+{
+	(void)prompt;
+	//TODO implementar
+	return (true);
+}
 
-#endif
+static void	_parser(t_prompt prompt)
+{
+	_check_args(prompt);
+	(void)prompt;
+	//TODO implementar resultado a -->  parser.parray
+}
+
+t_parser	new_parser(void)
+{
+	t_parser	new;
+
+	new.m_destructor = _destructor;
+	new.m_parser = _parser;
+	return (new);
+}

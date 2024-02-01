@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell2.c                                           :+:      :+:    :+:   */
+/*   process.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/01 15:18:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/01 15:26:33 by fmontser         ###   ########.fr       */
+/*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
+/*   Updated: 2024/02/01 17:49:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#ifndef PROCESS_H
+#define PROCESS_H
 
-t_shell	new_shell()
+typedef struct s_process
 {
-	t_shell	_shell;
+	char	*ppath;
+	char**	pargs;
+	char**	penv;
+	void	(*m_destructor)();
+	void	(*m_process)();
+} t_process;
 
-	_constructor(&_shell);
-	return (_shell);
-}
+t_process new_process(void);
+
+#endif
