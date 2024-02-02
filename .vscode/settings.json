@@ -5,6 +5,8 @@
 		"*.c": "c",
 		"shell.h": "c",
 		"parser.h": "c",
-		"libft.h": "c"
+		"libft.h": "c",
+		"prompt.h": "c",
+		"stdio.h": "c"
 	}
 }
