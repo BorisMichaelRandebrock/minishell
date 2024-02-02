@@ -6,13 +6,13 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/01 18:14:45 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:45:09 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "prompt.h"
 #include "shell.h"
+#include "prompt.h"
 #include "parser.h"
 
 int	main(void)
