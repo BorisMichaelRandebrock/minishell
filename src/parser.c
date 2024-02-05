@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/05 16:35:06 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:23:37 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,14 @@ static void	_parse_prompt(t_prompt *prompt)
 {
 	char	*input = prompt->_input;
 	size_t	input_sz = ft_strlen(input);
+	char	**args;
 
 	if(_check_bad_args(prompt))
 		return ;	//TODO shell parse error msg
+
+	args = ft_split(input, ' ');
+
+
 	if(ft_strncmp(input, "echo", input_sz) == 0)
 		printf("echo command recognized!\n");
 }
