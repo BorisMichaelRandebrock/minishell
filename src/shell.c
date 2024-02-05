@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/01 18:13:03 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:43:10 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "process.h"
 #include <unistd.h> //TODO check
 
-static void _plaunch(t_process proc)
+static void _proc_launch(t_process proc)
 {
 	(void)proc;
 	/*
@@ -62,8 +62,8 @@ t_shell	new_shell()
 
 	_sig_action.__sigaction_u.__sa_sigaction = _sig_handler;
 	new.sig_action = _sig_action;
-	new.m_destructor = _destructor;
-	new.m_plaunch = _plaunch;
+	new.destroy = _destructor;
+	new.proc_launch = _proc_launch;
 	//TODO register event on signal...
 	//sigaction(SIGUSR1, &_sig_action, NULL);
 	return (new);

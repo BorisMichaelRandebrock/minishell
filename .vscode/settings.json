@@ -1,12 +1,12 @@
 {
 	"files.associations": {
-		"*.js": "javascriptreact",
-		"*.hbs": "handlebars",
-		"*.c": "c",
+		"prompt.h": "c",
 		"shell.h": "c",
 		"parser.h": "c",
-		"libft.h": "c",
-		"prompt.h": "c",
-		"stdio.h": "c"
-	}
+		"process.h": "c"
+	},
+
+	"C_Cpp.default.includePath": [
+		"${workspaceFolder}/**",
+	]
 }

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 13:51:07 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/01 17:51:54 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:50:43 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@
 typedef struct s_shell
 {
 	struct sigaction	sig_action;
-	void				(*m_destructor)();
-	void				(*m_plaunch)();
-
+	void				(*destroy)();
+	void				(*proc_launch)();
 }						t_shell;
 
 t_shell					new_shell(void);

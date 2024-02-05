@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/02 16:45:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/05 16:34:04 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,26 @@
 #include "shell.h"
 #include "prompt.h"
 #include "parser.h"
+#include <stdbool.h>
+
 
 int	main(void)
 {
 	t_shell		shell;
 	t_prompt	prompt;
 	t_parser	parser;
+	bool		continue_flag;
 
 	shell = new_shell();
-	while (42) //TODO signal para salir del bucle, exit(), ctrl-c etc..
+	continue_flag = true;
+	while (continue_flag)	//TODO signal para salir del bucle, exit()...
 	{
 		prompt = new_prompt();
-		prompt.m_prompt();
-		parser.m_parser(prompt.input);
-		shell.m_plaunch(parser.parray);
-		prompt.m_destructor();
-		parser.m_destructor();
+		prompt.invoke(&prompt);
+		parser = new_parser();
+		parser.parse(&prompt);
+		prompt.destroy(&prompt);
 	}
-	shell.m_destructor();
+	shell.destroy();
 	return (EXIT_SUCCESS);
 }
