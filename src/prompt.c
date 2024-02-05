@@ -6,28 +6,41 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/01 17:50:35 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/05 16:54:08 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "prompt.h"
 #include <readline/readline.h>
+#include <readline/history.h>
+#include <stdlib.h>
+/*
+	NOTAS PARA APRENDER:
+		readline se ejecuta sobre el proceso padre, es solo una funcion
+		readline reserva memoria que debe ser posteriormente liberada.
 
-static void	_destructor(void)
+		history tambien se ejecuta sobre el proceso padre y no se pierde hasa el fin del proceso.
+		history NO reserva memoria y es gestionado de forma automatica
+*/
+
+static void	_destructor(t_prompt *prompt)
 {
-	// TODO implement destroyer if needed
+	free(prompt->_input);
 }
-static void	_prompt(void)
+static void	_invoker(t_prompt *prompt)
 {
-	// TODO implement prompt when needed
+	prompt->_input = readline("minishell> ");
+
+	using_history();
+	add_history(prompt->_input);
 }
 
 t_prompt	new_prompt(void)
 {
 	t_prompt	new;
 
-	new.input = NULL;
-	new.m_destructor = _destructor;
-	new.m_prompt = _prompt;
+	new._input = NULL;
+	new.destroy = _destructor;
+	new.invoke = _invoker;
 	return (new);
 }

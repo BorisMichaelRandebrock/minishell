@@ -1,0 +1,19 @@
+{
+	"version": "0.2.0",
+	"configurations":
+	[
+
+		{
+			"name": "(lldb) Iniciar",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/bin/minishell",
+			"args": [],
+			"preLaunchTask": "make",
+			"stopAtEntry": false,
+			"cwd": "${fileDirname}",
+			"environment": [],
+			"MIMode": "lldb"
+		},
+	]
+  }
