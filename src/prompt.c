@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/05 16:54:08 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/06 12:15:12 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@
 		history NO reserva memoria y es gestionado de forma automatica
 */
 
+//Free process object resources
 static void	_destructor(t_prompt *prompt)
 {
 	free(prompt->_input);
 }
+
+//Invoke a new prompt for input
 static void	_invoker(t_prompt *prompt)
 {
 	prompt->_input = readline("minishell> ");
@@ -35,6 +38,7 @@ static void	_invoker(t_prompt *prompt)
 	add_history(prompt->_input);
 }
 
+//Create new process object
 t_prompt	new_prompt(void)
 {
 	t_prompt	new;

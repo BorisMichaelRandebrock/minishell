@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/05 19:23:37 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/06 22:07:32 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "prompt.h"
 #include "libft.h"
 
-
+//Free process object resources
 static void	_destructor(void)
 {
 	// TODO implement destroyer if needed
@@ -30,6 +30,7 @@ static bool	_check_bad_args(t_prompt *prompt)
 	return (false);
 }
 
+//Parse user input via prompt object
 static void	_parse_prompt(t_prompt *prompt)
 {
 	char	*input = prompt->_input;
@@ -39,6 +40,7 @@ static void	_parse_prompt(t_prompt *prompt)
 	if(_check_bad_args(prompt))
 		return ;	//TODO shell parse error msg
 
+	//TODO @@@@@@@@@@@@@@@@ continua aqui crea 1+ t_command con sus t_arg
 	args = ft_split(input, ' ');
 
 
@@ -46,6 +48,7 @@ static void	_parse_prompt(t_prompt *prompt)
 		printf("echo command recognized!\n");
 }
 
+//Create new process object
 t_parser	new_parser(void)
 {
 	t_parser	new;
