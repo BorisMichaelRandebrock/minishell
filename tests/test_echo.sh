@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    test_echo.sh                                       :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
+#    By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/02 17:59:49 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/02 18:46:27 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/06 12:47:10 by brandebr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,24 +29,47 @@ TEST_LIST=(
 	"$?"
 )
 
+# compare()
+# {
+# 	echo
+# 	echo	TEST Nº $TEST_N
+# 	echo		$1 > temp1.tmp
+# 	$BIN_PATH	$1 > temp2.tmp
+
+# 	if diff temp1.tmp temp2.tmp &> /dev/null; then
+# 		echo $OK
+# 	else
+# 		((TOTAL_KO++))
+# 		echo $KO
+# 	fi
+# 		cat -e temp1.tmp
+# 		cat -e temp2.tmp
+# 		rm -f *.tmp
+# 		((TEST_N++))
+# }
 compare()
 {
-	echo
-	echo	TEST Nº $TEST_N
-	echo		$1 > temp1.tmp
-	$BIN_PATH	$1 > temp2.tmp
+    echo
+    echo "TEST Nº $TEST_N"
+    echo "$1" > temp1.tmp
 
-	if diff temp1.tmp temp2.tmp &> /dev/null; then
-		echo $OK
-	else
-		((TOTAL_KO++))
-		echo $KO
-	fi
-		cat -e temp1.tmp
-		cat -e temp2.tmp
-		rm -f *.tmp
-		((TEST_N++))
+    output=$(echo "$($BIN_PATH $1)")
+
+    echo "$output" > temp2.tmp
+
+    if diff temp1.tmp temp2.tmp &> /dev/null; then
+        echo "$OK"
+    else
+        ((TOTAL_KO++))
+        echo "$KO"
+    fi
+
+    cat -e temp1.tmp
+    cat -e temp2.tmp
+    rm -f *.tmp
+    ((TEST_N++))
 }
+
 
 for test in "${TEST_LIST[@]}"; do
 	compare "$test"
