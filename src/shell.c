@@ -6,17 +6,25 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/05 15:43:10 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/05 23:15:26 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h> //TODO retirar
+
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include "shell.h"
 #include "process.h"
-#include <unistd.h> //TODO check
+#include "parser.h"
+#include "libft.h"
 
-static void _proc_launch(t_process proc)
-{
-	(void)proc;
+#define RD_END 0
+#define WR_END 1
+#define FORKED_PROC 0
+#define BUFFER_64KB 65536	//TODO poner como variable entorno?
+
 	/*
 	//TODO fork shell/prompt?? then execute execve on new process
 
@@ -38,6 +46,36 @@ static void _proc_launch(t_process proc)
 	y el proceso actual se convertirá en el nuevo programa.
 
 	*/
+
+static char *_proc_launch(void)	//TODO pasar t_process
+{
+	pid_t	new_pid;
+	int		pipe_fd[2];
+	char	buffer[BUFFER_64KB];
+	char	*proc_out;
+	char	*args[] = {"/bin/bash", "-c", "compgen -b", NULL}; //TODO integrar en t_process
+
+	ft_memset(buffer, '\0', sizeof(buffer));
+	pipe(pipe_fd);
+	new_pid = fork(); //fork devuelve el pid
+	if (new_pid == FORKED_PROC)	// HIJO este codigo se ejecuta para el neuvo proceso...
+	{
+		close(pipe_fd[RD_END]);
+		dup2(pipe_fd[WR_END], STDOUT_FILENO);
+		close(pipe_fd[WR_END]);
+		execve("/bin/bash", args, NULL);
+	}
+	else	// PADRE, que es quien recibira el output...
+	{
+		wait(NULL);
+		close(pipe_fd[WR_END]);
+		ssize_t buff_sz = read(pipe_fd[RD_END], buffer, BUFFER_64KB);
+		//TODO comprobar error y max buffer
+		proc_out = malloc(buff_sz * sizeof(char)); //TODO liberar esto en destino
+		//TODO guardas malloc...
+		close(pipe_fd[RD_END]);
+	}
+	return (proc_out);
 }
 
 static void _destructor()
@@ -54,6 +92,11 @@ static void _sig_handler(int signal, siginfo_t *info, void *context)
 	//TODO implement action on signal recieved
 }
 
+static void _get_builtins(t_parser *context)
+{
+	(void)context;	//TODO implementar
+	_proc_launch();
+}
 
 t_shell	new_shell()
 {
@@ -64,7 +107,6 @@ t_shell	new_shell()
 	new.sig_action = _sig_action;
 	new.destroy = _destructor;
 	new.proc_launch = _proc_launch;
-	//TODO register event on signal...
-	//sigaction(SIGUSR1, &_sig_action, NULL);
+	new.get_builtins = _get_builtins;
 	return (new);
 }

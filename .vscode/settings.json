@@ -3,7 +3,8 @@
 		"prompt.h": "c",
 		"shell.h": "c",
 		"parser.h": "c",
-		"process.h": "c"
+		"process.h": "c",
+		"functional": "c"
 	},
 
 	"C_Cpp.default.includePath": [
