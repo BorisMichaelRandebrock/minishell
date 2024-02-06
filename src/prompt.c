@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/06 12:15:12 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/06 18:03:45 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "prompt.h"
-#include <readline/readline.h>
 #include <readline/history.h>
+#include <readline/readline.h>
 #include <stdlib.h>
+
 /*
 	NOTAS PARA APRENDER:
 		readline se ejecuta sobre el proceso padre, es solo una funcion
@@ -33,7 +34,6 @@ static void	_destructor(t_prompt *prompt)
 static void	_invoker(t_prompt *prompt)
 {
 	prompt->_input = readline("minishell> ");
-
 	using_history();
 	add_history(prompt->_input);
 }

@@ -1,46 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/01 18:26:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/06 12:53:43 by brandebr         ###   ########.fr       */
+/*   Created: 2024/02/06 16:39:38 by brandebr          #+#    #+#             */
+/*   Updated: 2024/02/06 18:00:27 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#define NLFLAG "-n"
-#define NLFLAG_SIZE 2
-#define EQUALS 0
 
 int	main(int argc, char **argv)
 {
-	int	i;
-	int	nl_flag;
+	char	**args;
 
-	// char	nl;
-	// nl = '\n';
-	nl_flag = 1;
-	if (argc < 2)
-		return (EXIT_FAILURE);
-	i = 1;
-	if (ft_strncmp(argv[i], NLFLAG, NLFLAG_SIZE) == EQUALS)
+	args = ft_split(argv[1], ' ');
+	if (chdir(args[0]) == -1)
+		printf("cd: no such file or directory: %s\n", args[0]);
+	else
+		printf("changing directory to: %s\n", args[0]);
+	/*if (args[1] == NULL)
 	{
-		i++;
-		nl_flag = 0;
-		// nl = '\0';
+		if (chdir(args[0]) == -1)
+			printf("cd: no such file or directory: %s\n", args[0]);
+		else
+			printf("changing directory to: %s\n", args[0]);
 	}
-	while (i < argc)
-	{
-		printf("%s", argv[i++]);
-		if (i < argc)
-			printf(" ");
-	}
-	if (nl_flag)
-		printf("\n");
-	return (EXIT_SUCCESS);
+	else
+		printf("changing directory to: %s\n", args[0]);*/
+	return (0);
 }
