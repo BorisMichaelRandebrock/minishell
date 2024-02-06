@@ -4,7 +4,8 @@
 		"shell.h": "c",
 		"parser.h": "c",
 		"process.h": "c",
-		"functional": "c"
+		"functional": "c",
+		"signal.h": "c"
 	},
 
 	"C_Cpp.default.includePath": [

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/05 22:47:31 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/06 09:41:07 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(void)
 	continue_flag = true;
 	shell = new_shell();
 	parser = new_parser();
-	shell.proc_launch();
+	shell.proc_exec(NULL); //TODO test
 /*
 	while (continue_flag)	//TODO signal para salir del bucle, exit()...
 	{

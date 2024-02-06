@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/05 23:15:26 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/06 09:46:03 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,16 @@
 
 	*/
 
-static char *_proc_launch(void)	//TODO pasar t_process
+static char *_proc_exec(t_process *context)
 {
+	(void)context;
 	pid_t	new_pid;
 	int		pipe_fd[2];
 	char	buffer[BUFFER_64KB];
 	char	*proc_out;
 	char	*args[] = {"/bin/bash", "-c", "compgen -b", NULL}; //TODO integrar en t_process
 
+	proc_out = NULL;
 	ft_memset(buffer, '\0', sizeof(buffer));
 	pipe(pipe_fd);
 	new_pid = fork(); //fork devuelve el pid
@@ -73,7 +75,10 @@ static char *_proc_launch(void)	//TODO pasar t_process
 		//TODO comprobar error y max buffer
 		proc_out = malloc(buff_sz * sizeof(char)); //TODO liberar esto en destino
 		//TODO guardas malloc...
+		ft_strlcpy(proc_out,buffer, buff_sz);
+		printf("%s\n", proc_out);
 		close(pipe_fd[RD_END]);
+
 	}
 	return (proc_out);
 }
@@ -95,7 +100,6 @@ static void _sig_handler(int signal, siginfo_t *info, void *context)
 static void _get_builtins(t_parser *context)
 {
 	(void)context;	//TODO implementar
-	_proc_launch();
 }
 
 t_shell	new_shell()
@@ -106,7 +110,7 @@ t_shell	new_shell()
 	_sig_action.__sigaction_u.__sa_sigaction = _sig_handler;
 	new.sig_action = _sig_action;
 	new.destroy = _destructor;
-	new.proc_launch = _proc_launch;
+	new.proc_exec = _proc_exec;
 	new.get_builtins = _get_builtins;
 	return (new);
 }
