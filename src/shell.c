@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/06 09:46:03 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/06 22:11:42 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,50 +22,38 @@
 
 #define RD_END 0
 #define WR_END 1
-#define FORKED_PROC 0
 #define BUFFER_64KB 65536	//TODO poner como variable entorno?
-
-	/*
-	//TODO fork shell/prompt?? then execute execve on new process
-
-	#include <sys/wait.h>
-	pid_t waitpid(pid_t pid, int *status, int options);
-
-	//int execve(const char *path, char *const argv[], char *const envp[]);
-
-	path: Es la ruta del programa que se va a ejecutar.
-
-	argv: Es un arreglo de cadenas de caracteres que representan los argumentos del programa.
-	El último elemento del arreglo debe ser un puntero nulo (NULL) para indicar el final del arreglo.
-
-	envp: Es un arreglo de cadenas de caracteres que representan las variables de entorno del programa.
-	Al igual que con argv, el último elemento debe ser un puntero nulo.
-
-	La función execve reemplaza la imagen de memoria del proceso actual con la del nuevo programa especificado
-	por path. Si la llamada tiene éxito, el código de ejecución del programa especificado comenzará a ejecutarse,
-	y el proceso actual se convertirá en el nuevo programa.
-
-	*/
 
 static char *_proc_exec(t_process *context)
 {
-	(void)context;
-	pid_t	new_pid;
 	int		pipe_fd[2];
 	char	buffer[BUFFER_64KB];
-	char	*proc_out;
-	char	*args[] = {"/bin/bash", "-c", "compgen -b", NULL}; //TODO integrar en t_process
 
-	proc_out = NULL;
+	char	**args = malloc(4 * sizeof(char *));
+	args[0] = "/bin/bash";
+	args[1] = "-c";
+	args[2] = "compgen -b";
+	args[3] = NULL;
+
+	//TODO en pruebas...
+
+/* 	printf("%s\n%s\n%s\n%p\n", context->_pargs[0],
+							context->_pargs[1],
+							context->_pargs[2],
+							context->_pargs[3]);
+
+
+	printf("-------------------------------\n\n"); */
+
 	ft_memset(buffer, '\0', sizeof(buffer));
 	pipe(pipe_fd);
-	new_pid = fork(); //fork devuelve el pid
-	if (new_pid == FORKED_PROC)	// HIJO este codigo se ejecuta para el neuvo proceso...
+	context->_pid = fork(); //fork devuelve el pid
+	if (context->_pid == 0)	// HIJO este codigo se ejecuta para el neuvo proceso...
 	{
 		close(pipe_fd[RD_END]);
 		dup2(pipe_fd[WR_END], STDOUT_FILENO);
 		close(pipe_fd[WR_END]);
-		execve("/bin/bash", args, NULL);
+		execve(args, args, NULL);
 	}
 	else	// PADRE, que es quien recibira el output...
 	{
@@ -73,21 +61,24 @@ static char *_proc_exec(t_process *context)
 		close(pipe_fd[WR_END]);
 		ssize_t buff_sz = read(pipe_fd[RD_END], buffer, BUFFER_64KB);
 		//TODO comprobar error y max buffer
-		proc_out = malloc(buff_sz * sizeof(char)); //TODO liberar esto en destino
+		context->_output = malloc(buff_sz * sizeof(char)); //TODO liberar esto en destino
 		//TODO guardas malloc...
-		ft_strlcpy(proc_out,buffer, buff_sz);
-		printf("%s\n", proc_out);
+		ft_strlcpy(context->_output, buffer, buff_sz);
+		printf("%s\n", context->_output);
 		close(pipe_fd[RD_END]);
 
 	}
-	return (proc_out);
+	return (context->_output);
 }
 
+
+//Free process object resources
 static void _destructor()
 {
 	//TODO implement destroyer if needed
 }
 
+//Signal handler hub
 static void _sig_handler(int signal, siginfo_t *info, void *context)
 {
 	(void)signal;
@@ -97,11 +88,13 @@ static void _sig_handler(int signal, siginfo_t *info, void *context)
 	//TODO implement action on signal recieved
 }
 
+//Get system builtin commands list
 static void _get_builtins(t_parser *context)
 {
 	(void)context;	//TODO implementar
 }
 
+//Create new process object
 t_shell	new_shell()
 {
 	t_shell	new;
