@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/07 12:03:07 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:54:49 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,6 @@ static char *_proc_exec(t_process *context)
 	args[1] = "-c";
 	args[2] = "compgen -b";
 	args[3] = NULL;
-
-	//TODO en pruebas...
-
-/* 	printf("%s\n%s\n%s\n%p\n", context->_pargs[0],
-							context->_pargs[1],
-							context->_pargs[2],
-							context->_pargs[3]);
-
-
-	printf("-------------------------------\n\n"); */
 
 	ft_memset(buffer, '\0', sizeof(buffer));
 	pipe(pipe_fd);
@@ -88,8 +78,8 @@ static void _sig_handler(int signal, siginfo_t *info, void *context)
 	//TODO implement action on signal recieved
 }
 
-//Get system builtin commands list
-static void _get_builtins(t_parser *context)
+
+static void _builtin_exec(t_parser *context)
 {
 	(void)context;	//TODO implementar
 }
@@ -104,6 +94,6 @@ t_shell	new_shell()
 	new.sig_action = _sig_action;
 	new.destroy = _destructor;
 	new.proc_exec = _proc_exec;
-	new.get_builtins = _get_builtins;
+	new.builtin_exec = _builtin_exec;
 	return (new);
 }

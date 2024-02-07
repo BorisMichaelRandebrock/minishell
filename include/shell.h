@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 13:51:07 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/06 09:40:15 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:54:22 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct s_shell
 	struct sigaction	sig_action;
 	void				(*destroy)(t_shell	*context);
 	char				*(*proc_exec)(t_process *context);
-	void				(*get_builtins)(t_parser *context);
+	void				(*builtin_exec)(t_parser *context);
 }	t_shell;
 
 t_shell	new_shell(void);
