@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/06 22:11:42 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/07 12:03:07 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static char *_proc_exec(t_process *context)
 		close(pipe_fd[RD_END]);
 		dup2(pipe_fd[WR_END], STDOUT_FILENO);
 		close(pipe_fd[WR_END]);
-		execve(args, args, NULL);
+		execve(args[0], args, NULL);
 	}
 	else	// PADRE, que es quien recibira el output...
 	{
