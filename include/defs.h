@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   defs.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/07 19:21:21 by fmontser         ###   ########.fr       */
+/*   Created: 2024/02/07 18:15:01 by fmontser          #+#    #+#             */
+/*   Updated: 2024/02/07 18:16:09 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
-# include "prompt.h"
+#ifndef DEFS_H
+# define DEFS_H
+# define NUL_CH '\0'
 
-typedef struct s_parser t_parser;
-
-typedef struct s_parser
-{
-	char	**_split;
-	void	(*destroy)(t_parser *context);
-	void	(*parse)(t_parser *context, t_prompt *prompt);
-} t_parser;
-
-t_parser new_parser(void);
 
 #endif
