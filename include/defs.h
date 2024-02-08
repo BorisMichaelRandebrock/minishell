@@ -6,13 +6,12 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:15:01 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/07 18:16:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/08 14:50:22 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFS_H
 # define DEFS_H
 # define NUL_CH '\0'
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 22:26:44 by fmontser          #+#    #+#             */
-/*   Updated: 2023/07/18 17:49:36 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:50:34 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	_count_items(const char *s, char c)
 	int		count;
 	bool	i_flag;
 
-	count = 0;
+	count = 1;
 	i_flag = false;
 	while (*s != '\0')
 	{

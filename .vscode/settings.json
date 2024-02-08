@@ -1,14 +1,9 @@
 {
-	"files.associations": {
-		"prompt.h": "c",
-		"shell.h": "c",
-		"parser.h": "c",
-		"process.h": "c",
-		"functional": "c",
-		"signal.h": "c"
-	},
-
 	"C_Cpp.default.includePath": [
 		"${workspaceFolder}/**",
-	]
+	],
+	"files.associations": {
+		"prompt.h": "c",
+		"process.h": "c"
+	}
 }

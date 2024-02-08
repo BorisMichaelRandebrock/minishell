@@ -6,16 +6,16 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/06 21:41:46 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/08 14:51:48 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PROCESS_H
 # define PROCESS_H
-# define MAX_ARGS 256
+
 # include <sys/types.h>
 
-typedef struct s_process t_process;
+typedef struct s_process	t_process;
 
 typedef struct s_process
 {

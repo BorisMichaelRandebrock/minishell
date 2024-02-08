@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/06 18:03:45 by brandebr         ###   ########.fr       */
+/*   Updated: 2024/02/08 14:15:29 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void	_destructor(t_prompt *prompt)
 static void	_invoker(t_prompt *prompt)
 {
 	prompt->_input = readline("minishell> ");
-	using_history();
 	add_history(prompt->_input);
 }
 
