@@ -6,13 +6,17 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/07 19:21:21 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/08 13:09:31 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 # include "prompt.h"
+
+
+
+
 
 typedef struct s_parser t_parser;
 
@@ -23,6 +27,6 @@ typedef struct s_parser
 	void	(*parse)(t_parser *context, t_prompt *prompt);
 } t_parser;
 
-t_parser new_parser(void);
+t_parser	new_parser(void);
 
 #endif

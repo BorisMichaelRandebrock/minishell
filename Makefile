@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/07 18:16:33 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/08 14:18:26 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,8 @@ SRC_DIR			:= src/
 OBJ_DIR			:= obj/
 BIN_DIR			:= bin/
 NAME			:= minishell
-HDRS 			:= parser.h process.h prompt.h shell.h defs.h
-SRCS 			:= main.c parser.c process.c prompt.c shell.c
+HDRS 			:= parser.h process.h prompt.h shell.h defs.h sterm.h
+SRCS 			:= main.c parser.c process.c prompt.c shell.c sterm.c
 OBJS			:= $(SRCS:.c=.o)
 
 LIBFT_DIR		:= src/libft/
@@ -45,7 +45,7 @@ vpath %.c $(SRC_DIR)
 vpath %.o $(OBJ_DIR)
 vpath % $(BIN_DIR)
 
-all: $(NAME) $(LIBFT) $(ECHO) $(CD)
+all: $(NAME) $(LIBFT)
 
 # Minishell compiler
 $(NAME): $(OBJS) $(LIBFT)
@@ -83,3 +83,4 @@ re: fclean all
 
 #TODO retirar .vscode de git
 #TODO retirar las funciones libft no utilizadas
+#TODO update ft_split (fran);

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/07 19:21:48 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/08 14:12:56 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	main(void)
 		prompt = new_prompt();
 		prompt.invoke(&prompt);
 		parser.parse(&parser, &prompt);
+		prompt.destroy(&prompt);
 	}
 	shell.destroy(&shell);
 	return (EXIT_SUCCESS);

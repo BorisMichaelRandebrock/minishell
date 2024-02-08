@@ -1,53 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.h                                          :+:      :+:    :+:   */
+/*   sterm_.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/08 12:24:04 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/08 13:19:58 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COMMAND_H
-# define COMMAND_H
+#ifndef sterm_H
+# define sterm_H
 
-# include <stdbool.h>
-
-typedef enum e_argtype
+//TODO quotes
+typedef enum e_stermtype
 {
-	STRING,
-	SQUOTE,
-	DQUOTE,
-	DOLLAR,
-	RD_OUT,
-	APP_OUT,
+	TEXT,
 	RD_IN,
-	DL_IN,
+	RD_IN_S, //TODO repasar el uso
+	RD_OUT,
+	RD_OUT_APP,
+	VAR,
 	PIPE
-}	t_argtype;
+}	t_stermtype;
 
-typedef struct s_arg t_arg;
+typedef struct s_sterm t_sterm;
 
-typedef struct s_arg
+typedef struct s_sterm
 {
-	char		*text;
-	t_argtype	type;
-	t_arg		*next;
-}	t_arg;
+	char	*text;
+	t_stermtype	type;
+	t_sterm		*next;
+	t_sterm		*prev;
+	t_stermtype	(*get_type)(char *);
+}	t_sterm;
 
-typedef struct s_command t_command;
-
-typedef struct s_command
-{
-	char	*_name;
-	t_arg	*_arg_lst;
-	void	(*destroy)(t_command *command);
-	void	(*consume_arg)(t_command *command);
-}	t_command;
-
-t_command	new_command(void);
-t_arg		new_arg(void);
+t_sterm	new_sterm(void);
 
 #endif
