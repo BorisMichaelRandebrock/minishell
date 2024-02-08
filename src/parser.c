@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/07 17:55:24 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/07 19:22:32 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,31 @@
 #include "process.h"
 #include "prompt.h"
 #include "libft.h"
+#include "defs.h"
 
 //Free process object resources
-static void	_destructor(void)
+static void	_destructor(t_parser *context)
 {
 	// TODO implement destroyer if needed
+	free(context->_split);
 }
 
-static bool	_check_bad_args(t_prompt *prompt)
+static bool	_check_bad_args(char **_split)
 {
-	(void)prompt;
-	//TODO implementar shell parser (lista de posibles errores de input)
+	char *	_metachars;
+
+	_metachars = "<>|$";
+	(void)_metachars;
+	(void)_split;
 	return (false);
 }
 
 //Parse user input via prompt object
-static void	_parse_prompt(t_prompt *prompt)
+static void	_parse_prompt(t_parser *context, t_prompt *prompt)
 {
-//	char	*input = prompt->_input;
-//	size_t	input_sz = ft_strlen(input);
-
-	if(_check_bad_args(prompt))
-		return ;	//TODO shell parse error msg
+	context->_split = ft_split(prompt->_input, ' ');
+	if(_check_bad_args(context->_split))
+		printf("true\n");
 
 }
 

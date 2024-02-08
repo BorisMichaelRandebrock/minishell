@@ -11,6 +11,7 @@
 			"args": [],
 			"preLaunchTask": "make",
 			"stopAtEntry": false,
+			"externalConsole": true,
 			"cwd": "${fileDirname}",
 			"environment": [],
 			"MIMode": "lldb"

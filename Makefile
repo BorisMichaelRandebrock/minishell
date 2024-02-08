@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/07 17:52:18 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/07 18:16:33 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC_DIR			:= src/
 OBJ_DIR			:= obj/
 BIN_DIR			:= bin/
 NAME			:= minishell
-HDRS 			:= parser.h process.h prompt.h shell.h
+HDRS 			:= parser.h process.h prompt.h shell.h defs.h
 SRCS 			:= main.c parser.c process.c prompt.c shell.c
 OBJS			:= $(SRCS:.c=.o)
 
