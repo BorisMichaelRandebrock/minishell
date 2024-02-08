@@ -4,6 +4,7 @@
 	],
 	"files.associations": {
 		"prompt.h": "c",
-		"process.h": "c"
+		"process.h": "c",
+		"readline.h": "c"
 	}
 }
