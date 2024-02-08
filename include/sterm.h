@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sterm_.h                                            :+:      :+:    :+:   */
+/*   sterm.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/08 13:19:58 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:23:34 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef sterm_H
-# define sterm_H
+#ifndef STERM_H
+# define STERM_H
 
 //TODO quotes
 typedef enum e_stermtype
 {
 	TEXT,
+	CMD,
+	ARG,
 	RD_IN,
 	RD_IN_S, //TODO repasar el uso
 	RD_OUT,
@@ -25,17 +27,18 @@ typedef enum e_stermtype
 	PIPE
 }	t_stermtype;
 
-typedef struct s_sterm t_sterm;
+typedef struct s_sterm	t_sterm;
 
 typedef struct s_sterm
 {
-	char	*text;
+	char		*text;
 	t_stermtype	type;
-	t_sterm		*next;
 	t_sterm		*prev;
+	t_sterm		*next;
+	void		(*destroy)(t_sterm * context);
 	t_stermtype	(*get_type)(char *);
 }	t_sterm;
 
-t_sterm	new_sterm(void);
+t_sterm	*new_sterm(void);
 
 #endif

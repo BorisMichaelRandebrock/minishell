@@ -6,13 +6,18 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 13:10:37 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/08 14:18:59 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:31:27 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sterm.h"
 #include "libft.h"
 #define EQUALS 0
+
+static void _destructor(t_sterm *context)
+{
+	free(context);
+}
 
 static t_stermtype	_get_type(char *term)
 {
@@ -35,10 +40,14 @@ static t_stermtype	_get_type(char *term)
 		return (TEXT);
 }
 
-t_sterm	new_sterm()
+t_sterm	*new_sterm()
 {
-	t_sterm new;
+	t_sterm *new;
 
-	new.get_type = _get_type;
+	new = malloc(sizeof(t_sterm));
+	new->prev = NULL;
+	new->next = NULL;
+	new->destroy = _destructor;
+	new->get_type = _get_type;
 	return (new);
 }

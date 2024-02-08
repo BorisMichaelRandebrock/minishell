@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 13:51:07 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/07 17:54:22 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/08 14:52:41 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "parser.h"
 # include "process.h"
 
-typedef struct s_shell t_shell;
+typedef struct s_shell	t_shell;
 
 typedef struct s_shell
 {
