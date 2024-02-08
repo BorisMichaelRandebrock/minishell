@@ -6,12 +6,14 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/08 16:23:34 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:39:57 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STERM_H
 # define STERM_H
+
+# define TERMTYPES 9
 
 //TODO quotes
 typedef enum e_stermtype
