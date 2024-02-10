@@ -6,14 +6,12 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/06 22:09:56 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/10 16:34:54 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h> //TODO retirar test
-
 #include <stdlib.h>
-#include "process.h"
+#include "minishell.h"
 #include "libft.h"
 
 //Free process object resources

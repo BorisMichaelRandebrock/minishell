@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sterm.c                                            :+:      :+:    :+:   */
+/*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 13:10:37 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/08 16:31:27 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/10 16:30:28 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sterm.h"
+#include "minishell.h"
 #include "libft.h"
 #define EQUALS 0
 
-static void _destructor(t_sterm *context)
+static void _destructor(t_token *context)
 {
 	free(context);
 }
 
-static t_stermtype	_get_type(char *term)
+static t_tokentype	_get_type(char *term)
 {
 	size_t term_sz;
 
@@ -40,11 +40,11 @@ static t_stermtype	_get_type(char *term)
 		return (TEXT);
 }
 
-t_sterm	*new_sterm()
+t_token	*new_token()
 {
-	t_sterm *new;
+	t_token *new;
 
-	new = malloc(sizeof(t_sterm));
+	new = malloc(sizeof(t_token));
 	new->prev = NULL;
 	new->next = NULL;
 	new->destroy = _destructor;
