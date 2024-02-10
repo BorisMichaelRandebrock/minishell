@@ -3,8 +3,7 @@
 		"${workspaceFolder}/**",
 	],
 	"files.associations": {
-		"prompt.h": "c",
-		"process.h": "c",
-		"readline.h": "c"
+		"history.h": "c",
+		"minishell.h": "c"
 	}
 }

@@ -6,12 +6,12 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 17:15:53 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/06 22:07:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/10 16:36:09 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "command.h"
+#include "minishell.h"
 
 //Free process object resources
 static void	_destructor(t_command *command)	//TODO test

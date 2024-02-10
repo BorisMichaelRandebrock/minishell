@@ -6,18 +6,14 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/07 17:54:49 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/10 19:02:49 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <stdio.h> //TODO retirar
 
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include "shell.h"
-#include "process.h"
-#include "parser.h"
+#include "minishell.h"
 #include "libft.h"
 
 #define RD_END 0
@@ -35,7 +31,7 @@ static char *_proc_exec(t_process *context)
 	args[2] = "compgen -b";
 	args[3] = NULL;
 
-	ft_memset(buffer, '\0', sizeof(buffer));
+	ft_memset(buffer, NUL_CH, sizeof(buffer));
 	pipe(pipe_fd);
 	context->_pid = fork(); //fork devuelve el pid
 	if (context->_pid == 0)	// HIJO este codigo se ejecuta para el neuvo proceso...
@@ -63,9 +59,13 @@ static char *_proc_exec(t_process *context)
 
 
 //Free process object resources
-static void _destructor()
+static void _destructor(t_shell *shell)
 {
 	//TODO implement destroyer if needed
+	shell->_is_running = false;
+	shell->_prompt->destroy(shell->_prompt);
+	free(shell);
+	//TODO llamar a todos los destructores...
 }
 
 //Signal handler hub
@@ -79,21 +79,27 @@ static void _sig_handler(int signal, siginfo_t *info, void *context)
 }
 
 
-static void _builtin_exec(t_parser *context)
+static void _builtin_exec(t_command *command)
 {
-	(void)context;	//TODO implementar
+	(void)command;	//TODO implementar
 }
 
 //Create new process object
-t_shell	new_shell()
+t_shell	*new_shell(char **env)
 {
-	t_shell	new;
+	t_shell	*new;
 	struct sigaction _sig_action;
 
-	_sig_action.__sigaction_u.__sa_sigaction = _sig_handler;
-	new.sig_action = _sig_action;
-	new.destroy = _destructor;
-	new.proc_exec = _proc_exec;
-	new.builtin_exec = _builtin_exec;
+	new = malloc(sizeof(t_shell));
+	if (!new)
+		cleanexit(new, MEM_ERROR);
+	_sig_action.__sigaction_u.__sa_sigaction = _sig_handler;	//TODO esta en en el stack?? SIGNAL!
+	new->sig_action = _sig_action;
+	new->_is_running = true;
+	new->_enviorment = new_enviorment(new, env);
+	new->_parser = new_parser(new);
+	new->destroy = _destructor;
+	new->proc_exec = _proc_exec;
+	new->builtin_exec = _builtin_exec;
 	return (new);
 }

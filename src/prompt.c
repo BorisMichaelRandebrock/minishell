@@ -6,15 +6,16 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/08 14:15:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:08:22 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "prompt.h"
+#include <stdlib.h>
 #include <readline/history.h>
 #include <readline/readline.h>
-#include <stdlib.h>
+#include "minishell.h"
 
+//TODO borrar notas
 /*
 	NOTAS PARA APRENDER:
 		readline se ejecuta sobre el proceso padre, es solo una funcion
@@ -27,7 +28,11 @@
 //Free process object resources
 static void	_destructor(t_prompt *prompt)
 {
-	free(prompt->_input);
+	if (prompt)
+	{
+		free(prompt->_input);
+		free(prompt);
+	}
 }
 
 //Invoke a new prompt for input
@@ -38,12 +43,16 @@ static void	_invoker(t_prompt *prompt)
 }
 
 //Create new process object
-t_prompt	new_prompt(void)
+t_prompt	*new_prompt(t_shell *shell)
 {
-	t_prompt	new;
+	t_prompt	*new;
 
-	new._input = NULL;
-	new.destroy = _destructor;
-	new.invoke = _invoker;
+	new = malloc(sizeof(t_prompt));
+	if (!new)
+		cleanexit(shell, MEM_ERROR);
+	new->_input = NULL;	//TODO probar si usando calloc se peude evitar esto.
+	new->_shell = shell;
+	new->destroy = _destructor;
+	new->invoke = _invoker;
 	return (new);
 }
