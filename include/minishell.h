@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 16:12:26 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/10 19:02:35 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/12 14:18:22 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ typedef struct s_env
 	char	*pwd;
 	char	*old_pwd;
 	char	*tmp_dir;
+	void	(*destroy)(t_env *env);
 }	t_env;
 
 typedef struct s_shell
@@ -125,7 +126,7 @@ typedef struct s_shell
 	struct sigaction	sig_action;	//TODO hacer un re-typedef?
 	t_env				*_enviorment;
 	t_prompt			*_prompt;
-	t_parser			_parser;
+	t_parser			*_parser;
 	t_command			_command;
 	t_process			_process;
 	void				(*destroy)(t_shell	*shell);
@@ -137,7 +138,7 @@ t_shell		*new_shell(char **env);
 t_env		*new_enviorment(t_shell *shell, char **env);
 t_prompt	*new_prompt(t_shell *shell);
 t_token		*new_token(void);
-t_parser	new_parser(t_shell *shell);
+t_parser	*new_parser(t_shell *shell);
 t_arg		new_arg(void);
 t_command	new_command(void);
 t_process	new_process(void);

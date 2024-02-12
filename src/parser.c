@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/10 17:02:20 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/12 14:20:47 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,9 @@ static void	_parse_prompt(t_prompt *prompt)
 {
 	t_token	*token_lst;
 
+
 	token_lst = NULL;
-	_get_term_list(&prompt->_shell->_parser, prompt, token_lst);
+	_get_term_list(prompt->_shell->_parser, prompt, token_lst);
 	if (!_validate_input(token_lst))
 	{
 		printf("error!");
@@ -97,12 +98,15 @@ static void	_parse_prompt(t_prompt *prompt)
 }
 
 //Create new process object
-t_parser	new_parser(t_shell *shell)
+t_parser	*new_parser(t_shell *shell)
 {
-	t_parser	new;
+	t_parser	*new;
 
-	new._shell = shell;
-	new.destroy = _destructor;
-	new.parse = _parse_prompt;
+	new = malloc(sizeof(t_parser));
+	if (!new)
+		cleanexit(shell, MEM_ERROR);
+	new->_shell = shell;
+	new->destroy = _destructor;
+	new->parse = _parse_prompt;
 	return (new);
 }

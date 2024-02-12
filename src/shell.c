@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/10 19:02:49 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/12 14:11:12 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ static void _destructor(t_shell *shell)
 {
 	//TODO implement destroyer if needed
 	shell->_is_running = false;
-	shell->_prompt->destroy(shell->_prompt);
+	if (shell->_prompt)
+		shell->_prompt->destroy(shell->_prompt);
+	if (shell->_enviorment) 						//TODO armonizar parametros
+		shell->_enviorment->destroy(shell->_enviorment);
 	free(shell);
 	//TODO llamar a todos los destructores...
 }

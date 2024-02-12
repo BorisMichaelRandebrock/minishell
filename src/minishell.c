@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/10 19:02:10 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/12 14:15:20 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int	main(int argc, char *argv[], char *env[])
 	t_shell	*shell;
 
 	//TODO borrar pruebas imprimir env
-	int i = 0;
+/* 	int i = 0;
 	while (env[i])
-		printf("%s\n", env[i++]);
+		printf("%s\n", env[i++]);*/
 	(void)argc;
 	(void)argv;
 
@@ -38,8 +38,8 @@ int	main(int argc, char *argv[], char *env[])
 	{
 		shell->_prompt = new_prompt(shell);
 		shell->_prompt->invoke(shell->_prompt);
-		//shell->_parser->parse(&shell->_prompt);
-		printf("%s\n", shell->_prompt->_input);	//TODO borrar test
+		shell->_parser->parse(shell->_prompt);
+
 		shell->destroy(shell);
 	}
 	return (SUCCESS);
