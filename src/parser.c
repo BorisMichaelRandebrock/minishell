@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/12 20:07:32 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/12 20:15:28 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	_parse_prompt(t_prompt *prompt)
 	(void) test;
 /* masked_split
 
-1. sacar las mascaras con retro-marcado
+1. sacar las mascaras con retro-marcado (guardando inicio y usando memset)
 
 						echo "hola|   que" 'tal'"tio"    '  | cat -e
 "mask					00000011111111111000000001110000000000000000
@@ -53,6 +53,8 @@ static void	_parse_prompt(t_prompt *prompt)
 ch_mask					11110111111000111101111111111000010010111011
 
 2. recorrer y guardar en el heap (char **), no necesita numero previo.
+Se van cambiando los modos segun encuentras caracteres quotes u operadores.
+Las redirecciones >> se tratan como dos >. (se procesan en otro lado)
 
 mode ch
 						echo
