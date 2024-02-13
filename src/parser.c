@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/12 20:15:28 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/13 13:49:29 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,8 @@
 #include "minishell.h"
 #include "libft.h"
 
-#define SPC_CH ' '
-#define TAB_CH '\t'
-#define SQU_CH '\''
-#define DQU_CH '"'
-#define MSQ_SPC 0
 
-#define N_TOKEN_TYPES 9
+#define N_TOKEN_TYPES 9 //TODO es necesario?
 
 //Free process object resources
 static void	_destructor(t_parser *parser)
@@ -37,36 +32,55 @@ static void	_destructor(t_parser *parser)
 }
 
 
+
+
+
 //Parse user input via prompt object
 static void	_parse_prompt(t_prompt *prompt)
 {
-	(void) prompt;
-	char	*test = "echo \"hola| adios\" si \"seny   or\"cat -e";
-	(void) test;
-/* masked_split
+	(void)prompt;
+/*
+	int		i;
+	int		j;
+	bool	tflag;
+	char	*token_ptr;
+	char	*split_lst;
 
-1. sacar las mascaras con retro-marcado (guardando inicio y usando memset)
+ 	split_lst = prompt->_shell->_parser->_split;
+	split_lst = malloc(sizeof(char **));	//TODO pasar al inicializador parser
+	if (!split_lst)
+		cleanexit(prompt->_shell, MEM_ERROR);
 
-						echo "hola|   que" 'tal'"tio"    '  | cat -e
-"mask					00000011111111111000000001110000000000000000
-'mask					00000000000000000000111000000000000000000000
-ch_mask					11110111111000111101111111111000010010111011
 
-2. recorrer y guardar en el heap (char **), no necesita numero previo.
-Se van cambiando los modos segun encuentras caracteres quotes u operadores.
-Las redirecciones >> se tratan como dos >. (se procesan en otro lado)
+//TODO pre-clean whitespace!!!!
 
-mode ch
-						echo
-mode "	(" & ch)			 hola|   que
-mode '	(' & ch)							tal
-mode "  (" & ch)							     tio
-mode ch													 '
-mode op (!(" & ') & ch)										|
-mode ch														  cat -e
+	i = 0;
+	j = 0;
+	tflag = false;
+	while (prompt->_input[i])
+	{
+		if ((prompt->_dq_mask[i] == '0' && prompt->_sq_mask[i] == '0')) //Si no hay mascaras
+		{
+			if (prompt->_input[i] != SPC_CH && !tflag)	// si no hay espacio y tflag es falso
+			{
+				token_ptr = &prompt->_input[i];	// Guarda el token_ptr
+				tflag = true;
+			}
+			else if (prompt->_input[i] == SPC_CH && tflag) // si hay un espacio y tflag es true
+			{
+				split_lst[j] = ft_calloc(  , sizeof(char));
+			}
+		}
 
-3. Integrar el array en el parser. */
 
+		//if (prompt->_dq_mask[i] == '1' || prompt->_sq_mask[i] == '1')
+	}
+ */
+
+
+	printf("%s\n", prompt->_input);
+	printf("%s\n", prompt->_dq_mask);
+	printf("%s\n", prompt->_sq_mask);
 }
 
 //Create new process object
