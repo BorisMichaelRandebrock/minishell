@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 16:12:26 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/13 13:51:49 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/13 20:19:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ typedef struct s_process	t_process;
 typedef struct s_prompt
 {
 	char	*_input;
-	char	*_dq_mask;
-	char	*_sq_mask;
+	char	*_mask;
 	size_t	_size;
 	t_shell	*_shell;
 	void	(*destroy)(t_prompt *prompt);

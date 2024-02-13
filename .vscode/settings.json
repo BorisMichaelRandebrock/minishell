@@ -6,6 +6,7 @@
 		"history.h": "c",
 		"minishell.h": "c",
 		"bitset": "c",
-		"readline.h": "c"
+		"readline.h": "c",
+		"__locale": "c"
 	}
 }

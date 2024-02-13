@@ -91,5 +91,5 @@ mode ch														  cat -e
 
 supertest:
 
+    echo   "hola ' ' '"    """ "    '"""""' "asda'd" ' sdff sf  "'  sdfs  "dsf
 
-echo    "hola|   que" 'tal'"tio"    '  | cat -e

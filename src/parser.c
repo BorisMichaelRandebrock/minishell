@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/13 13:49:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/13 20:28:09 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,58 +29,17 @@ static void	_destructor(t_parser *parser)
 		free(parser->_split[i]); //TODO check leaks!
 		i++;
 	}
+	free(parser);
 }
-
-
-
-
 
 //Parse user input via prompt object
 static void	_parse_prompt(t_prompt *prompt)
 {
 	(void)prompt;
-/*
-	int		i;
-	int		j;
-	bool	tflag;
-	char	*token_ptr;
-	char	*split_lst;
-
- 	split_lst = prompt->_shell->_parser->_split;
-	split_lst = malloc(sizeof(char **));	//TODO pasar al inicializador parser
-	if (!split_lst)
-		cleanexit(prompt->_shell, MEM_ERROR);
-
-
-//TODO pre-clean whitespace!!!!
-
-	i = 0;
-	j = 0;
-	tflag = false;
-	while (prompt->_input[i])
-	{
-		if ((prompt->_dq_mask[i] == '0' && prompt->_sq_mask[i] == '0')) //Si no hay mascaras
-		{
-			if (prompt->_input[i] != SPC_CH && !tflag)	// si no hay espacio y tflag es falso
-			{
-				token_ptr = &prompt->_input[i];	// Guarda el token_ptr
-				tflag = true;
-			}
-			else if (prompt->_input[i] == SPC_CH && tflag) // si hay un espacio y tflag es true
-			{
-				split_lst[j] = ft_calloc(  , sizeof(char));
-			}
-		}
-
-
-		//if (prompt->_dq_mask[i] == '1' || prompt->_sq_mask[i] == '1')
-	}
- */
-
-
-	printf("%s\n", prompt->_input);
-	printf("%s\n", prompt->_dq_mask);
-	printf("%s\n", prompt->_sq_mask);
+	//TODO @@@@@@@@@@ parsear el prompt usando la mascara
+	// split condicionado por la mascara
+	// expansion de VAR
+	// construccion de tokenlist
 }
 
 //Create new process object
