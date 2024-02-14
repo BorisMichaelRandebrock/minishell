@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 16:12:26 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/13 20:19:39 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/14 11:50:52 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ typedef enum e_tokentype
 
 typedef struct s_token
 {
-	char		*text;
-	t_tokentype	type;
-	t_token		*prev;
-	t_token		*next;
+	char		*_text;
+	t_tokentype	_type;
+	t_token		*_prev;
+	t_token		*_next;
 	void		(*destroy)(t_token *token);
 	t_tokentype	(*get_type)(char *);
 }	t_token;
@@ -75,6 +75,7 @@ typedef struct s_parser
 {
 	char	**_split;
 	t_shell	*_shell;
+	t_token	*_tokens;
 	void	(*destroy)(t_parser *parser);
 	void	(*parse)(t_prompt *prompt);
 }	t_parser;
@@ -143,7 +144,7 @@ typedef struct s_shell
 t_shell		*new_shell(char **env);
 t_env		*new_enviorment(t_shell *shell, char **env);
 t_prompt	*new_prompt(t_shell *shell);
-t_token		*new_token(void);
+t_token		*new_token(t_shell *shell);
 t_parser	*new_parser(t_shell *shell);
 t_arg		new_arg(void);
 t_command	new_command(void);
