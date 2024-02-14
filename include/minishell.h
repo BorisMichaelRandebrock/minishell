@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 16:12:26 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/14 11:50:52 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:12:52 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@
 # define SQU_CH '\''
 # define DQU_CH '"'
 
-# include <stdio.h> //TODO para pruebas retirar
-# include <sys/types.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <stdio.h> //TODO para pruebas retirar
+# include <sys/types.h>
 
 typedef struct s_env		t_env;
 typedef struct s_shell		t_shell;
@@ -40,13 +40,13 @@ typedef struct s_process	t_process;
 
 typedef struct s_prompt
 {
-	char	*_input;
-	char	*_mask;
-	size_t	_size;
-	t_shell	*_shell;
-	void	(*destroy)(t_prompt *prompt);
-	void	(*invoke)(t_prompt *prompt);
-}	t_prompt;
+	char					*_input;
+	char					*_mask;
+	size_t					_size;
+	t_shell					*_shell;
+	void					(*destroy)(t_prompt *prompt);
+	void					(*invoke)(t_prompt *prompt);
+}							t_prompt;
 
 typedef enum e_tokentype
 {
@@ -59,96 +59,95 @@ typedef enum e_tokentype
 	RD_OUT_APP,
 	VAR,
 	PIPE
-}	t_tokentype;
+}							t_tokentype;
 
 typedef struct s_token
 {
-	char		*_text;
-	t_tokentype	_type;
-	t_token		*_prev;
-	t_token		*_next;
-	void		(*destroy)(t_token *token);
-	t_tokentype	(*get_type)(char *);
-}	t_token;
+	char					*_text;
+	t_tokentype				_type;
+	t_token					*_prev;
+	t_token					*_next;
+	void					(*destroy)(t_token *token);
+	t_tokentype				(*get_type)(char *);
+}							t_token;
 
 typedef struct s_parser
 {
-	char	**_split;
-	t_shell	*_shell;
-	t_token	*_tokens;
-	void	(*destroy)(t_parser *parser);
-	void	(*parse)(t_prompt *prompt);
-}	t_parser;
+	char					**_split;
+	t_shell					*_shell;
+	t_token					*_tokens;
+	void					(*destroy)(t_parser *parser);
+	void					(*parse)(t_prompt *prompt);
+}							t_parser;
 
 typedef struct s_arg
 {
-	char		*text;
-	t_arg		*next;
-}	t_arg;
+	char					*text;
+	t_arg					*next;
+}							t_arg;
 
 typedef struct s_command
 {
-	char	*_name;
-	t_arg	*_arg_lst;
-	void	(*destroy)(t_command *command);
-	void	(*consume_arg)(t_command *command);
-	t_shell	*_shell;
-}	t_command;
+	char					*_name;
+	t_arg					*_arg_lst;
+	void					(*destroy)(t_command *command);
+	void					(*consume_arg)(t_command *command);
+	t_shell					*_shell;
+}							t_command;
 
 typedef struct s_process
 {
-	pid_t	_pid;
-	int		*_status;
-	char	*_ppath;
-	char	**_pargs;
-	char	**_penvs;
-	char	*_output;
-	t_shell	*_shell;
-	//Free process object resources
-	void	(*destroy)(t_process *context);
-	//Set absolute path to binary
-	void	(*set_path)(t_process *context, char *path);
-	//Set process args ended with NULL arg.
-	void	(*set_args)(t_process *context, char *args[]);
-	//Set process enviorment variables ended with NULL arg. Format "ENV=value".
-	void	(*set_env)(t_process *context, char *envs[]);
-}	t_process;
-
+	pid_t					_pid;
+	int						*_status;
+	char					*_ppath;
+	char					**_pargs;
+	char					**_penvs;
+	char					*_output;
+	t_shell					*_shell;
+	// Free process object resources
+	void					(*destroy)(t_process *context);
+	// Set absolute path to binary
+	void					(*set_path)(t_process *context, char *path);
+	// Set process args ended with NULL arg.
+	void					(*set_args)(t_process *context, char *args[]);
+	// Set process enviorment variables ended with NULL arg. Format "ENV=value".
+	void					(*set_env)(t_process *context, char *envs[]);
+}							t_process;
 
 typedef struct s_env
 {
-	char	*last_process_name;
-	char	*last_exit_code;
-	char	*path;
-	char	*pwd;
-	char	*old_pwd;
-	char	*tmp_dir;
-	void	(*destroy)(t_env *env);
-}	t_env;
+	char					*last_process_name;
+	char					*last_exit_code;
+	char					*path;
+	char					*pwd;
+	char					*old_pwd;
+	char					*tmp_dir;
+	void					(*destroy)(t_env *env);
+}							t_env;
 
 typedef struct s_shell
 {
-	bool				_is_running;
+	bool					_is_running;
 
-	struct sigaction	sig_action;	//TODO hacer un re-typedef?
-	t_env				*_enviorment;
-	t_prompt			*_prompt;
-	t_parser			*_parser;
-	t_command			_command;
-	t_process			_process;
-	void				(*destroy)(t_shell	*shell);
-	char				*(*proc_exec)(t_process *process);
-	void				(*builtin_exec)(t_command *command);
-}	t_shell;
+	struct sigaction sig_action; // TODO hacer un re-typedef?
+	t_env					*_enviorment;
+	t_prompt				*_prompt;
+	t_parser				*_parser;
+	t_command				_command;
+	t_process				_process;
+	void					(*destroy)(t_shell *shell);
+	char					*(*proc_exec)(t_process *process);
+	void					(*builtin_exec)(t_command *command);
+}							t_shell;
 
-t_shell		*new_shell(char **env);
-t_env		*new_enviorment(t_shell *shell, char **env);
-t_prompt	*new_prompt(t_shell *shell);
-t_token		*new_token(t_shell *shell);
-t_parser	*new_parser(t_shell *shell);
-t_arg		new_arg(void);
-t_command	new_command(void);
-t_process	new_process(void);
-void		cleanexit(t_shell *shell, int error_code);
+t_shell						*new_shell(char **env);
+t_env						*new_enviorment(t_shell *shell, char **env);
+t_prompt					*new_prompt(t_shell *shell);
+t_token						*new_token(t_shell *shell);
+t_parser					*new_parser(t_shell *shell);
+t_arg						new_arg(void);
+t_command					new_command(void);
+t_process					new_process(void);
+void						cleanexit(t_shell *shell, int error_code);
 
 #endif
