@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 16:12:26 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/14 11:50:52 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/14 18:16:35 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,19 @@ typedef struct s_token		t_token;
 typedef struct s_command	t_command;
 typedef struct s_arg		t_arg;
 typedef struct s_process	t_process;
+typedef struct s_str		t_str;
+
+typedef struct s_str
+{
+	char	*str;
+	t_str	*next;
+}	t_str;
 
 typedef struct s_prompt
 {
 	char	*_input;
-	char	*_mask;
-	size_t	_size;
 	t_shell	*_shell;
+	t_str	*_str_list;
 	void	(*destroy)(t_prompt *prompt);
 	void	(*invoke)(t_prompt *prompt);
 }	t_prompt;
@@ -113,7 +119,6 @@ typedef struct s_process
 	//Set process enviorment variables ended with NULL arg. Format "ENV=value".
 	void	(*set_env)(t_process *context, char *envs[]);
 }	t_process;
-
 
 typedef struct s_env
 {
