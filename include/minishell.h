@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/10 16:12:26 by fmontser          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/02/14 18:16:35 by fmontser         ###   ########.fr       */
-=======
-/*   Updated: 2024/02/14 15:12:52 by brandebr         ###   ########.fr       */
->>>>>>> master
+/*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
+/*   Updated: 2024/02/14 18:29:43 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,22 +47,13 @@ typedef struct s_str
 
 typedef struct s_prompt
 {
-<<<<<<< HEAD
 	char	*_input;
 	t_shell	*_shell;
 	t_str	*_str_list;
 	void	(*destroy)(t_prompt *prompt);
 	void	(*invoke)(t_prompt *prompt);
 }	t_prompt;
-=======
-	char					*_input;
-	char					*_mask;
-	size_t					_size;
-	t_shell					*_shell;
-	void					(*destroy)(t_prompt *prompt);
-	void					(*invoke)(t_prompt *prompt);
-}							t_prompt;
->>>>>>> master
+
 
 typedef enum e_tokentype
 {
@@ -117,7 +104,6 @@ typedef struct s_command
 
 typedef struct s_process
 {
-<<<<<<< HEAD
 	pid_t	_pid;
 	int		*_status;
 	char	*_ppath;
@@ -134,24 +120,7 @@ typedef struct s_process
 	//Set process enviorment variables ended with NULL arg. Format "ENV=value".
 	void	(*set_env)(t_process *context, char *envs[]);
 }	t_process;
-=======
-	pid_t					_pid;
-	int						*_status;
-	char					*_ppath;
-	char					**_pargs;
-	char					**_penvs;
-	char					*_output;
-	t_shell					*_shell;
-	// Free process object resources
-	void					(*destroy)(t_process *context);
-	// Set absolute path to binary
-	void					(*set_path)(t_process *context, char *path);
-	// Set process args ended with NULL arg.
-	void					(*set_args)(t_process *context, char *args[]);
-	// Set process enviorment variables ended with NULL arg. Format "ENV=value".
-	void					(*set_env)(t_process *context, char *envs[]);
-}							t_process;
->>>>>>> master
+
 
 typedef struct s_env
 {
