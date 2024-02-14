@@ -6,9 +6,11 @@
 /*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 17:28:13 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/13 18:34:52 by brandebr         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:46:23 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 int	ok(char c)
 {
@@ -35,4 +37,26 @@ int	token_count(char *str)
 			count++;
 		i++;
 	}
+}
+
+char	**masked_split(t_prompt *prompt)
+{
+	char	**res;
+	int		i;
+	int		j;
+	int		prevmask;
+	int		currmask;
+	int		count;
+
+	i = 0;
+	while (prompt->_input[i])
+	{
+		currmask = ft_atoi(&prompt->_mask[i]);
+		if (prompt->_input[i] == SPC_CH && prompt->_mask[i] == '0'
+			|| prompt->_input[i] != SPC_CH && currmask > prevmask)
+			count++;
+		prevmask = currmask;
+		i++;
+	}
+	return (NULL);
 }
