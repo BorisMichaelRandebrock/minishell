@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 13:10:37 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/10 16:30:28 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/14 11:50:51 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,13 @@
 #include "libft.h"
 #define EQUALS 0
 
-static void _destructor(t_token *context)
+static void _destructor(t_token *token)
 {
-	free(context);
+	while (token)
+	{
+		free(token);
+		token = token->_next;
+	}
 }
 
 static t_tokentype	_get_type(char *term)
@@ -40,13 +44,15 @@ static t_tokentype	_get_type(char *term)
 		return (TEXT);
 }
 
-t_token	*new_token()
+t_token	*new_token(t_shell	*shell)
 {
 	t_token *new;
 
 	new = malloc(sizeof(t_token));
-	new->prev = NULL;
-	new->next = NULL;
+	if (!new)
+		cleanexit(shell, MEM_ERROR);
+	new->_prev = NULL;
+	new->_next = NULL;
 	new->destroy = _destructor;
 	new->get_type = _get_type;
 	return (new);

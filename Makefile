@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/13 13:12:02 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/14 11:04:26 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,3 +89,4 @@ re: fclean all
 #TODO resolver que pasa cuando no se recompilan slos cambios de una libreria o make anidado
 #TODO montar clase iter (fran)
 #TODO update nueva funcion libft ft_is_whspc
+#TODO repasar tema del history, es mas complejo...mirar bash manual
