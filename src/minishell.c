@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/12 20:07:50 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/13 20:31:16 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,6 @@ void	cleanexit(t_shell *shell, int error_code)
 int	main(int argc, char *argv[], char *env[])
 {
 	t_shell	*shell;
-
-	//TODO borrar pruebas imprimir env
-/* 	int i = 0;
-	while (env[i])
-		printf("%s\n", env[i++]);*/
 	(void)argc;
 	(void)argv;
 

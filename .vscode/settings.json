@@ -4,6 +4,9 @@
 	],
 	"files.associations": {
 		"history.h": "c",
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"bitset": "c",
+		"readline.h": "c",
+		"__locale": "c"
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 16:12:26 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/12 14:18:22 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/13 20:19:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 # define FAILURE 1
 
 # define NUL_CH '\0'
+# define SPC_CH ' '
+# define TAB_CH '\t'
+# define SQU_CH '\''
+# define DQU_CH '"'
 
 # include <stdio.h> //TODO para pruebas retirar
 # include <sys/types.h>
@@ -37,6 +41,8 @@ typedef struct s_process	t_process;
 typedef struct s_prompt
 {
 	char	*_input;
+	char	*_mask;
+	size_t	_size;
 	t_shell	*_shell;
 	void	(*destroy)(t_prompt *prompt);
 	void	(*invoke)(t_prompt *prompt);

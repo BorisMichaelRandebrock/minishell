@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 22:49:16 by fmontser          #+#    #+#             */
-/*   Updated: 2023/11/18 23:13:41 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/13 13:51:48 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,6 @@ bool	ft_is_prime(int n);
 int		ft_fsize(char *file_path);
 void	*ft_fload(char *file_path, int file_size);
 bool	ft_fexists(char *file_path);
+bool	ft_is_whspc(char c);
 
 #endif

@@ -87,3 +87,9 @@ mode op (!(" & ') & ch)										|
 mode ch														  cat -e
 
 3. Integrar el array en el parser.
+
+
+supertest:
+
+    echo   "hola ' ' '"    """ "    '"""""' "asda'd" ' sdff sf  "'  sdfs  "dsf
+
