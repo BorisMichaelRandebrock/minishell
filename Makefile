@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
+#    By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/14 11:04:26 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/15 17:39:14 by brandebr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJ_DIR			:= obj/
 BIN_DIR			:= bin/
 NAME			:= minishell
 HDRS 			:= minishell.h
-SRCS 			:= minishell.c shell.c enviorment.c prompt.c parser.c token.c process.c
+SRCS 			:= minishell.c shell.c enviorment.c prompt.c parser.c token.c process.c echo.c cd.c pwd.c
 OBJS			:= $(SRCS:.c=.o)
 
 LIBFT_DIR		:= src/libft/
