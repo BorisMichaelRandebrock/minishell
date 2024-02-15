@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/14 11:04:26 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/15 12:26:22 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,7 +81,7 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-
+#TODO limpieza includes
 #TODO garantizar que debemos usar readline asumiendo que esta instalada en el sistema y no compilandola nosotros...
 #TODO retirar .vscode de git
 #TODO retirar las funciones libft no utilizadas
