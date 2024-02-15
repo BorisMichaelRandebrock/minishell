@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/15 20:29:13 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/15 23:21:14 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,77 +23,23 @@
 //Free process object resources
 static void	_destructor(t_prompt *prompt)
 {
+	t_list	*prev_str;
+
 	if (prompt)
 	{
 		free(prompt->_input);
+		while (prompt->_raw_list)
+		{
+			free(prompt->_raw_list->content);
+			prev_str = prompt->_raw_list;
+			prompt->_raw_list = prompt->_raw_list->next;
+			free(prev_str);
+		}
 		free(prompt);
 	}
 }
 
-static int _extract_token(t_prompt *prompt, int start, int end)
-{
-	char *token;
 
-	token = ft_substr(prompt->_input, start, ++end - start);
-	ft_memmove(&prompt->_input[start], &prompt->_input[end], ft_strlen(prompt->_input) + NUL_CH);
-	if (!prompt->_str_list)
-		prompt->_str_list = ft_lstnew(token);
-	else
-		ft_lstadd_back(&prompt->_str_list, ft_lstnew(token));
-	return (start);
-}
-
-static void _tokenize(t_prompt *prompt, char *dlmt)
-{
-	int		i;
-	int		j;
-	int		start;
-	int		end;
-	bool	flag;
-	char	_dlmt;
-
-	i = 0;
-	j = 0;
-	start = 0;
-	end = 0;
-	flag = false;
-	_dlmt = '\0';
-	while (prompt->_input[i])
-	{
-		while (dlmt[j] && !flag)
-		{
-			if (prompt->_input[i] == dlmt[j])
-			{
-				_dlmt = dlmt[j];
-				break ;
-			}
-			j++;
-		}
-		if (prompt->_input[i] == _dlmt)
-		{
-			flag = !flag;
-			if (flag)
-				start = i;
-			else
-				end = i;
-			if (start < end && !flag)
-			{
-				i = _extract_token(prompt, start, end);
-				continue ;
-			}
-		}
-		j = 0;
-		i++;
-	}
-	prompt->_split = ft_split(prompt->_input, SPC_CH);
-	free(prompt->_input);
-	while (*prompt->_split)
-	{
-		prompt->_input = *prompt->_split;
-		_extract_token(prompt, 0, ft_strlen(prompt->_input));
-		prompt->_split++;
-	}
-}
 
 
 
@@ -102,14 +48,19 @@ static void	_invoker(t_prompt *prompt)
 {
 	(void)prompt;
 	//prompt->_input = readline("minishell> ");
-	prompt->_input = ft_strdup("    \"\" echo \"hola ' que\" echo2 'bu'  \"bubu \"    echo3 'ase \" tu'  'por \" aqui' \"nada\"'nada'   echo4   ");
-	_tokenize(prompt, "\"' ");
+	//prompt->_input = ft_strdup("    \"\" echo \"hola ' que\" echo2 'bu'  \"bubu \"    echo3 'ase \" tu'  'por \" aqui' \"nada\"'nada'   echo4   ");
+	prompt->_input = ft_strdup("h q");
+	toklst(prompt, "\"' ");
+	//TODO @@@@@@@ continuar aqui! no coge el ultimo token?¿?¿¿
 
-	while (prompt->_str_list)
+	t_list *test = prompt->_raw_list;
+
+ 	while (test)
 	{
-		printf("%s\n", prompt->_str_list->content);
-		prompt->_str_list = prompt->_str_list->next;
+		printf("%s\n", test->content);
+		test = test->next;
 	}
+	prompt->destroy(prompt);
 	exit(0);
 
 }

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/15 10:17:18 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/15 20:59:58 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@ static void	_destructor(t_parser *parser)
 	int	i;
 
 	i = 0;
-	while (parser->_split[i])
+	if (parser->_split)
 	{
-		free(parser->_split[i]); // TODO check leaks!
-		i++;
+		while (parser->_split[i])
+		{
+			free(parser->_split[i]); // TODO check leaks!
+			i++;
+		}
 	}
 	parser->_tokens->destroy(parser->_tokens);
 	free(parser);
@@ -79,6 +82,7 @@ t_parser	*new_parser(t_shell *shell)
 	if (!new)
 		cleanexit(shell, MEM_ERROR);
 	new->_shell = shell;
+	new->_split = NULL;
 	new->_tokens = new_token(shell);
 	new->destroy = _destructor;
 	new->parse = _parse_prompt;
