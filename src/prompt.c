@@ -3,24 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
 /*   Updated: 2024/02/16 09:46:36 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "libft.h"
+#include "minishell.h"
 #include <readline/history.h>
 #include <readline/readline.h>
-#include "minishell.h"
-#include "libft.h"
-#include <string.h>
+#include <stdlib.h>
 
 #define QUOTE_SZ 1
 #define DELIMS	"\"\' "
 
-//Free process object resources
+// Free process object resources
 static void	_destructor(t_prompt *prompt)
 {
 	t_list	*prev_str;
@@ -56,10 +55,9 @@ static void	_invoker(t_prompt *prompt)
 	}
 	prompt->destroy(prompt);
 	exit(0);
-
 }
 
-//Create new process object
+// Create new process object
 t_prompt	*new_prompt(t_shell *shell)
 {
 	t_prompt	*new;
@@ -67,7 +65,7 @@ t_prompt	*new_prompt(t_shell *shell)
 	new = malloc(sizeof(t_prompt));
 	if (!new)
 		cleanexit(shell, MEM_ERROR);
-	new->_input = NULL;	//TODO probar si usando calloc se peude evitar esto.
+	new->_input = NULL; // TODO probar si usando calloc se peude evitar esto.
 	new->_shell = shell;
 	new->destroy = _destructor;
 	new->invoke = _invoker;
