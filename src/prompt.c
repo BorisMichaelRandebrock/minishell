@@ -6,7 +6,7 @@
 /*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/16 09:46:36 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/16 19:30:44 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <stdlib.h>
 
 #define QUOTE_SZ 1
-#define DELIMS	"\"\' "
+#define DELIMS "\"\' "
 
 // Free process object resources
 static void	_destructor(t_prompt *prompt)
@@ -38,17 +38,16 @@ static void	_destructor(t_prompt *prompt)
 	}
 }
 
-
-//Invoke a new prompt for input
+// Invoke a new prompt for input
 static void	_invoker(t_prompt *prompt)
 {
-	prompt->_input = readline("minishell> ");
+	t_list	*test;
+
+	prompt->_input = readline("🐌 minishell> ");
 	toklst(prompt, "\"' ");
-	//TODO @@@@@@@ continuar aqui! intentar romper!
-
-	t_list *test = prompt->_raw_list;
-
- 	while (test)
+	// TODO @@@@@@@ continuar aqui! intentar romper!
+	test = prompt->_raw_list;
+	while (test)
 	{
 		printf("%s\n", test->content);
 		test = test->next;
