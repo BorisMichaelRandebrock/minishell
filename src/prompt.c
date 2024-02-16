@@ -6,7 +6,7 @@
 /*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/15 17:56:54 by brandebr         ###   ########.fr       */
+/*   Updated: 2024/02/16 09:46:36 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,55 +17,44 @@
 #include <stdlib.h>
 
 #define QUOTE_SZ 1
+#define DELIMS	"\"\' "
 
 // Free process object resources
 static void	_destructor(t_prompt *prompt)
 {
+	t_list	*prev_str;
+
 	if (prompt)
 	{
 		free(prompt->_input);
+		while (prompt->_raw_list)
+		{
+			free(prompt->_raw_list->content);
+			prev_str = prompt->_raw_list;
+			prompt->_raw_list = prompt->_raw_list->next;
+			free(prev_str);
+		}
 		free(prompt);
 	}
 }
 
-static void	_extract_qs(t_prompt *prompt, char q)
-{
-	int				i;
-	unsigned int	start;
-	bool			flag;
 
-	i = 0;
-	flag = false;
-	while (prompt->_input[i])
-	{
-		if (prompt->_input[i] == q && !flag)
-		{
-			flag = !flag;
-			start = i;
-		}
-		else if (prompt->_input[i] == q && flag)
-		{
-			flag = !flag;
-			prompt->_str_list = malloc(sizeof(t_str));
-			if (!prompt->_str_list)
-				cleanexit(prompt->_shell, MEM_ERROR);
-			prompt->_str_list->str = ft_substr(prompt->_input, start, ((i + 1)
-						- start));
-			prompt->_str_list = prompt->_str_list->next;
-		}
-		i++;
-	}
-}
-
-// Invoke a new prompt for input
+//Invoke a new prompt for input
 static void	_invoker(t_prompt *prompt)
 {
-	prompt->_input = readline("🐌 minishell> ");
-	add_history(prompt->_input);
-	ft_strtrim(prompt->_input, " \\t\\n\\r\\f\\v");
-	_extract_qs(prompt, DQU_CH);
-	_extract_qs(prompt, SQU_CH);
-	// TODO @@@@@@@@ continuar aqui...
+	prompt->_input = readline("minishell> ");
+	toklst(prompt, "\"' ");
+	//TODO @@@@@@@ continuar aqui! intentar romper!
+
+	t_list *test = prompt->_raw_list;
+
+ 	while (test)
+	{
+		printf("%s\n", test->content);
+		test = test->next;
+	}
+	prompt->destroy(prompt);
+	exit(0);
 }
 
 // Create new process object

@@ -67,7 +67,11 @@ static void	_parse_prompt(t_prompt *prompt)
 } */
 
 
-supertest:
+
+
+supertests:
+
+echo "hola" 'que' "ase" tu
 
     echo   "hola ' ' '"    """ "    '"""""' "asda'd" ' sdff sf  "'  sdfs  "dsf
 

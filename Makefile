@@ -6,7 +6,7 @@
 #    By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/15 17:39:14 by brandebr         ###   ########.fr        #
+#    Updated: 2024/02/15 23:14:31 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ OBJ_DIR			:= obj/
 BIN_DIR			:= bin/
 NAME			:= minishell
 HDRS 			:= minishell.h
-SRCS 			:= minishell.c shell.c enviorment.c prompt.c parser.c token.c process.c echo.c cd.c pwd.c
+SRCS 			:= minishell.c shell.c enviorment.c prompt.c parser.c token.c process.c\
+					toklst.c
 OBJS			:= $(SRCS:.c=.o)
 
 LIBFT_DIR		:= src/libft/
@@ -81,7 +82,7 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-
+#TODO limpieza includes
 #TODO garantizar que debemos usar readline asumiendo que esta instalada en el sistema y no compilandola nosotros...
 #TODO retirar .vscode de git
 #TODO retirar las funciones libft no utilizadas

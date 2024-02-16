@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/14 18:29:43 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/15 23:20:06 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <stdbool.h>
 # include <stdio.h> //TODO para pruebas retirar
 # include <sys/types.h>
+# include "libft.h"
 
 typedef struct s_env		t_env;
 typedef struct s_shell		t_shell;
@@ -39,21 +40,14 @@ typedef struct s_arg		t_arg;
 typedef struct s_process	t_process;
 typedef struct s_str		t_str;
 
-typedef struct s_str
-{
-	char	*str;
-	t_str	*next;
-}	t_str;
-
 typedef struct s_prompt
 {
 	char	*_input;
 	t_shell	*_shell;
-	t_str	*_str_list;
+	t_list	*_raw_list;
 	void	(*destroy)(t_prompt *prompt);
 	void	(*invoke)(t_prompt *prompt);
 }	t_prompt;
-
 
 typedef enum e_tokentype
 {
@@ -157,5 +151,6 @@ t_arg						new_arg(void);
 t_command					new_command(void);
 t_process					new_process(void);
 void						cleanexit(t_shell *shell, int error_code);
+void 						toklst(t_prompt *prompt, char *dlmt);
 
 #endif
