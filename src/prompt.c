@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/16 09:46:36 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/16 18:50:50 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@ static void	_destructor(t_prompt *prompt)
 }
 
 
+
+
 //Invoke a new prompt for input
 static void	_invoker(t_prompt *prompt)
 {
 	prompt->_input = readline("minishell> ");
+	add_space(prompt);
 	toklst(prompt, "\"' ");
-	//TODO @@@@@@@ continuar aqui! intentar romper!
 
 	t_list *test = prompt->_raw_list;
 

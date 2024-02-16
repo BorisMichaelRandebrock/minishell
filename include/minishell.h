@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/15 23:20:06 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/16 18:47:42 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 # define SUCCESS 0
 # define FAILURE 1
+# define CH_SZ	1
 
 # define NUL_CH '\0'
 # define SPC_CH ' '
@@ -40,6 +41,15 @@ typedef struct s_arg		t_arg;
 typedef struct s_process	t_process;
 typedef struct s_str		t_str;
 
+typedef	enum e_op
+{
+	RD_IN,
+	RD_OUT,
+	PIPE,
+	RD_OUT_APP,
+	RD_IN_S
+}	t_op;
+
 typedef struct s_prompt
 {
 	char	*_input;
@@ -54,12 +64,7 @@ typedef enum e_tokentype
 	TEXT,
 	CMD,
 	ARG,
-	RD_IN,
-	RD_IN_S,
-	RD_OUT,
-	RD_OUT_APP,
-	VAR,
-	PIPE
+	VAR
 }							t_tokentype;
 
 typedef struct s_token
@@ -151,6 +156,7 @@ t_arg						new_arg(void);
 t_command					new_command(void);
 t_process					new_process(void);
 void						cleanexit(t_shell *shell, int error_code);
-void 						toklst(t_prompt *prompt, char *dlmt);
+void						toklst(t_prompt *prompt, char *dlmt);
+void						add_space(t_prompt *prompt);
 
 #endif
