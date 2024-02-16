@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:40:14 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/15 23:20:54 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/16 10:08:43 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int _extract_token(t_prompt *prompt, int start, int end)
 		free(trim_token);
 	return (start);
 }
-
+// TODO adaptar a norminette (quizas recursiva?)
 void toklst(t_prompt *prompt, char *dlmt)
 {
 	int		i;
@@ -80,4 +80,5 @@ void toklst(t_prompt *prompt, char *dlmt)
 		j = 0;
 		i++;
 	}
+	_extract_token(prompt, start, end);
 }

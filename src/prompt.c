@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/15 23:21:14 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/16 09:46:36 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,12 @@ static void	_destructor(t_prompt *prompt)
 }
 
 
-
-
-
 //Invoke a new prompt for input
 static void	_invoker(t_prompt *prompt)
 {
-	(void)prompt;
-	//prompt->_input = readline("minishell> ");
-	//prompt->_input = ft_strdup("    \"\" echo \"hola ' que\" echo2 'bu'  \"bubu \"    echo3 'ase \" tu'  'por \" aqui' \"nada\"'nada'   echo4   ");
-	prompt->_input = ft_strdup("h q");
+	prompt->_input = readline("minishell> ");
 	toklst(prompt, "\"' ");
-	//TODO @@@@@@@ continuar aqui! no coge el ultimo token?¿?¿¿
+	//TODO @@@@@@@ continuar aqui! intentar romper!
 
 	t_list *test = prompt->_raw_list;
 
