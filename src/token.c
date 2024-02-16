@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 13:10:37 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/14 11:50:51 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/16 17:17:51 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ static void _destructor(t_token *token)
 
 static t_tokentype	_get_type(char *term)
 {
-	size_t term_sz;
-
-	term_sz = ft_strlen(term);
+	/* size_t term_sz; */
+	(void)term;
+/* 	term_sz = ft_strlen(term);
 	if (ft_strncmp(term, ">", term_sz) == EQUALS)
 		return (RD_OUT);
 	else if (ft_strncmp(term, "<", term_sz) == EQUALS)
@@ -41,7 +41,9 @@ static t_tokentype	_get_type(char *term)
 	else if (ft_strncmp(term, "$", term_sz) == EQUALS)
 		return (VAR);
 	else
-		return (TEXT);
+		return (TEXT); */
+
+	return (0); //TODO fix
 }
 
 t_token	*new_token(t_shell	*shell)

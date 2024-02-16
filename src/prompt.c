@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
 /*   Updated: 2024/02/16 19:30:44 by brandebr         ###   ########.fr       */
@@ -37,11 +37,6 @@ static void	_destructor(t_prompt *prompt)
 		free(prompt);
 	}
 }
-
-// Invoke a new prompt for input
-static void	_invoker(t_prompt *prompt)
-{
-	t_list	*test;
 
 	prompt->_input = readline("🐌 minishell> ");
 	toklst(prompt, "\"' ");

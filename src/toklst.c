@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:40:14 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/16 10:08:43 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/16 19:27:47 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,25 @@ static int _extract_token(t_prompt *prompt, int start, int end)
 		free(trim_token);
 	return (start);
 }
+
+/* static char	_get_dlmt(char *ptr)
+{
+	int	i;
+
+	i = 0;
+	while(ptr[i])
+	{
+		if (ptr[i] == '"' || ptr[i] == '\'' || ptr[i] == ' ')
+			return (ptr[i]);
+		i++;
+	}
+	return ('\0');
+} */
+
+
+//TODO dos pretokens no pueden compartir un separador echo"hola"
+//TODO recordatorio, si '\0' guarda un -1 para;
+
 // TODO adaptar a norminette (quizas recursiva?)
 void toklst(t_prompt *prompt, char *dlmt)
 {
@@ -44,7 +63,7 @@ void toklst(t_prompt *prompt, char *dlmt)
 	int		end;
 	bool	flag;
 	char	_dlmt;
-
+	char *debug = prompt->_input;
 	i = 0;
 	j = 0;
 	start = 0;
@@ -79,6 +98,7 @@ void toklst(t_prompt *prompt, char *dlmt)
 		}
 		j = 0;
 		i++;
+		debug++;
 	}
 	_extract_token(prompt, start, end);
 }
