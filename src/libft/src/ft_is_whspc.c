@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:11:21 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/13 13:26:05 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/18 11:38:14 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 bool	ft_is_whspc(char c)
 {
-	size_t i;
-	char white[7];
+	size_t	i;
+	char	white[7];
 
 	i = 0;
 	white[0] = ' ';
@@ -28,8 +28,8 @@ bool	ft_is_whspc(char c)
 	while (white[i])
 	{
 		if (c == white[i])
-			return true;
+			return (true);
 		i++;
 	}
-	return false;
+	return (false);
 }

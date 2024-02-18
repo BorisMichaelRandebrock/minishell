@@ -6,22 +6,22 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:40:14 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/16 19:27:47 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/18 11:37:21 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#define SPC_CH ' '
-#define NUL_CH '\0'
+#define START 0
+#define END 1
 
-
-static int _extract_token(t_prompt *prompt, int start, int end)
+static int	_extract_token(t_prompt *prompt, int start, int end)
 {
-	char *raw_token;
-	char *trim_token;
+	char	*raw_token;
+	char	*trim_token;
 
 	raw_token = ft_substr(prompt->_input, start, ++end - start);
-	ft_memmove(&prompt->_input[start], &prompt->_input[end], ft_strlen(prompt->_input) + NUL_CH);
+	ft_memmove(&prompt->_input[start], &prompt->_input[end],
+		ft_strlen(prompt->_input) + NUL_CH);
 	trim_token = ft_strtrim(raw_token, " ");
 	free(raw_token);
 	if (*trim_token)
@@ -36,69 +36,47 @@ static int _extract_token(t_prompt *prompt, int start, int end)
 	return (start);
 }
 
-/* static char	_get_dlmt(char *ptr)
+static char	_get_dlmt(char c)
 {
-	int	i;
-
-	i = 0;
-	while(ptr[i])
-	{
-		if (ptr[i] == '"' || ptr[i] == '\'' || ptr[i] == ' ')
-			return (ptr[i]);
-		i++;
-	}
+	if (c == '"' || c == '\'' || c == ' ')
+		return (c);
 	return ('\0');
-} */
+}
 
+static void	_set_range(bool *flag, int *rng, int i)
+{
+	*flag = !*flag;
+	if (*flag)
+		rng[START] = i;
+	else
+		rng[END] = i;
+}
 
-//TODO dos pretokens no pueden compartir un separador echo"hola"
-//TODO recordatorio, si '\0' guarda un -1 para;
-
-// TODO adaptar a norminette (quizas recursiva?)
-void toklst(t_prompt *prompt, char *dlmt)
+void	toklst(t_prompt *prompt)
 {
 	int		i;
-	int		j;
-	int		start;
-	int		end;
+	int		rng[2];
 	bool	flag;
-	char	_dlmt;
-	char *debug = prompt->_input;
+	char	dlmt;
+
 	i = 0;
-	j = 0;
-	start = 0;
-	end = 0;
+	ft_memcpy(rng, (int []){10, 20}, sizeof(rng));
 	flag = false;
 	while (prompt->_input[i])
 	{
-		while (dlmt[j] && !flag)
+		if (!flag)
+			dlmt = _get_dlmt(prompt->_input[i]);
+		if (prompt->_input[i] == dlmt || dlmt == NUL_CH)
 		{
-			if (prompt->_input[i] == dlmt[j])
-			{
-				_dlmt = dlmt[j];
-				break ;
-			}
-			_dlmt = NUL_CH;
-			j++;
+			if (dlmt == NUL_CH)
+				dlmt = SPC_CH;
+			_set_range(&flag, rng, i);
+			if (rng[START] < rng[END] && !flag)
+				i = _extract_token(prompt, rng[START], rng[END]);
 		}
-		if (prompt->_input[i] == _dlmt || _dlmt == NUL_CH)
-		{
-			if (_dlmt == NUL_CH)
-				_dlmt = SPC_CH;
-			flag = !flag;
-			if (flag)
-				start = i;
-			else
-				end = i;
-			if (start < end && !flag)
-			{
-				i = _extract_token(prompt, start, end);
-				continue ;
-			}
-		}
-		j = 0;
+		if (rng[START] < rng[END] && !flag)
+			continue ;
 		i++;
-		debug++;
 	}
-	_extract_token(prompt, start, end);
+	_extract_token(prompt, rng[START], rng[END]);
 }
