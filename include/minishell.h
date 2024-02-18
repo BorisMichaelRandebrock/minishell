@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/18 11:40:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/18 14:18:29 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define MINISHELL_H
 
 # define MEM_ERROR -10
+# define NULL_ERROR -11
+
+# define START 0
 
 # define SUCCESS 0
 # define FAILURE 1
@@ -24,6 +27,11 @@
 # define TAB_CH '\t'
 # define SQU_CH '\''
 # define DQU_CH '"'
+# define PIP_CH '|'
+# define OUT_CH '>'
+# define IN_CH '<'
+# define APP_STR ">>"
+# define HER_STR "<<"
 
 # include <signal.h>
 # include <stdbool.h>
@@ -47,7 +55,8 @@ typedef	enum e_op
 	RD_OUT,
 	PIPE,
 	RD_OUT_APP,
-	RD_IN_S
+	RD_IN_S,
+	NONE
 }	t_op;
 
 typedef struct s_prompt
@@ -64,26 +73,25 @@ typedef enum e_tokentype
 	TEXT,
 	CMD,
 	ARG,
-	VAR
-}							t_tokentype;
+	VAR,
+	OP
+}	t_tokentype;
 
 typedef struct s_token
 {
 	char					*_text;
-	t_tokentype				_type;
-	t_token					*_prev;
-	t_token					*_next;
+	t_tokentype				*_type;
+	t_op					*_op;
 	void					(*destroy)(t_token *token);
-	t_tokentype				(*get_type)(char *);
+	t_op					(*get_op_type)(char *text);
 }							t_token;
 
 typedef struct s_parser
 {
-	char					**_split;
 	t_shell					*_shell;
-	t_token					*_tokens;
+	t_list					*_tokens;
 	void					(*destroy)(t_parser *parser);
-	void					(*parse)(t_prompt *prompt);
+	void					(*parse)(t_shell *shell);
 }							t_parser;
 
 typedef struct s_arg
@@ -150,7 +158,7 @@ typedef struct s_shell
 t_shell						*new_shell(char **env);
 t_env						*new_enviorment(t_shell *shell, char **env);
 t_prompt					*new_prompt(t_shell *shell);
-t_token						*new_token(t_shell *shell);
+t_token						*new_token();
 t_parser					*new_parser(t_shell *shell);
 t_arg						new_arg(void);
 t_command					new_command(void);
@@ -158,5 +166,6 @@ t_process					new_process(void);
 void						cleanexit(t_shell *shell, int error_code);
 void						toklst(t_prompt *prompt);
 void						add_space(t_prompt *prompt);
+void						*sh_calloc(t_shell *shell, size_t size);
 
 #endif

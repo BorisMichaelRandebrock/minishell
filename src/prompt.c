@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/18 10:31:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/18 14:27:18 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static void	_destructor(t_prompt *prompt)
 
 	if (prompt)
 	{
-		free(prompt->_input);
+		if (prompt->_input)
+			free(prompt->_input);
 		while (prompt->_raw_list)
 		{
 			free(prompt->_raw_list->content);
@@ -39,18 +40,20 @@ static void	_destructor(t_prompt *prompt)
 }
 static void	_invoker(t_prompt *prompt)
 {
+	//prompt->_input = ft_strdup("echo \"hola ' \" que 'ase| ' | cat -e | echo >> txt");
 	prompt->_input = readline("🐌 minishell> ");
 	add_space(prompt);
 	toklst(prompt);
+
 	// TODO @@@@@@@ continuar aqui! intentar romper!
 
-	while (prompt->_raw_list)
+/* 	while (prompt->_raw_list)
 	{
 		printf("%s\n", prompt->_raw_list->content);
 		prompt->_raw_list = prompt->_raw_list->next;
 	}
 	prompt->destroy(prompt);
-	exit(0);
+	exit(0); */
 }
 
 // Create new process object

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/15 20:57:40 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/18 12:50:56 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	cleanexit(t_shell *shell, int error_code)
 {
 	if (error_code == MEM_ERROR)
 		printf("Memory error, exiting...");
+	if (error_code == NULL_ERROR)
+		printf("NULL error, exiting...");
 	if (shell)
 		shell->destroy(shell);
 	exit(FAILURE);
@@ -33,7 +35,7 @@ int	main(int argc, char *argv[], char *env[])
 	{
 		shell->_prompt = new_prompt(shell);
 		shell->_prompt->invoke(shell->_prompt);
-		//shell->_parser->parse(shell->_prompt);
+		shell->_parser->parse(shell);
 
 		shell->destroy(shell);
 	}
