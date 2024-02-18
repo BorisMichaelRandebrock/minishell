@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/18 10:18:46 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/18 10:31:09 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	_invoker(t_prompt *prompt)
 {
 	prompt->_input = readline("🐌 minishell> ");
 	add_space(prompt);
-	toklst(prompt, "\"' ");
+	toklst(prompt);
 	// TODO @@@@@@@ continuar aqui! intentar romper!
 
 	while (prompt->_raw_list)
