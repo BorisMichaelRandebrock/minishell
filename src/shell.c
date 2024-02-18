@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/13 20:29:16 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/18 13:08:54 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,6 @@ t_shell	*new_shell(char **env)
 	new->destroy = _destructor;
 	new->proc_exec = _proc_exec;
 	new->builtin_exec = _builtin_exec;
+	sh_calloc(new,0);
 	return (new);
 }

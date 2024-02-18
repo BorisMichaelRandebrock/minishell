@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/16 17:20:03 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/18 12:55:17 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ BIN_DIR			:= bin/
 NAME			:= minishell
 HDRS 			:= minishell.h
 SRCS 			:= minishell.c shell.c enviorment.c prompt.c parser.c token.c process.c\
-					toklst.c spacer.c
+					toklst.c spacer.c utils.c
 OBJS			:= $(SRCS:.c=.o)
 
 LIBFT_DIR		:= src/libft/
@@ -82,6 +82,7 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
+#TODO armonizar malloc con sh_calloc (utils)
 #TODO limpieza includes
 #TODO garantizar que debemos usar readline asumiendo que esta instalada en el sistema y no compilandola nosotros...
 #TODO retirar .vscode de git

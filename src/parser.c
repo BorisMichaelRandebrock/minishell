@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/15 20:59:58 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/18 14:27:21 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,62 +15,52 @@
 #include <readline/readline.h>
 #include <stdbool.h>
 
-#define N_TOKEN_TYPES 9 // TODO es necesario?
+
 
 // Free process object resources
 static void	_destructor(t_parser *parser)
 {
-	int	i;
-
-	i = 0;
-	if (parser->_split)
-	{
-		while (parser->_split[i])
-		{
-			free(parser->_split[i]); // TODO check leaks!
-			i++;
-		}
-	}
-	parser->_tokens->destroy(parser->_tokens);
+	//TODO free all
 	free(parser);
 }
 
-// TODO NO podemos determinar si es un CMD sin compararlo con los nombres de los comandos disponibles en:
-//	- comandos residentes en ruta absoluta
-//	- comandos residentes en ruta relativa
-//	- comandos residentes en PATH
-// Existe este termino en este directorio? echo "hola""adios"
-
-/*
-static void	_get_tokens(t_parser *parser, t_prompt *prompt)
+//test echo "hola ' " que 'ase| ' | cat -e | echo >> txt
+static void	*_tokenize(void *raw)
 {
-	int	i;
+	t_token	*new;
+	size_t	end;
 
-	//parser->_split =
-	i = 0;
-	parser->_tokens = new_token(prompt->_shell);
-	parser->_tokens->_text = parser->_split[i];
-	parser->_tokens->_type = parser->_tokens->get_type(parser->_split[i++]);
-	while (parser->_split[i])
-	{
-		parser->_tokens->_next = new_token(prompt->_shell);
-		parser->_tokens->_next->_prev = parser->_tokens;
-		parser->_tokens->_next->_text = parser->_split[i];
-		parser->_tokens->_next->_type = parser->_tokens->get_type(parser->_split[i++]);
-		parser->_tokens = parser->_tokens->_next;
-	}
-} */
+	new = new_token();
+	new->_text = (char *)raw;
+	end = ft_strlen(new->_text);
+	*new->_op = new->get_op_type(new->_text);
+	if (*new->_op != NONE)
+		*new->_type = OP;
+	else if ((new->_text[START] == DQU_CH && new->_text[end] == DQU_CH)
+		|| (new->_text[START] == SQU_CH && new->_text[end] == SQU_CH))
+		*new->_type = ARG;
+	else
+		*new->_type = TEXT;
+	return (new);
+}
 
+//TODO revisar ft_lstmap con paco...leaks...
 // Parse user input via prompt object
-static void	_parse_prompt(t_prompt *prompt)
+static void	_parse_prompt(t_shell *sh)
 {
-	(void)prompt;
-	// TODO separar qtokens
-	//_get_tokens(prompt->_shell->_parser, prompt);
-	// TODO @@@@@@@@@@ parsear el prompt usando la mascara
-	// split condicionado por la mascara
-	// expansion de VAR
-	// construccion de tokenlist
+	sh->_parser->_tokens = ft_lstmap(sh->_prompt->_raw_list,_tokenize , free);
+
+	//TODO tests!
+
+	while(sh->_parser->_tokens)
+	{
+		t_token *_token = (t_token *)sh->_parser->_tokens->content;
+
+		printf("%s\n", _token->_text);
+		//printf("%s \t\t\t\t\t\t %i \t\t\t\t\t\t %i\n", _token->_text, (int)*_token->_type, (int)*_token->_op);
+		sh->_parser->_tokens = sh->_parser->_tokens->next;
+	}
+	exit(0);
 }
 
 // Create new process object
@@ -82,8 +72,7 @@ t_parser	*new_parser(t_shell *shell)
 	if (!new)
 		cleanexit(shell, MEM_ERROR);
 	new->_shell = shell;
-	new->_split = NULL;
-	new->_tokens = new_token(shell);
+	new->_tokens = NULL;
 	new->destroy = _destructor;
 	new->parse = _parse_prompt;
 	return (new);
