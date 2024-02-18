@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/16 19:30:44 by brandebr         ###   ########.fr       */
+/*   Updated: 2024/02/18 10:18:46 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,17 @@ static void	_destructor(t_prompt *prompt)
 		free(prompt);
 	}
 }
-
+static void	_invoker(t_prompt *prompt)
+{
 	prompt->_input = readline("🐌 minishell> ");
+	add_space(prompt);
 	toklst(prompt, "\"' ");
 	// TODO @@@@@@@ continuar aqui! intentar romper!
-	test = prompt->_raw_list;
-	while (test)
+
+	while (prompt->_raw_list)
 	{
-		printf("%s\n", test->content);
-		test = test->next;
+		printf("%s\n", prompt->_raw_list->content);
+		prompt->_raw_list = prompt->_raw_list->next;
 	}
 	prompt->destroy(prompt);
 	exit(0);
