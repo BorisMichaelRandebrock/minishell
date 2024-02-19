@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/18 14:27:18 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/19 19:07:45 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,17 @@ static void	_destructor(t_prompt *prompt)
 		free(prompt);
 	}
 }
+
 static void	_invoker(t_prompt *prompt)
 {
-	//prompt->_input = ft_strdup("echo \"hola ' \" que 'ase| ' | cat -e | echo >> txt");
-	prompt->_input = readline("🐌 minishell> ");
-	add_space(prompt);
-	toklst(prompt);
 
-	// TODO @@@@@@@ continuar aqui! intentar romper!
+	//TODO @@@@@@@ tokeniza a comandos. dede el prompt directo.
+	// Establecer la logica CMD > ARG > OP ? OP ?
 
-/* 	while (prompt->_raw_list)
-	{
-		printf("%s\n", prompt->_raw_list->content);
-		prompt->_raw_list = prompt->_raw_list->next;
-	}
-	prompt->destroy(prompt);
-	exit(0); */
+	prompt->_input = ft_strdup("echo\"hola '     \"'que  \"  ' ");
+	//prompt->_input = readline("🐌 minishell> ");
+
+	exit(0);
 }
 
 // Create new process object
@@ -61,10 +56,7 @@ t_prompt	*new_prompt(t_shell *shell)
 {
 	t_prompt	*new;
 
-	new = malloc(sizeof(t_prompt));
-	if (!new)
-		cleanexit(shell, MEM_ERROR);
-	new->_input = NULL; // TODO probar si usando calloc se peude evitar esto.
+	new = sh_calloc(NULL, sizeof(t_prompt));
 	new->_shell = shell;
 	new->destroy = _destructor;
 	new->invoke = _invoker;

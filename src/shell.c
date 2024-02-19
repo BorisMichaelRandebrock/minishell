@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/18 13:08:54 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/19 19:04:25 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_shell	*new_shell(char **env)
 
 	new = malloc(sizeof(t_shell));
 	if (!new)
-		cleanexit(new, MEM_ERROR);
+		sh_exit(new, MEM_ERROR);
 	_sig_action.__sigaction_u.__sa_sigaction = _sig_handler;	//TODO esta en en el stack?? SIGNAL!
 	new->sig_action = _sig_action;
 	new->_is_running = true;

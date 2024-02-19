@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/18 14:18:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/19 19:04:27 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,9 +163,7 @@ t_parser					*new_parser(t_shell *shell);
 t_arg						new_arg(void);
 t_command					new_command(void);
 t_process					new_process(void);
-void						cleanexit(t_shell *shell, int error_code);
-void						toklst(t_prompt *prompt);
-void						add_space(t_prompt *prompt);
+void						sh_exit(t_shell *shell, int error_code);
 void						*sh_calloc(t_shell *shell, size_t size);
 
 #endif

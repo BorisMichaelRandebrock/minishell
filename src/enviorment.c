@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/12 14:10:59 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/19 19:04:25 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_env		*new_enviorment(t_shell *shell, char **env)
 
 	new = malloc(sizeof(t_env));
 	if (!new)
-		cleanexit(shell, MEM_ERROR);
+		sh_exit(shell, MEM_ERROR);
 	*new = (t_env){
 		.last_process_name = _get_env_var(env, LAST_PROC_DEF),
 		.last_exit_code = NULL,

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/18 14:27:21 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/19 19:07:29 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_parser	*new_parser(t_shell *shell)
 
 	new = malloc(sizeof(t_parser));
 	if (!new)
-		cleanexit(shell, MEM_ERROR);
+		sh_exit(shell, MEM_ERROR);
 	new->_shell = shell;
 	new->_tokens = NULL;
 	new->destroy = _destructor;
