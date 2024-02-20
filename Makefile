@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/20 16:54:02 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/20 20:52:41 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,13 +81,10 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-#TODO borrar split_quoted raro
 #TODO armonizar malloc con sh_calloc (utils)
 #TODO limpieza includes
-#TODO garantizar que debemos usar readline asumiendo que esta instalada en el sistema y no compilandola nosotros...
 #TODO retirar .vscode de git
 #TODO retirar las funciones libft no utilizadas
-#TODO update ft_split (fran) para mi libft;
 #TODO resolver que pasa cuando no se recompilan slos cambios de una libreria o make anidado
 #TODO montar clase iter (fran)
 #TODO update nueva funcion libft ft_is_whspc

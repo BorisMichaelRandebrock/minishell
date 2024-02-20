@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/20 18:37:46 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/20 21:04:26 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	_get_raw_prompt(t_shell *sh)
 	sh->raw = ft_strdup("     echo \"hola   \"    'adios  ' aqui' alla  'otro");
 	//sh->raw = readline("🐌 minishell> ");
 	if (!sh->raw)
-		sh_exit(NULL, MEM_ERROR);
+		sh_exit(NULL);
 	while (ft_is_whspc(*sh->raw)) //TODO Quitar tim
 		sh->raw++;
 	ft_lstadd_back(&sh->free_cnt,ft_lstnew(sh->raw));
@@ -46,6 +46,6 @@ int	main(int argc, char *argv[], char *env[])
 		sh->tkn_lst = sh->tkn_lst->next;
 	}
 
-	sh_exit(NULL,SUCCESS);
+	sh_exit(NULL);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/20 16:49:17 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/20 21:06:56 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,9 @@ typedef struct s_env
 
 t_shell		*new_shell(char **env);
 t_env		*new_enviorment(char **env);
-void		sh_exit(t_shell *shell, int error_code);
+void		sh_exit(t_shell *shell);
 void		*sh_calloc(t_shell *shell, size_t size, t_flst freelst);
 void		parse(t_shell *sh, char *raw);
+void		print_error(int error_code);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/20 16:47:39 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/20 21:12:40 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,26 @@
 #include "libft.h"
 #include <stdlib.h>
 
+void	print_error(int error_code)
+{
+	if (error_code == MEM_ERROR)
+		printf("Memory error, exiting...");
+	if (error_code == NULL_ERROR)
+		printf("NULL error, exiting...");
+}
+
 //Clean exit from shell
-void	sh_exit(t_shell *nullable_shell, int error_code)
+void	sh_exit(t_shell *nullable_shell)
 {
 	static t_shell	*_shell = NULL;
 
 	if (!_shell)
 	{
 		if (!nullable_shell)
-			sh_exit(nullable_shell, NULL_ERROR);
+			print_error(NULL_ERROR);
 		_shell = nullable_shell;
 		return ;
 	}
-	if (error_code == MEM_ERROR)
-		printf("Memory error, exiting...");
-	if (error_code == NULL_ERROR)
-		printf("NULL error, exiting...");
-
 	while (_shell->free_cnt->next)
 	{
 		free(_shell->free_cnt->content);
@@ -54,7 +57,7 @@ void	*sh_calloc(t_shell *nullable_shell, size_t size, t_flst list_type)
 	if (!_shell)
 	{
 		if (!nullable_shell)
-			sh_exit(nullable_shell, NULL_ERROR);
+			sh_exit(nullable_shell);
 		_shell = nullable_shell;
 		return (NULL);
 	}
@@ -63,7 +66,10 @@ void	*sh_calloc(t_shell *nullable_shell, size_t size, t_flst list_type)
 		freelst = _shell->free_cnt;
 	new = ft_calloc(1, size);
 	if (!new)
-		sh_exit(nullable_shell, MEM_ERROR);
+	{
+		print_error(MEM_ERROR);
+		sh_exit(nullable_shell);
+	}
 	if (!freelst)
 		ft_lstnew(new);
 	else

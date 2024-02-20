@@ -6,17 +6,14 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/20 18:40:25 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/20 21:07:00 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-
-//  echo "test"
 // Parse a raw prompt into tokens
-
 static t_token	*_extract_token(char *raw, int start, int end)
 {
 	t_token	*tkn;
