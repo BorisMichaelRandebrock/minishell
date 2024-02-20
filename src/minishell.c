@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/20 15:44:23 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/20 18:37:46 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,13 @@
 
 static void	_get_raw_prompt(t_shell *sh)
 {
-		sh->raw = readline("🐌 minishell> ");
-		if (!sh->raw)
-			sh_exit(NULL, MEM_ERROR);
-		ft_lstadd_back(&sh->free_lst,ft_lstnew(sh->raw));
+	sh->raw = ft_strdup("     echo \"hola   \"    'adios  ' aqui' alla  'otro");
+	//sh->raw = readline("🐌 minishell> ");
+	if (!sh->raw)
+		sh_exit(NULL, MEM_ERROR);
+	while (ft_is_whspc(*sh->raw)) //TODO Quitar tim
+		sh->raw++;
+	ft_lstadd_back(&sh->free_cnt,ft_lstnew(sh->raw));
 }
 
 int	main(int argc, char *argv[], char *env[])
@@ -33,9 +36,16 @@ int	main(int argc, char *argv[], char *env[])
 	while(sh->is_running)
 	{
 		_get_raw_prompt(sh);
-		printf("%s\n", sh->raw);
+
+		parse(sh, sh->raw);
 		break ;
 	}
+	while (sh->tkn_lst)
+	{
+		printf("%s\n", ((t_token *)sh->tkn_lst->content)->string );
+		sh->tkn_lst = sh->tkn_lst->next;
+	}
+
 	sh_exit(NULL,SUCCESS);
 	return (SUCCESS);
 }

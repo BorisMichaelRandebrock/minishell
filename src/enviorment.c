@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/20 12:58:02 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:45:08 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*_get_env_var(char **env, const char *var_def)
 		if (match)
 		{
 			match_sz = ft_strlen(match) + NUL_SZ;
-			var = sh_calloc(NULL, match_sz);
+			var = sh_calloc(NULL, match_sz, CNT);
 			ft_strlcpy(var, match, match_sz);
 			return (var);
 		}
@@ -47,9 +47,9 @@ t_env		*new_enviorment(char **env)
 {
 	t_env	*new;
 
-	new = sh_calloc(NULL, sizeof(t_env));
+	new = sh_calloc(NULL, sizeof(t_env), STRCT);
 	new->last_proc = _get_env_var(env, LAST_PROC_DEF);
-	new->last_exit = sh_calloc(NULL, ft_strlen(LAST_EXIT_DEF) + 1 + NUL_SZ);
+	new->last_exit = sh_calloc(NULL, ft_strlen(LAST_EXIT_DEF) + 1 + NUL_SZ, CNT);
 	ft_strlcpy(new->last_exit, "?=0", 4);
 	new->path = _get_env_var(env, PATH_DEF);
 	new->pwd = _get_env_var(env, PWD_DEF);

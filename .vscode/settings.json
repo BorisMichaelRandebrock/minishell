@@ -20,6 +20,7 @@
 		"vector": "c",
 		"__bit_reference": "c",
 		"ios": "c",
-		"__tuple": "c"
+		"__tuple": "c",
+		"libft.h": "c"
 	}
 }

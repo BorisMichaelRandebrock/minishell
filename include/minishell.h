@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/20 15:32:46 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:49:17 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,34 @@
 
 typedef struct s_env t_env;
 
+typedef enum e_flst
+{
+	CNT,
+	STRCT,
+	NONE
+}	t_flst;
+
+typedef enum e_tkntype
+{
+	CMD,
+	ARG,
+	OP
+}	t_tkntype;
+
+typedef struct s_token
+{
+	char		*string;
+	t_tkntype	type;
+}	t_token;
+
 typedef struct s_shell
 {
 	bool	is_running;
 	char	*raw;
 	t_env	*env;
 	t_list	*free_lst;
+	t_list	*free_cnt;
+	t_list	*tkn_lst;
 }	t_shell;
 
 typedef struct s_env
@@ -63,6 +85,6 @@ typedef struct s_env
 t_shell		*new_shell(char **env);
 t_env		*new_enviorment(char **env);
 void		sh_exit(t_shell *shell, int error_code);
-void		*sh_calloc(t_shell *shell, size_t size);
-
+void		*sh_calloc(t_shell *shell, size_t size, t_flst freelst);
+void		parse(t_shell *sh, char *raw);
 #endif

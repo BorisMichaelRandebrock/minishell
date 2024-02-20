@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/20 15:22:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:20:24 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_shell	*new_shell(char **env)
 	if (!new)
 		exit(FAILURE);
 	new->free_lst = ft_lstnew(new);
-	sh_calloc(new,INIT);
+	sh_calloc(new,INIT, NONE);
 	sh_exit(new,INIT);
 	new->is_running = true;
 	new->env = new_enviorment(env);
