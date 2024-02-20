@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/20 13:09:55 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:51:41 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ void	sh_exit(t_shell *nullable_shell, int error_code)
 		printf("Memory error, exiting...");
 	if (error_code == NULL_ERROR)
 		printf("NULL error, exiting...");
-	while (_shell->free_lst)
+	while (_shell->free_lst->next)
 	{
 		free(_shell->free_lst->content);
 		_shell->free_lst = _shell->free_lst->next;
 	}
+	free(_shell->free_lst->content);
 	exit(FAILURE);
 }
 //Initialize shell first (return null), null shell for use

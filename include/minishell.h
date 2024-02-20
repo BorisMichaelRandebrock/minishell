@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/20 12:38:25 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:32:46 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,23 @@
 
 typedef struct s_env t_env;
 
-typedef struct s_env
-{
-	char					*last_proc;
-	char					*last_exit;
-	char					*path;
-	char					*pwd;
-	char					*old_pwd;
-	char					*tmp_dir;
-}							t_env;
-
 typedef struct s_shell
 {
-	bool				is_running;
-	t_env				*env;
-	t_list				*free_lst;
+	bool	is_running;
+	char	*raw;
+	t_env	*env;
+	t_list	*free_lst;
 }	t_shell;
+
+typedef struct s_env
+{
+	char	*last_proc;
+	char	*last_exit;
+	char	*path;
+	char	*pwd;
+	char	*old_pwd;
+	char	*tmp_dir;
+}	t_env;
 
 t_shell		*new_shell(char **env);
 t_env		*new_enviorment(char **env);

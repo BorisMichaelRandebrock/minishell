@@ -11,9 +11,18 @@
 			"args": [],
 			"preLaunchTask": "make",
 			"stopAtEntry": false,
-			"externalConsole": false,
+			"externalConsole": true,
 			"cwd": "${fileDirname}",
 			"environment": [],
+			"MIMode": "lldb"
+		},
+		{
+			"name": "(lldb) Attach",
+			"type": "cppdbg",
+			"request": "attach",
+			"program": "${workspaceFolder}/bin/minishell",
+			"preLaunchTask": "make",
+			"processId": "${command:pickProcess}",
 			"MIMode": "lldb"
 		},
 	]
