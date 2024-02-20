@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/19 19:08:14 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/20 12:40:08 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,7 @@ OBJ_DIR			:= obj/
 BIN_DIR			:= bin/
 NAME			:= minishell
 HDRS 			:= minishell.h
-SRCS 			:= minishell.c shell.c enviorment.c prompt.c parser.c token.c process.c\
-					 utils.c
+SRCS 			:= minishell.c shell.c enviorment.c utils.c
 OBJS			:= $(SRCS:.c=.o)
 
 LIBFT_DIR		:= src/libft/

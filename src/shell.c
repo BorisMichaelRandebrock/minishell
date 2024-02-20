@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/19 19:04:25 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:05:08 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #define WR_END 1
 #define BUFFER_64KB 65536	//TODO poner como variable entorno?
 
-static char *_proc_exec(t_process *context)
+/* static char *_proc_exec(t_process *context)
 {
 	int		pipe_fd[2];
 	char	buffer[BUFFER_64KB];
@@ -55,57 +55,21 @@ static char *_proc_exec(t_process *context)
 
 	}
 	return (context->_output);
-}
+} */
 
-
-//Free process object resources
-static void _destructor(t_shell *shell)
-{
-	//TODO implement destroyer if needed
-	shell->_is_running = false;
-	if (shell->_parser)
-		shell->_parser->destroy(shell->_parser);
-	if (shell->_prompt)
-		shell->_prompt->destroy(shell->_prompt);
-	if (shell->_enviorment) 						//TODO armonizar parametros
-		shell->_enviorment->destroy(shell->_enviorment);
-	free(shell);
-	//TODO llamar a todos los destructores...
-}
-
-//Signal handler hub
-static void _sig_handler(int signal, siginfo_t *info, void *context)
-{
-	(void)signal;
-	(void)info;
-	(void)context;
-
-	//TODO implement action on signal recieved
-}
-
-
-static void _builtin_exec(t_command *command)
-{
-	(void)command;	//TODO implementar
-}
 
 //Create new process object
 t_shell	*new_shell(char **env)
 {
 	t_shell	*new;
-	struct sigaction _sig_action;
 
-	new = malloc(sizeof(t_shell));
+	new = ft_calloc(1, sizeof(t_shell));
 	if (!new)
-		sh_exit(new, MEM_ERROR);
-	_sig_action.__sigaction_u.__sa_sigaction = _sig_handler;	//TODO esta en en el stack?? SIGNAL!
-	new->sig_action = _sig_action;
-	new->_is_running = true;
-	new->_enviorment = new_enviorment(new, env);
-	new->_parser = new_parser(new);
-	new->destroy = _destructor;
-	new->proc_exec = _proc_exec;
-	new->builtin_exec = _builtin_exec;
-	sh_calloc(new,0);
+		exit(FAILURE);
+	new->free_lst = ft_lstnew(new);
+	sh_calloc(new,INIT);
+	sh_exit(new,INIT);
+	new->is_running = true;
+	new->env = new_enviorment(env);
 	return (new);
 }
