@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/20 21:06:56 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/21 00:01:42 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,11 @@
 
 # include <signal.h>
 # include <stdbool.h>
-# include <stdio.h> //TODO para pruebas retirar
-# include <sys/types.h>
 # include "libft.h"
 
-typedef struct s_env t_env;
+# include <stdio.h> //TODO para pruebas retirar
 
-typedef enum e_flst
-{
-	CNT,
-	STRCT,
-	NONE
-}	t_flst;
+typedef struct s_env t_env;
 
 typedef enum e_tkntype
 {
@@ -68,25 +61,26 @@ typedef struct s_shell
 	char	*raw;
 	t_env	*env;
 	t_list	*free_lst;
-	t_list	*free_cnt;
 	t_list	*tkn_lst;
 }	t_shell;
 
 typedef struct s_env
 {
-	char	*last_proc;
-	char	*last_exit;
 	char	*path;
 	char	*pwd;
 	char	*old_pwd;
 	char	*tmp_dir;
+	char	*last_proc;
+	char	*last_exit;
 }	t_env;
 
-t_shell		*new_shell(char **env);
-t_env		*new_enviorment(char **env);
-void		sh_exit(t_shell *shell);
-void		*sh_calloc(t_shell *shell, size_t size, t_flst freelst);
-void		parse(t_shell *sh, char *raw);
-void		print_error(int error_code);
+t_shell		*new_sh(char **env);
+t_env		*new_env(char **env);
+void		parse( char *raw);
+t_shell		*get_shell();
+void		*sh_calloc(size_t num, size_t size);
+void		sh_perror(int error_code);
+void		sh_exit(int exit_code);
+void		*sh_addfree(void *alloc);
 
 #endif

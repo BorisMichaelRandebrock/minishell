@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/20 21:06:22 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/20 22:43:15 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,12 @@
 
 
 //Create new process object
-t_shell	*new_shell(char **env)
+t_shell	*new_sh(char **env)
 {
-	t_shell	*new;
+	t_shell	*sh;
 
-	new = ft_calloc(1, sizeof(t_shell));
-	if (!new)
-		exit(FAILURE);
-	new->free_lst = ft_lstnew(new);
-	sh_calloc(new,INIT, NONE);
-	sh_exit(new);
-	new->is_running = true;
-	new->env = new_enviorment(env);
-	return (new);
+	sh = get_shell();
+	sh->is_running = true;
+	sh->env = new_env(env);
+	return (sh);
 }
