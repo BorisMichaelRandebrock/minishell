@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/21 14:41:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:54:51 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,22 @@
 #define START			1
 #define END				2
 #define TCOUNT			3
+
+
+//TODO manage operator
+static bool	_is_op(char *raw)
+{
+	(void)raw; //TODO borrar esto...
+	t_shell	*sh;
+
+	sh = get_shell();
+
+	// 1. identificar operador
+	// 2. no lo es return FALSE y parse continua
+	// 3. si lo es crear un nuevo token y agregarlo a la lista (sh->token_lst)
+	// 4. lanzar parse (cursi!) desde raw + 1!
+	return (false);
+}
 
 // Extract a token with a range to a list
 static void	_extract_token(char *raw, int idx[4])
@@ -75,6 +91,8 @@ void	parse(char *raw)
 	raw = sh_addfree(ft_strtrim(raw, WHSPC_CHRS));
 	while (raw[idx[POS]])
 	{
+		if(_is_op(raw))
+			break ;
 		if (raw[idx[POS]] == SPC_CH && !flag)
 		{
 			idx[POS]++;
