@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/21 14:54:51 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:58:53 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ static bool	_is_op(char *raw)
 
 	// 1. identificar operador
 	// 2. no lo es return FALSE y parse continua
-	// 3. si lo es crear un nuevo token y agregarlo a la lista (sh->token_lst)
-	// 4. lanzar parse (cursi!) desde raw + 1!
+	// 3. si lo es crear un nuevo token (linea ~50) y agregarlo a la lista (sh->token_lst)
+	// 4. lanzar parse (cursi!) desde raw + 1 (o + 2)!
 	return (false);
 }
 
