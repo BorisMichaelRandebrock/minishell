@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/21 11:31:18 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:39:38 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 # define INIT -100
 # define MEM_ERROR -10
 # define NULL_ERROR -11
-
-# define START 0
 
 # define SUCCESS 0
 # define FAILURE 1
