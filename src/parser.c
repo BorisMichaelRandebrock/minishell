@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/22 19:27:56 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/22 19:39:01 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	_extract_token(char *start, char *end)
 {
 	t_shell	*sh;
 	t_token	*tkn;
+	t_list	*tmp;
 	size_t	length;
 	char	*substr;
 
@@ -28,16 +29,18 @@ static void	_extract_token(char *start, char *end)
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_addfree(ft_substr(start, 0, length));
 	tkn->string = sh_addfree(ft_strtrim(substr, WHSPC_CHRS));
+	tmp = sh_addfree(ft_lstnew(tkn));
 	if (!sh->tkn_lst)
-		sh->tkn_lst = ft_lstnew(tkn);
+		sh->tkn_lst = tmp;
 	else
-		ft_lstadd_back(&sh->tkn_lst, ft_lstnew(tkn));
+		ft_lstadd_back(&sh->tkn_lst, tmp);
 }
 
 void	_extract_op(char *raw)
 {
 	t_shell	*sh;
 	t_token *tkn;
+	t_list	*tmp;
 	char	*substr;
 	int		op_sz;
 
@@ -49,10 +52,11 @@ void	_extract_op(char *raw)
 	substr = sh_addfree(ft_substr(raw, 0, op_sz));
 	tkn->string = substr;
 	tkn->type = OP;	//TODO unificar?
+	tmp = sh_addfree(ft_lstnew(tkn));
 	if (!sh->tkn_lst)
-		sh->tkn_lst = ft_lstnew(tkn);
+		sh->tkn_lst = tmp;
 	else
-		ft_lstadd_back(&sh->tkn_lst, ft_lstnew(tkn));
+		ft_lstadd_back(&sh->tkn_lst, tmp);
 }
 
 //Parse a raw prompt into token list
@@ -61,8 +65,6 @@ void	parse(char *raw)
 	char	*start;
 	char	dlmt;
 
-	t_shell *sh = get_shell();
-	(void)sh;
 	if(*raw == '\0')
 		return ;
 	dlmt = SPC_CH;

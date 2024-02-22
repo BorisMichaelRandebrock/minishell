@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/22 19:27:33 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/22 19:39:09 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ int	main(int argc, char *argv[], char *env[])
  	while(sh->is_running)
 	{
 		//sh->raw = sh_addfree(ft_strdup("echo \"hola\" 'adios"));
-		sh->raw = sh_addfree(ft_strdup("  echo   <<\"hola\">>   que   <<    'ase  tu' |echo 'por >> aqui'| cat -e"));
-		//sh->raw = sh_addfree(readline("🐌 minishell> "));
+		sh->raw = sh_addfree(readline("🐌 minishell> "));
 		parse(sh->raw);
 
 
