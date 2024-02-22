@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/22 19:39:01 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/22 19:41:37 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "minishell.h"
 
 #define WHSPC_CHRS " \t\n\r\f\v"
-
 
 static void	_extract_token(char *start, char *end)
 {
@@ -39,7 +38,7 @@ static void	_extract_token(char *start, char *end)
 void	_extract_op(char *raw)
 {
 	t_shell	*sh;
-	t_token *tkn;
+	t_token	*tkn;
 	t_list	*tmp;
 	char	*substr;
 	int		op_sz;
@@ -51,7 +50,6 @@ void	_extract_op(char *raw)
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_addfree(ft_substr(raw, 0, op_sz));
 	tkn->string = substr;
-	tkn->type = OP;	//TODO unificar?
 	tmp = sh_addfree(ft_lstnew(tkn));
 	if (!sh->tkn_lst)
 		sh->tkn_lst = tmp;
@@ -65,7 +63,7 @@ void	parse(char *raw)
 	char	*start;
 	char	dlmt;
 
-	if(*raw == '\0')
+	if (*raw == '\0')
 		return ;
 	dlmt = SPC_CH;
 	while (ft_strchr(WHSPC_CHRS, *raw))
