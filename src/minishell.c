@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/21 13:19:04 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/22 19:27:33 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,21 @@ int	main(int argc, char *argv[], char *env[])
 	(void)argv;
 	t_shell	*sh;
 
-	t_list	*clear_lst;
-
 	sh = new_sh(env);
  	while(sh->is_running)
 	{
-		//sh->raw = sh_addfree(ft_strdup("   'echo'   \"hola   \"'adios'''\"\"  '  \"  s "));
-		sh->raw = sh_addfree(readline("🐌 minishell> "));
+		//sh->raw = sh_addfree(ft_strdup("echo \"hola\" 'adios"));
+		sh->raw = sh_addfree(ft_strdup("  echo   <<\"hola\">>   que   <<    'ase  tu' |echo 'por >> aqui'| cat -e"));
+		//sh->raw = sh_addfree(readline("🐌 minishell> "));
 		parse(sh->raw);
 
 
-		clear_lst = sh->tkn_lst;
 		while (sh->tkn_lst)
 		{
-		printf("%s  -  %i\n", ((t_token *)sh->tkn_lst->content)->string, ((t_token *)sh->tkn_lst->content)->type);
+		printf("%s\n", ((t_token *)sh->tkn_lst->content)->string);
 		sh->tkn_lst = sh->tkn_lst->next;
 		}
-		ft_lstclear(&clear_lst, free);
-		//break ;
+		break ;
 	}
 	sh_exit(SUCCESS);
 }

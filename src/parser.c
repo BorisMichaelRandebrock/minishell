@@ -6,37 +6,17 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/21 15:00:25 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/22 19:27:56 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-#define WHSPC_CHRS "	\t\n\r\f\v\0"
-#define POS				0
-#define START			1
-#define END				2
-#define TCOUNT			3
+#define WHSPC_CHRS " \t\n\r\f\v"
 
 
-//TODO manage operator
-static bool	_is_op(char *raw)
-{
-	(void)raw; //TODO borrar esto...
-	t_shell	*sh;
-
-	sh = get_shell();
-
-	// 1. identificar operador
-	// 2. no lo es return FALSE y parse continua
-	// 3. si lo es crear un nuevo token (linea ~50) y agregarlo a la lista (sh->token_lst)
-	// 4. lanzar parse (cursi!) desde raw + 1 (o + 2)!
-	return (false);
-}
-
-// Extract a token with a range to a list
-static void	_extract_token(char *raw, int idx[4])
+static void	_extract_token(char *start, char *end)
 {
 	t_shell	*sh;
 	t_token	*tkn;
@@ -44,61 +24,60 @@ static void	_extract_token(char *raw, int idx[4])
 	char	*substr;
 
 	sh = get_shell();
-	length = ++(idx[END]) - (idx[START]);
+	length = ++end - start;
 	tkn = sh_calloc(1, sizeof(t_token));
-	substr = sh_addfree(ft_substr(raw, idx[START], length));
+	substr = sh_addfree(ft_substr(start, 0, length));
 	tkn->string = sh_addfree(ft_strtrim(substr, WHSPC_CHRS));
-	tkn->type = ARG;
-	if (idx[TCOUNT] == 0)
-		tkn->type = CMD;
-	idx[TCOUNT]++;
 	if (!sh->tkn_lst)
 		sh->tkn_lst = ft_lstnew(tkn);
 	else
 		ft_lstadd_back(&sh->tkn_lst, ft_lstnew(tkn));
 }
 
-//Find a token and set range for extraction
-static void	_find_token(char *raw, int idx[4], bool *flag, char *dlmt)
+void	_extract_op(char *raw)
 {
-	if (!*flag)
-	{
-		if (raw[idx[POS]] == SQU_CH || raw[idx[POS]] == DQU_CH)
-			*dlmt = raw[idx[POS]];
-		else
-			*dlmt = SPC_CH;
-		*flag = true;
-		idx[START] = idx[POS];
-	}
-	else if ((raw[idx[POS]] == *dlmt || raw[idx[POS] + 1] == NUL_CH) && *flag)
-	{
-		*flag = false;
-		idx[END] = idx[POS];
-		_extract_token(raw, idx);
-	}
+	t_shell	*sh;
+	t_token *tkn;
+	char	*substr;
+	int		op_sz;
+
+	sh = get_shell();
+	op_sz = 1;
+	if ((*raw == '<' || *raw == '>') && *raw == *(raw + 1))
+		op_sz = 2;
+	tkn = sh_calloc(1, sizeof(t_token));
+	substr = sh_addfree(ft_substr(raw, 0, op_sz));
+	tkn->string = substr;
+	tkn->type = OP;	//TODO unificar?
+	if (!sh->tkn_lst)
+		sh->tkn_lst = ft_lstnew(tkn);
+	else
+		ft_lstadd_back(&sh->tkn_lst, ft_lstnew(tkn));
 }
 
 //Parse a raw prompt into token list
 void	parse(char *raw)
 {
-	int		idx[4];
+	char	*start;
 	char	dlmt;
-	bool	flag;
 
-	ft_memcpy(idx, (int []){0, 0, 0, 0}, sizeof(idx));
+	t_shell *sh = get_shell();
+	(void)sh;
+	if(*raw == '\0')
+		return ;
 	dlmt = SPC_CH;
-	flag = true;
-	raw = sh_addfree(ft_strtrim(raw, WHSPC_CHRS));
-	while (raw[idx[POS]])
+	while (ft_strchr(WHSPC_CHRS, *raw))
+		raw++;
+	if (*raw == DQU_CH || *raw == SQU_CH)
+		dlmt = *raw;
+	if (*raw == '<' || *raw == '>' || *raw == '|')
 	{
-		if(_is_op(raw))
-			break ;
-		if (raw[idx[POS]] == SPC_CH && !flag)
-		{
-			idx[POS]++;
-			continue ;
-		}
-		_find_token(raw, idx, &flag, &dlmt);
-		idx[POS]++;
+		_extract_op(raw);
+		return (parse(++raw));
 	}
+	start = raw;
+	while (*(++raw) != dlmt && *raw)
+		;
+	_extract_token(start, raw);
+	parse(++raw);
 }
