@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/22 19:41:37 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:46:58 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,17 @@
 #include "minishell.h"
 
 #define WHSPC_CHRS " \t\n\r\f\v"
+
+static void _expand_vars(char *tkn_str)
+{
+	//TODO expandir las varaibles
+}
+
+static void _typify_token(t_token *tkn)
+{
+	_expand_vars(tkn->string);
+	//TODO tipificar los token, y limpiar las comillas
+}
 
 static void	_extract_token(char *start, char *end)
 {
@@ -28,6 +39,7 @@ static void	_extract_token(char *start, char *end)
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_addfree(ft_substr(start, 0, length));
 	tkn->string = sh_addfree(ft_strtrim(substr, WHSPC_CHRS));
+	_typify_token(tkn);
 	tmp = sh_addfree(ft_lstnew(tkn));
 	if (!sh->tkn_lst)
 		sh->tkn_lst = tmp;
@@ -50,6 +62,7 @@ void	_extract_op(char *raw)
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_addfree(ft_substr(raw, 0, op_sz));
 	tkn->string = substr;
+	_typify_token(tkn);
 	tmp = sh_addfree(ft_lstnew(tkn));
 	if (!sh->tkn_lst)
 		sh->tkn_lst = tmp;
