@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/22 19:41:37 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:26:50 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,35 @@
 #include "minishell.h"
 
 #define WHSPC_CHRS " \t\n\r\f\v"
+
+static void	_expand_vars(char *tkn_str)
+{
+	// TODO expandir las varaibles
+}
+
+static void	_typify_token(t_token *tkn)
+{
+	t_shell	*sh;
+	t_token	*prev_tkn;
+	t_list	*_tkn_lst;
+
+	_tkn_lst = sh->tkn_lst;
+	prev_tkn = NULL;
+	sh = get_shell();
+	while (!_tkn_lst->next->content == tkn)
+		_tkn_lst = _tkn_lst->next;
+	prev_tkn = sh->tkn_lst;
+	if (_is_op(tkn->string))
+		tkn->type = OP;
+	else if (_is_cmd(tkn->string))
+		tkn->type = CMD;
+	else
+		tkn->type = ARG;
+	// TODO tipificar los token, y limpiar las comillas
+	// cmd: primero o    primero despues de |.
+	// args: empeiza y acaban en quotes, no son primeros,
+	pero si cuando le precede un redireccionador.
+}
 
 static void	_extract_token(char *start, char *end)
 {
@@ -28,6 +57,7 @@ static void	_extract_token(char *start, char *end)
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_addfree(ft_substr(start, 0, length));
 	tkn->string = sh_addfree(ft_strtrim(substr, WHSPC_CHRS));
+	_typify_token(tkn);
 	tmp = sh_addfree(ft_lstnew(tkn));
 	if (!sh->tkn_lst)
 		sh->tkn_lst = tmp;
@@ -50,6 +80,7 @@ void	_extract_op(char *raw)
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_addfree(ft_substr(raw, 0, op_sz));
 	tkn->string = substr;
+	_typify_token(tkn);
 	tmp = sh_addfree(ft_lstnew(tkn));
 	if (!sh->tkn_lst)
 		sh->tkn_lst = tmp;
@@ -57,7 +88,7 @@ void	_extract_op(char *raw)
 		ft_lstadd_back(&sh->tkn_lst, tmp);
 }
 
-//Parse a raw prompt into token list
+// Parse a raw prompt into token list
 void	parse(char *raw)
 {
 	char	*start;
