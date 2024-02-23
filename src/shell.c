@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/20 22:43:15 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/23 15:27:18 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,33 @@
 #define RD_END 0
 #define WR_END 1
 #define BUFFER_64KB 65536	//TODO poner como variable entorno?
+
+
+
+
+
+
+t_shell	*get_shell(void)
+{
+	static	t_shell *shell = NULL;
+
+	if (!shell)
+		shell = ft_calloc(1, sizeof(t_shell));
+		if (!shell)
+			sh_perror(MEM_ERROR);
+	return (shell);
+}
+
+//Create new process object
+t_shell	*new_sh(char **env)
+{
+	t_shell	*sh;
+
+	sh = get_shell();
+	sh->is_running = true;
+	sh->env = new_env(env);
+	return (sh);
+}
 
 /* static char *_proc_exec(t_process *context)
 {
@@ -56,15 +83,3 @@
 	}
 	return (context->_output);
 } */
-
-
-//Create new process object
-t_shell	*new_sh(char **env)
-{
-	t_shell	*sh;
-
-	sh = get_shell();
-	sh->is_running = true;
-	sh->env = new_env(env);
-	return (sh);
-}

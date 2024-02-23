@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/22 19:39:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:30:54 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,6 @@
 #include "libft.h"
 #include <readline/history.h>
 #include <readline/readline.h>
-
-t_shell	*get_shell()
-{
-	static	t_shell *shell = NULL;
-
-	if (!shell)
-		shell = ft_calloc(1, sizeof(t_shell));
-		if (!shell)
-			sh_perror(MEM_ERROR);
-	return (shell);
-}
 
 int	main(int argc, char *argv[], char *env[])
 {
@@ -35,17 +24,25 @@ int	main(int argc, char *argv[], char *env[])
 	sh = new_sh(env);
  	while(sh->is_running)
 	{
-		//sh->raw = sh_addfree(ft_strdup("echo \"hola\" 'adios"));
-		sh->raw = sh_addfree(readline("🐌 minishell> "));
+		sh->raw = sh_addfree(ft_strdup("echo \"hola\" | echo 'adios'"));
+		//sh->raw = sh_addfree(readline("🐌 minishell> "));
 		parse(sh->raw);
-
-
-		while (sh->tkn_lst)
+		sequence_cmd(sh, sh->tkn_lst);
+		while (sh->cmd_lst)
 		{
-		printf("%s\n", ((t_token *)sh->tkn_lst->content)->string);
-		sh->tkn_lst = sh->tkn_lst->next;
+			t_cmd	*scmd = (t_cmd *)sh->cmd_lst->content;
+			t_list	*alist = (t_list *)scmd->args;
+
+			printf("%s -", scmd->name->string);
+			while (alist)
+			{
+				printf(" %s", ((t_token *)alist->content)->string);
+				alist = alist->next;
+			}
+			printf("\n");
+			sh->cmd_lst = sh->cmd_lst->next;
 		}
-		break ;
+		sh->is_running =false;
 	}
 	sh_exit(SUCCESS);
 }

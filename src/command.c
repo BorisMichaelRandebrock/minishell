@@ -5,49 +5,82 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/05 17:15:53 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/10 16:36:09 by fmontser         ###   ########.fr       */
+/*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
+/*   Updated: 2024/02/23 17:30:54 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "minishell.h"
 
-//Free process object resources
-static void	_destructor(t_command *command)	//TODO test
+void	sequence_cmd(t_shell *sh, t_list *tkn_lst)
 {
-	t_arg	*arg;
+	t_token	*tkn;
+	t_cmd	*cmd;
 
-	free(command->_name);
-	while(command->_arg_lst)
+	cmd = sh_calloc(1, sizeof(t_cmd));
+	while(tkn_lst)
 	{
-		arg = command->_arg_lst;
-		free(arg->text);
-		command->_arg_lst = command->_arg_lst->next;
-		free(arg);
+		tkn = tkn_lst->content;
+		if (tkn->type == CMD)
+			cmd->name = tkn;
+		else if (tkn->type == ARG)
+			ft_lstadd_back(&cmd->args, sh_addfree(ft_lstnew(tkn)));
+		else if (tkn->type == OP)
+		{
+			ft_lstadd_back(&sh->cmd_lst, sh_addfree(ft_lstnew(cmd)));
+			cmd = sh_calloc(1, sizeof(t_cmd));
+			cmd->name = tkn;
+			ft_lstadd_back(&sh->cmd_lst, sh_addfree(ft_lstnew(cmd)));
+			if (tkn_lst->next)
+				sequence_cmd(sh, tkn_lst->next);
+			return ;
+		}
+		tkn_lst = tkn_lst->next;
 	}
-	free(command);
+	ft_lstadd_back(&sh->cmd_lst, sh_addfree(ft_lstnew(cmd)));
 }
-
-//Consume an argument from a command object
-static t_arg *_consume_arg(t_command *command) //TODO test
+/*
+void	sequence_cmd(t_list	*tkn_lst)
 {
-	t_arg	*arg;
+	t_shell	*sh;
+	t_token	*tkn;
+	t_cmd	*cmd;
+	t_list	*tmp;
 
-	if (command->_arg_lst)
-		arg = command->_arg_lst;
-	else
-		return (NULL);
-	command->_arg_lst = command->_arg_lst->next;
-	return (arg);
+	sh = get_shell();
+	cmd = sh_calloc(1, sizeof(t_cmd));
+	tkn = tkn_lst->content;
+	if (tkn_lst && tkn->type == OP)
+	{
+		cmd->cmd = tkn;
+		tmp = sh_addfree(ft_lstnew(cmd));
+		if (!sh->cmd_lst)
+			sh->cmd_lst = tmp;
+		else
+			ft_lstadd_back(&sh->cmd_lst, tmp);
+		if (tkn_lst->next)
+			sequence_cmd(tkn_lst->next);
+		return ;
+	}
+	while(tkn_lst)
+	{
+		tkn = tkn_lst->content;
+		if (tkn->type == CMD)
+			cmd->cmd = tkn;
+		else if (tkn->type == ARG)
+		{
+			tmp = sh_addfree(ft_lstnew(tkn));
+			if (!cmd->args)
+				cmd->args = tmp;
+			else
+				ft_lstadd_back(&cmd->args, tmp);
+		}
+		else if (tkn->type == OP)
+				//TODO que pasa?
+		tkn_lst = tkn_lst->next;
+	}
+	if (tkn_lst)
+		sequence_cmd(tkn_lst->next);
 }
 
-//Create new process object
-t_command	new_command(void)
-{
-	t_command	new;
-
-	new.consume_arg = _consume_arg;
-	new.destroy = _destructor;
-	return (new);
-}
+ */
