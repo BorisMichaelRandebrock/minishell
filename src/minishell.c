@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/23 16:59:42 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:30:54 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int argc, char *argv[], char *env[])
 			t_cmd	*scmd = (t_cmd *)sh->cmd_lst->content;
 			t_list	*alist = (t_list *)scmd->args;
 
-			printf("%s -", scmd->cmd->string);
+			printf("%s -", scmd->name->string);
 			while (alist)
 			{
 				printf(" %s", ((t_token *)alist->content)->string);

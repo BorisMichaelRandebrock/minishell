@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/23 16:21:07 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:30:54 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ typedef struct s_token
 	t_tkntype	type;
 }	t_token;
 
-typedef struct s_comd
+typedef struct s_cmd
 {
-	t_token	*cmd;
+	t_token	*name;
 	t_list	*args;
 }	t_cmd;
 
