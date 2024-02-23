@@ -6,12 +6,13 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/23 17:30:54 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/23 19:04:27 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+#define BUFF_1KB 1024
 
 # define INIT -100
 # define MEM_ERROR -10
@@ -21,6 +22,7 @@
 # define FAILURE 1
 # define CH_SZ	1
 
+# define DOL_CH '$'
 # define NUL_CH '\0'
 # define SPC_CH ' '
 # define TAB_CH '\t'
@@ -75,6 +77,7 @@ typedef struct s_shell
 
 typedef struct s_env
 {
+	char	**sys_env;	//TODO para tests, o quiza sea necesario.
 	char	*path;
 	char	*pwd;
 	char	*old_pwd;
@@ -87,6 +90,7 @@ t_shell		*new_sh(char **env);
 t_env		*new_env(char **env);
 void		parse( char *raw);
 t_shell		*get_shell();
+char		*get_env_var(char **env, const char *var_def);
 void		*sh_calloc(size_t num, size_t size);
 void		sh_perror(int error_code);
 void		sh_exit(int exit_code);
