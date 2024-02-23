@@ -5,49 +5,39 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/05 17:15:53 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/10 16:36:09 by fmontser         ###   ########.fr       */
+/*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
+/*   Updated: 2024/02/23 17:44:41 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "minishell.h"
 
-//Free process object resources
-static void	_destructor(t_command *command)	//TODO test
+//Creates a cmd sequence and stores it in shell parameters
+void	sequence_cmd(t_shell *sh, t_list *tkn_lst)
 {
-	t_arg	*arg;
+	t_token	*tkn;
+	t_cmd	*cmd;
 
-	free(command->_name);
-	while(command->_arg_lst)
+	cmd = sh_calloc(1, sizeof(t_cmd));
+	while(tkn_lst)
 	{
-		arg = command->_arg_lst;
-		free(arg->text);
-		command->_arg_lst = command->_arg_lst->next;
-		free(arg);
+		tkn = tkn_lst->content;
+		if (tkn->type == CMD)
+			cmd->name = tkn;
+		else if (tkn->type == ARG)
+			ft_lstadd_back(&cmd->args, sh_addfree(ft_lstnew(tkn)));
+		else if (tkn->type == OP)
+		{
+			ft_lstadd_back(&sh->cmd_lst, sh_addfree(ft_lstnew(cmd)));
+			cmd = sh_calloc(1, sizeof(t_cmd));
+			cmd->name = tkn;
+			ft_lstadd_back(&sh->cmd_lst, sh_addfree(ft_lstnew(cmd)));
+			if (tkn_lst->next)
+				sequence_cmd(sh, tkn_lst->next);
+			return ;
+		}
+		tkn_lst = tkn_lst->next;
 	}
-	free(command);
+	ft_lstadd_back(&sh->cmd_lst, sh_addfree(ft_lstnew(cmd)));
 }
 
-//Consume an argument from a command object
-static t_arg *_consume_arg(t_command *command) //TODO test
-{
-	t_arg	*arg;
-
-	if (command->_arg_lst)
-		arg = command->_arg_lst;
-	else
-		return (NULL);
-	command->_arg_lst = command->_arg_lst->next;
-	return (arg);
-}
-
-//Create new process object
-t_command	new_command(void)
-{
-	t_command	new;
-
-	new.consume_arg = _consume_arg;
-	new.destroy = _destructor;
-	return (new);
-}
