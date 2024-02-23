@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/23 13:46:58 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:59:38 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,24 @@
 
 static void _expand_vars(char *tkn_str)
 {
-	//TODO expandir las varaibles
+	(void)tkn_str;
+	//TODO 2 expandir las varaibles
 }
 
 static void _typify_token(t_token *tkn)
 {
 	_expand_vars(tkn->string);
-	//TODO tipificar los token, y limpiar las comillas
+	//TODO 1 tipificar los token, y limpiar las comillas
+	//TODO TEST TEMPORAL BORRAR
+
+	static int count = 0;
+	if (count == 0)
+		tkn->type = CMD;
+	else if (tkn->string[0] == '|')
+		tkn->type = OP;
+	else
+		tkn->type = ARG;
+	count++;
 }
 
 static void	_extract_token(char *start, char *end)

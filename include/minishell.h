@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/21 14:39:38 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:21:07 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@
 
 typedef struct s_env t_env;
 
+
+
+
+
 typedef enum e_tkntype
 {
 	CMD,
@@ -53,6 +57,12 @@ typedef struct s_token
 	t_tkntype	type;
 }	t_token;
 
+typedef struct s_comd
+{
+	t_token	*cmd;
+	t_list	*args;
+}	t_cmd;
+
 typedef struct s_shell
 {
 	bool	is_running;
@@ -60,6 +70,7 @@ typedef struct s_shell
 	t_env	*env;
 	t_list	*free_lst;
 	t_list	*tkn_lst;
+	t_list	*cmd_lst;
 }	t_shell;
 
 typedef struct s_env
@@ -80,66 +91,6 @@ void		*sh_calloc(size_t num, size_t size);
 void		sh_perror(int error_code);
 void		sh_exit(int exit_code);
 void		*sh_addfree(void *alloc);
+void		sequence_cmd(t_shell *sh, t_list *tkn_lst);
 
 #endif
-
-/*
-static t_token	*_extract_token(char *raw, int start, int end)
-{
-	t_token	*tkn;
-	size_t	length;
-	char	*substr;
-
-	length = ++end - start;
-	tkn = sh_calloc(NULL, sizeof(t_token), STRCT);
-	substr = ft_substr(raw, start, length);
-	tkn->string = ft_strtrim(substr, " ");
-	free(substr);
-	//TODO guardar el puntero en lista CNT
-	return (tkn);
-}
-
-void	parse(t_shell *sh, char *raw)
-{
-	int		i;
-	int		start;
-	int		end;
-	bool	flag;
-	char	dlmt;
-
-	char *debug = raw;
-
-	flag = true;
-	i = 0;
-	start = 0;
-	dlmt = SPC_CH;
-	while (raw[i])
-	{
-		if (raw[i] == SPC_CH && !flag)
-		{
-			i++;
-			debug++;
-			continue ;
-		}
-		if (!flag)
-		{
-			if (raw[i] == SQU_CH || raw[i] == DQU_CH)
-				dlmt = raw[i];
-			else
-				dlmt = SPC_CH;
-			flag = true;
-			start = i;
-		}
-		else if ((raw[i] == dlmt || raw[i + 1] == NUL_CH) && flag)
-		{
-			flag = false;
-			end = i;
-			if (!sh->tkn_lst)
-				sh->tkn_lst = ft_lstnew(_extract_token(raw, start, end));
-			else
-				ft_lstadd_back(&sh->tkn_lst, ft_lstnew(_extract_token(raw, start, end)));
-		}
-		i++;
-		debug++;
-	}
-}*/

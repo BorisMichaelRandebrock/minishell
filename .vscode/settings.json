@@ -21,6 +21,7 @@
 		"__bit_reference": "c",
 		"ios": "c",
 		"__tuple": "c",
-		"libft.h": "c"
+		"libft.h": "c",
+		"stdlib.h": "c"
 	}
 }
