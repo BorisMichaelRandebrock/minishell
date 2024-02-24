@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/23 20:36:30 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/24 14:13:12 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	main(int argc, char *argv[], char *env[])
 		// sh->raw = sh_addfree(readline("🐌 minishell> "));
 		parse(sh->raw);
 		sequence_cmd(sh, sh->tkn_lst);
+		sort_sequence(sh->cmd_lst);
 
 		sh->is_running =false;
 	}
