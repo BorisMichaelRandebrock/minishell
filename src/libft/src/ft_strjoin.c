@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 14:55:16 by fmontser          #+#    #+#             */
-/*   Updated: 2023/07/18 11:59:25 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/26 18:47:43 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	{
 		return (NULL);
 	}
-	while (*s1)
+	while (s1 && *s1)
 	{
 		result[i++] = *s1++;
 	}
-	while (*s2)
+	while (s2 && *s2)
 	{
 		result[i++] = *s2++;
 	}

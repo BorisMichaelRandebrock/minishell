@@ -22,6 +22,9 @@
 		"ios": "c",
 		"__tuple": "c",
 		"libft.h": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"unistd.h": "c",
+		"fcntl.h": "c",
+		"locale": "c"
 	}
 }

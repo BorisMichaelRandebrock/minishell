@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 22:48:12 by fmontser          #+#    #+#             */
-/*   Updated: 2023/07/08 16:59:34 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/26 18:47:41 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen(const char	*s)
 	size_t	length;
 
 	length = 0;
-	while (*s)
+	while (s && *s)
 	{
 		length++;
 		s++;

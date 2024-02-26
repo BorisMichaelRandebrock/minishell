@@ -6,13 +6,14 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/21 14:26:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/26 16:58:12 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <unistd.h>
 #include "minishell.h"
 #include "libft.h"
-#include <stdlib.h>
 
 void	sh_perror(int error_code)
 {
@@ -30,6 +31,7 @@ void	sh_exit(int exit_code)
 	t_list	*next;
 
 	sh = get_shell();
+	unlink(sh->env->filename);
 	while (sh->free_lst)
 	{
 		next = sh->free_lst->next;

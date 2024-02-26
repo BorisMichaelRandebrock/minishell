@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/23 20:33:49 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/26 19:55:40 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ BIN_DIR			:= bin/
 NAME			:= minishell
 HDRS 			:= minishell.h
 SRCS 			:= main.c shell.c enviorment.c utils.c parser.c command.c\
-					# cd.c echo.c pwd.c
+				get_next_line.c expand.c	# cd.c echo.c pwd.c
 OBJS			:= $(SRCS:.c=.o)
 
 LIBFT_DIR		:= src/libft/
@@ -82,6 +82,7 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
+#TODO ft_strjoin, ft_strlen update(fran)
 #TODO armonizar malloc con sh_calloc (utils)
 #TODO limpieza includes
 #TODO retirar .vscode de git

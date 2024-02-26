@@ -6,22 +6,43 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/23 19:22:44 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/26 20:04:29 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "minishell.h"
 #include "libft.h"
 
-#define	LAST_PROC_DEF	"_="
-#define	LAST_EXIT_DEF	"?="
-#define	PATH_DEF		"PATH="
-#define	PWD_DEF			"PWD="
-#define	OLD_PWD_DEF		"OLDPWD="
-#define	TEMP_DIR_DEF	"TMPDIR=tmp/"
-#define EXIT_DEF_SZ		4
+#define LAST_PROC_DEF	"_="
+#define LAST_EXIT_DEF	"?="
+#define PATH_DEF		"PATH="
+#define PWD_DEF			"PWD="
+#define OLD_PWD_DEF		"OLDPWD="
 
-char	*get_env_var(char **env, const char *var_def)
+char	*read_env(char *var_name)
+{
+	t_shell	*sh;
+	char	*match;
+	char	*_env_var;
+
+	_env_var= sh_addfree(ft_strjoin(var_name, "="));
+	sh = get_shell();
+	sh->env->fd = open(sh->env->filename, O_RDONLY);
+	while (sh->env->fd)
+	{
+		match = ft_strnstr(get_next_line(sh->env->fd),
+				_env_var, ft_strlen(_env_var));
+		if (match)
+			sh->env->fd = close(sh->env->fd);
+	}
+	return (match);
+}
+
+static char	*_get_sys_var(char **env, const char *var_def)
 {
 	int		i;
 	size_t	match_sz;
@@ -31,7 +52,6 @@ char	*get_env_var(char **env, const char *var_def)
 	i = 0;
 	while (env[i])
 	{
-		printf("%s\n", env[i]);
 		match = ft_strnstr(env[i], var_def, ft_strlen(var_def));
 		if (match)
 		{
@@ -45,18 +65,28 @@ char	*get_env_var(char **env, const char *var_def)
 	return (NULL);
 }
 
-t_env		*new_env(char **env)
+//TODO proteger  y crear wrap para gestionar archivos open, etc...
+t_env	*new_env(char **env)
 {
-	t_env	*new;
+	static char	*defs[4] = {PATH_DEF, PWD_DEF, OLD_PWD_DEF, LAST_PROC_DEF};
+	char		*var;
+	t_env		*new;
+	size_t		def_sz;
+	size_t		i;
 
 	new = sh_calloc(1, sizeof(t_env));
-	new->sys_env = env;
-	new->path = get_env_var(env, PATH_DEF);
-	new->pwd = get_env_var(env, PWD_DEF);
-	new->old_pwd = get_env_var(env, OLD_PWD_DEF);
-	new->tmp_dir = get_env_var(env, TEMP_DIR_DEF);
-	new->last_proc = get_env_var(env, LAST_PROC_DEF);
-	new->last_exit = sh_calloc(1, EXIT_DEF_SZ);
-	ft_strlcpy(new->last_exit, "?=0", EXIT_DEF_SZ);
+	new->filename = sh_addfree(ft_strdup("env"));
+	new->fd = open(new->filename, O_RDWR | O_APPEND | O_CREAT, 0777);
+	i = 0;
+	while (i < 4)
+	{
+		var = _get_sys_var(env, defs[i]);
+		def_sz = ft_strlen(var);
+		write(new->fd, var, def_sz);
+		write(new->fd, NL_STR, CH_SZ);
+		i++;
+	}
+	write(new->fd, LAST_EXIT_DEF, 2);
+	close(new->fd);
 	return (new);
 }

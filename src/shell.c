@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/23 15:27:18 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/26 18:39:36 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ t_shell	*get_shell(void)
 }
 
 //Create new process object
-t_shell	*new_sh(char **env)
+t_shell	*new_sh(char **sys_env)
 {
 	t_shell	*sh;
 
 	sh = get_shell();
 	sh->is_running = true;
-	sh->env = new_env(env);
+	sh->env = new_env(sys_env);
 	return (sh);
 }
 
