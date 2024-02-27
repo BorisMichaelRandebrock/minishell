@@ -6,14 +6,15 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/27 14:32:50 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/27 19:40:52 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
-#define POS		0
-#define START	1
+#define POS			0
+#define START		1
+#define VAR_OFFSET	2
 /*
 //TODO
 $ si le sigue un whspc o nul entoncces es un caracter
@@ -22,25 +23,27 @@ $VAR no encontrada, se elimina hasta el proximo whscp o el final.
 //TODO
 mas de una var... $VAR$VAR
 */
-//TODO "\"home: $_ sdf $_ \""
+
 size_t	_rebuild_token(t_token *tkn, char *var_name, size_t str_sz, size_t pos[2])
 {
 	size_t	alloc_sz;
 	size_t	exp_sz;
 	char	*exp;
 	char	*tail;
-	char	*str;
+	char	*buff;
+
+	//TODO @@@ 2 expand: "echo $_" variables uera de comillas...peta!
 
 	exp = read_env(var_name);
 	exp = ft_strchr(exp, '=') + CH_SZ;
 	exp_sz = ft_strlen(exp);
 	alloc_sz = (str_sz - (pos[POS] - pos[START])) + exp_sz;
-	tail = sh_addfree(ft_strdup(&tkn->string[pos[START] + 2]));
-	str = tkn->string;
+	tail = sh_addfree(ft_strdup(&tkn->string[pos[START] + VAR_OFFSET]));
+	buff = tkn->string;
 	tkn->string = sh_calloc(1, alloc_sz);
-	ft_strlcpy(tkn->string, str, pos[START] + CH_SZ);
+	ft_strlcpy(tkn->string, buff, pos[START] + CH_SZ);
 	ft_strlcpy(&tkn->string[pos[START]], exp, exp_sz);
-	tkn->string = (ft_strjoin(tkn->string, tail));
+	tkn->string = sh_addfree(ft_strjoin(tkn->string, tail));
 	return (pos[START] + exp_sz - CH_SZ);
 }
 
@@ -72,8 +75,8 @@ void expand_var(void *tkn)
 		}
 		pos[POS]++;
 	}
-	printf("%s\n", _tkn->string);
 }
+
 /* static void	_dequote_token(t_token *tkn)
 {
 	t_shell	*sh;

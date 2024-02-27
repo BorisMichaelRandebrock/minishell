@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/27 15:31:57 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/27 19:14:08 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,22 +78,14 @@ typedef struct s_shell
 {
 	bool	is_running;
 	char	*raw;
-	t_env	*env;
+	char	**env;
 	t_list	*free_lst;
 	t_list	*tkn_lst;
 	t_list	*cmd_lst;
 }	t_shell;
 
-typedef struct s_env
-{
-	char	*filename;
-	int		_fd;
-	int		fd;
-
-}	t_env;
-
 t_shell		*new_sh(char **sys_env);
-t_env		*new_env(char **sys_env);
+char		**new_env(char **sys_env);
 char		*read_env(char *var_name);
 void		parse( char *raw);
 t_shell		*get_shell();

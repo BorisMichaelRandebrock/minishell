@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/26 13:16:12 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/27 19:40:26 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static void	_extract_token(char *start, char *end)
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_addfree(ft_substr(start, 0, length));
 	tkn->string = sh_addfree(ft_strtrim(substr, WHSPC_CHRS));
+	printf("%s\n", tkn->string); //TODO @@@ 1 parser: "echo _    " mas de un espacio al final genera porqueria...
 	tmp = sh_addfree(ft_lstnew(tkn));
 	if (!sh->tkn_lst)
 		sh->tkn_lst = tmp;
