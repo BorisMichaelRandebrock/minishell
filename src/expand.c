@@ -6,13 +6,14 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/26 20:11:21 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/27 14:32:50 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
-
+#define POS		0
+#define START	1
 /*
 //TODO
 $ si le sigue un whspc o nul entoncces es un caracter
@@ -21,57 +22,58 @@ $VAR no encontrada, se elimina hasta el proximo whscp o el final.
 //TODO
 mas de una var... $VAR$VAR
 */
-
-
-// echo \"home: $HOME wdfsdf\"
-void expand_vars(char *tkn_str)
+//TODO "\"home: $_ sdf $_ \""
+size_t	_rebuild_token(t_token *tkn, char *var_name, size_t str_sz, size_t pos[2])
 {
-	t_shell	*sh;
-	size_t	str_sz;
-	size_t	i;
-	size_t	start;
-	size_t	end;
 	size_t	alloc_sz;
-	char	def[BUFF_1KB];
-	char	*var;
+	size_t	exp_sz;
+	char	*exp;
+	char	*tail;
+	char	*str;
 
-	start = 0;
-	end = 0;
-	str_sz = ft_strlen(tkn_str);
-	sh = get_shell();
-	i = 0;
-
-	if (tkn_str[0] == SQU_CH && tkn_str[str_sz] == SQU_CH)
-		return ;
-	while(tkn_str[i])
-	{
-		if (tkn_str[i] == DOLL_CH)
-		{
-			start = i;
-			while (tkn_str[++i] != SPC_CH)
-				;
-			end = i;
-			ft_strlcpy(def, &tkn_str[start + CH_SZ], (end - start));
-			//TODO es necesario hacer un refactor del ENV, pasarlo a un archivo tempporal.
-			var = read_env(def);
-			var = ft_strchr(var, '=');
-			var++;
-			alloc_sz = (str_sz - (end - start)) + ft_strlen(var);
-
-			//TODO @@@@@@ continuar aqui, pasarle los datos reales, crear una funcion que llame a esta para exp todos los tokens...
-
-
-			tkn_str = sh_addfree(ft_realloc(tkn_str, alloc_sz)); //TODO leak, realloc libera por su cuenta! y luego queda vacio! ajustar free function
-			ft_memmove(&tkn_str[start + ft_strlen(var)],&tkn_str[end],ft_strlen(&tkn_str[end])); //TODO no hace bien si el $NAME es mas pequeño que su valor, por jeemplo $PWD PWD=/ (3 vs 1).
-			ft_memcpy(&tkn_str[start], var, ft_strlen(var));
-			//i += //TODO ponerlo al final del memcpy   o   añadir la diferencia entre el recambio (necesitas numeros absolutos...)
-			continue ;
-		}
-		i++;
-	}
+	exp = read_env(var_name);
+	exp = ft_strchr(exp, '=') + CH_SZ;
+	exp_sz = ft_strlen(exp);
+	alloc_sz = (str_sz - (pos[POS] - pos[START])) + exp_sz;
+	tail = sh_addfree(ft_strdup(&tkn->string[pos[START] + 2]));
+	str = tkn->string;
+	tkn->string = sh_calloc(1, alloc_sz);
+	ft_strlcpy(tkn->string, str, pos[START] + CH_SZ);
+	ft_strlcpy(&tkn->string[pos[START]], exp, exp_sz);
+	tkn->string = (ft_strjoin(tkn->string, tail));
+	return (pos[START] + exp_sz - CH_SZ);
 }
 
 
+void expand_var(void *tkn)
+{
+	t_token	*_tkn;
+	size_t	pos[2];
+	size_t	str_sz;
+	char	var_name[BUFF_1KB];
+
+	_tkn = (t_token *)tkn;
+	ft_memcpy(pos, (size_t[]){0, 0}, sizeof(pos));
+	str_sz = ft_strlen(_tkn->string);
+	if (_tkn->string[0] == SQU_CH && _tkn->string[str_sz] == SQU_CH)
+		return ;
+	while(_tkn->string[pos[POS]])
+	{
+		str_sz = ft_strlen(_tkn->string);
+		if (_tkn->string[pos[POS]] == DOLL_CH)
+		{
+			pos[START] = pos[POS];
+			while (_tkn->string[pos[POS]] != SPC_CH && _tkn->string[pos[POS]] != DQU_CH) //TODO condicion para $ si next es nul char
+				pos[POS]++;
+			ft_strlcpy(var_name, &_tkn->string[pos[START] + CH_SZ],
+				(pos[POS] - pos[START]));
+			pos[POS] = _rebuild_token(_tkn, var_name, str_sz, pos);
+			continue ;
+		}
+		pos[POS]++;
+	}
+	printf("%s\n", _tkn->string);
+}
 /* static void	_dequote_token(t_token *tkn)
 {
 	t_shell	*sh;

@@ -11,6 +11,16 @@
 				"kind": "build",
 				"isDefault": true
 			}
+		},
+		{
+			"label": "rem env",
+			"type": "shell",
+			"command": "rm ${workspaceFolder}/**/env",
+			"group":
+			{
+				"kind": "build",
+				"isDefault": true
+			}
 		}
 	]
   }

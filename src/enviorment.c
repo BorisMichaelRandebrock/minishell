@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/26 20:04:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:47:03 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ char	*read_env(char *var_name)
 
 	_env_var= sh_addfree(ft_strjoin(var_name, "="));
 	sh = get_shell();
-	sh->env->fd = open(sh->env->filename, O_RDONLY);
-	while (sh->env->fd)
+	sh->env->_fd = dup(sh->env->fd);
+	while (sh->env->_fd)
 	{
-		match = ft_strnstr(get_next_line(sh->env->fd),
+		match = ft_strnstr(get_next_line(sh->env->_fd),
 				_env_var, ft_strlen(_env_var));
 		if (match)
-			sh->env->fd = close(sh->env->fd);
+			sh->env->_fd = close(sh->env->_fd);
 	}
 	return (match);
 }
@@ -77,16 +77,17 @@ t_env	*new_env(char **env)
 	new = sh_calloc(1, sizeof(t_env));
 	new->filename = sh_addfree(ft_strdup("env"));
 	new->fd = open(new->filename, O_RDWR | O_APPEND | O_CREAT, 0777);
+	new->_fd = dup(new->fd);
 	i = 0;
 	while (i < 4)
 	{
 		var = _get_sys_var(env, defs[i]);
 		def_sz = ft_strlen(var);
-		write(new->fd, var, def_sz);
-		write(new->fd, NL_STR, CH_SZ);
+		write(new->_fd, var, def_sz);
+		write(new->_fd, NL_STR, CH_SZ);
 		i++;
 	}
-	write(new->fd, LAST_EXIT_DEF, 2);
-	close(new->fd);
+	write(new->_fd, LAST_EXIT_DEF, 2);
+	close(new->_fd);
 	return (new);
 }

@@ -10,6 +10,7 @@
 			"program": "${workspaceFolder}/bin/minishell",
 			"args": [],
 			"preLaunchTask": "make",
+			"postDebugTask": "rem env",
 			"stopAtEntry": false,
 			"externalConsole": false,
 			"cwd": "${fileDirname}",

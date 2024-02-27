@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/26 18:28:14 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:31:57 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,9 @@ typedef struct s_shell
 typedef struct s_env
 {
 	char	*filename;
+	int		_fd;
 	int		fd;
+
 }	t_env;
 
 t_shell		*new_sh(char **sys_env);
@@ -100,8 +102,8 @@ void		sh_perror(int error_code);
 void		sh_exit(int exit_code);
 void		*sh_addfree(void *alloc);
 void		typify_token(t_list *tkn_lst);
-void		expand_vars(char *tkn_str);
-void		sequence_cmd(t_shell *sh, t_list *tkn_lst);
+void		expand_var(void *tkn);
+void		sequence_cmd(t_shell *sh™, t_list *tkn_lst);
 void		sort_sequence(t_list *cmd_lst);
 char		*get_next_line(int fd);
 
