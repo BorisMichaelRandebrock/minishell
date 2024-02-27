@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/27 19:40:52 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/27 19:52:29 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ size_t	_rebuild_token(t_token *tkn, char *var_name, size_t str_sz, size_t pos[2]
 	char	*tail;
 	char	*buff;
 
-	//TODO @@@ 2 expand: "echo $_" variables uera de comillas...peta!
-
 	exp = read_env(var_name);
 	exp = ft_strchr(exp, '=') + CH_SZ;
 	exp_sz = ft_strlen(exp);
@@ -55,6 +53,8 @@ void expand_var(void *tkn)
 	size_t	str_sz;
 	char	var_name[BUFF_1KB];
 
+	//TODO @@@ 2 expand: "echo $_" variables uera de comillas...peta!
+
 	_tkn = (t_token *)tkn;
 	ft_memcpy(pos, (size_t[]){0, 0}, sizeof(pos));
 	str_sz = ft_strlen(_tkn->string);
@@ -66,7 +66,7 @@ void expand_var(void *tkn)
 		if (_tkn->string[pos[POS]] == DOLL_CH)
 		{
 			pos[START] = pos[POS];
-			while (_tkn->string[pos[POS]] != SPC_CH && _tkn->string[pos[POS]] != DQU_CH) //TODO condicion para $ si next es nul char
+			while (_tkn->string[pos[POS]] != SPC_CH && _tkn->string[pos[POS]] != DQU_CH) //TODO @@@@@@@@@@@@ condicion para $ si next es nul char
 				pos[POS]++;
 			ft_strlcpy(var_name, &_tkn->string[pos[START] + CH_SZ],
 				(pos[POS] - pos[START]));
@@ -75,6 +75,7 @@ void expand_var(void *tkn)
 		}
 		pos[POS]++;
 	}
+	printf("%s\n", _tkn->string); //TODO test borrar
 }
 
 /* static void	_dequote_token(t_token *tkn)
