@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/28 14:17:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 14:23:30 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ size_t	_rebuild_token(t_token *tkn, char *var_name, size_t str_sz, size_t i[2])
 	if (!exp)
 	{
 		exp_sz =  ft_strlen(var_name) + CH_SZ;
-		ft_memmove(&tkn->string[i[SP]], &tkn->string[exp_sz - 1],
+		ft_memmove(&tkn->string[i[SP]], &tkn->string[i[SP] + exp_sz],
 			ft_strlen(&tkn->string[exp_sz]) + NUL_SZ);
 		return (0);
 	}
@@ -83,6 +83,8 @@ static void	_get_var_name(char *var_name, char *str)
 	ft_strlcpy(var_name, &str[1], i);
 }
 
+
+//TODO @@@@@@ mala gestion leaks
 void expand_var(void *tkn)
 {
 	t_token	*_tkn;
