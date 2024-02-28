@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/28 19:34:38 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 19:59:08 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void		*sh_calloc(size_t num, size_t size);
 void		sh_perror(int error_code);
 void		sh_exit(int exit_code);
 void		*sh_addfree(void *alloc);
-void		typify_token(t_list *tkn_lst);
+void		typify(t_list *tkn_lst);
 void		expand_var(t_token *tkn);
 void		sequence_cmd(t_shell *sh™, t_list *tkn_lst);
 void		sort_sequence(t_list *cmd_lst);

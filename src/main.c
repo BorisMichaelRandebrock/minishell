@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/28 19:41:59 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 19:59:33 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int argc, char *argv[], char *sys_env[])
 		sh->raw = sh_addfree(ft_strdup(" \"'$X $X'\" "));
 		// sh->raw = sh_addfree(readline("🐌 minishell> "));
 		parse(sh->raw);
-		typify_token(sh->tkn_lst);
+		typify(sh->tkn_lst);
 
 		ft_lstiter(sh->tkn_lst, _testprint);
 		//sequence_cmd(sh, sh->tkn_lst);

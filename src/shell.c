@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/27 19:29:28 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 20:05:10 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@
 
 t_shell	*get_shell(void)
 {
-	static	t_shell *shell = NULL;
+	static t_shell	*shell = NULL;
 
 	if (!shell)
+	{
 		shell = ft_calloc(1, sizeof(t_shell));
 		if (!shell)
 			sh_perror(MEM_ERROR);
+	}
 	return (shell);
 }
 

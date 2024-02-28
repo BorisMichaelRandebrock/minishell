@@ -1,15 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/28 19:35:28 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 20:01:22 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -18,10 +17,10 @@ static void	_get_var_name(char *var_name, char *str)
 	int	i;
 
 	i = 0;
-	while(str[i] && str[i] != SPC_CH && str[i] != SQU_CH && str[i] != DQU_CH)
+	while (str[i] && str[i] != SPC_CH && str[i] != SQU_CH && str[i] != DQU_CH)
 	{
 		if (str[i] == DOLL_CH && i > 0)
-			break;
+			break ;
 		i++;
 	}
 	ft_strlcpy(var_name, &str[1], i);
@@ -37,7 +36,7 @@ char	*_alloc_expansion(char *str)
 
 	alloc_sz = ft_strlen(str);
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == DOLL_CH)
 		{
@@ -52,7 +51,7 @@ char	*_alloc_expansion(char *str)
 	return (alloc);
 }
 
-void expand_var(t_token *tkn)
+void	expand_var(t_token *tkn)
 {
 	int		i;
 	int		j;
@@ -73,7 +72,7 @@ void expand_var(t_token *tkn)
 			ft_memcpy(&tkn->str[j], exp, ft_strlen(exp));
 			i += ft_strlen(var_name) + CH_SZ;
 			j += ft_strlen(exp);
-			continue;
+			continue ;
 		}
 		else
 			tkn->str[j++] = str[i++];

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/28 19:41:20 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 20:02:37 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,41 +24,11 @@ static void	_dequote_token(t_token *tkn)
 	if (tkn->type == ARG || tkn->type == CMD)
 	{
 		if ((_str[0] == DQU_CH && _str[ft_strlen(_str) - 1] == DQU_CH)
-			||(_str[0] == SQU_CH && _str[ft_strlen(_str) - 1] == SQU_CH))
+			|| (_str[0] == SQU_CH && _str[ft_strlen(_str) - 1] == SQU_CH))
 		{
 			ft_memmove(_str, &_str[1], ft_strlen(_str) - NQUOTES);
 			_str[ft_strlen(_str) - NQUOTES] = NUL_CH;
 		}
-	}
-}
-
-//TODO pasarla  a individual y que la llame parse
-void	typify_token(t_list *tkn_lst)
-{
-	t_list	*_prev;
-	t_list	*_lst;
-	t_token	*_tkn;
-	t_token	*_prev_tkn;
-
-	_prev = NULL;
-	_lst = tkn_lst;
-	while (_lst)
-	{
-		_tkn = (t_token *)_lst->content;
-		if (_prev)
-			_prev_tkn = (t_token *)_prev->content;
-		if (_prev == NULL || _prev_tkn->str[0] == '|')
-			_tkn->type = CMD;
-		else if (*_tkn->str == '<' || *_tkn->str == '>' || *_tkn->str == '|')
-			_tkn->type = OP;
-		else
-			_tkn->type = ARG;
-		_tkn->optype = PIPE;		//TODO si es posible no asignar nada si no es un op
-		if (_tkn->str[0] != '|')
-			_tkn->optype = REDIR;
-		_prev = _lst;
-		_tkn = (t_token *)_lst->next;
-		_lst = _lst->next;
 	}
 }
 
@@ -132,4 +102,33 @@ void	parse(char *raw)
 		;
 	_extract_token(start, raw);
 	parse(++raw);
+}
+
+void	typify(t_list *tkn_lst)
+{
+	t_list	*_prev;
+	t_list	*_lst;
+	t_token	*_tkn;
+	t_token	*_prev_tkn;
+
+	_prev = NULL;
+	_lst = tkn_lst;
+	while (_lst)
+	{
+		_tkn = (t_token *)_lst->content;
+		if (_prev)
+			_prev_tkn = (t_token *)_prev->content;
+		if (_prev == NULL || _prev_tkn->str[0] == '|')
+			_tkn->type = CMD;
+		else if (*_tkn->str == '<' || *_tkn->str == '>' || *_tkn->str == '|')
+			_tkn->type = OP;
+		else
+			_tkn->type = ARG;
+		_tkn->optype = PIPE;		//TODO si es posible no asignar nada si no es un op
+		if (_tkn->str[0] != '|')
+			_tkn->optype = REDIR;
+		_prev = _lst;
+		_tkn = (t_token *)_lst->next;
+		_lst = _lst->next;
+	}
 }
