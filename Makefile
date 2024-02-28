@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/26 19:55:40 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/28 12:23:22 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,12 +82,11 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-#TODO ft_strjoin, ft_strlen update(fran)
+#TODO ft_strjoin, ft_strlen, ft_strnstr, ft_is_whspc update(fran)
 #TODO armonizar malloc con sh_calloc (utils)
 #TODO limpieza includes
 #TODO retirar .vscode de git
 #TODO retirar las funciones libft no utilizadas
 #TODO resolver que pasa cuando no se recompilan slos cambios de una libreria o make anidado
 #TODO montar clase iter (fran)
-#TODO update nueva funcion libft ft_is_whspc
 #TODO repasar tema del history, es mas complejo...mirar bash manual

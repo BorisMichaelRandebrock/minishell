@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/27 19:47:57 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 13:12:50 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 
 bool	_is_op(char *str)
 {
-	if ((*str == '<' || *str == '>') && *str == *(str + 1)) //TODO simplificar
-		return (1);
 	if (*str == '<' || *str == '>' || *str == '|')
 		return (1);
 	return (0);
@@ -44,7 +42,7 @@ void	typify_token(t_list *tkn_lst)
 			_tkn->type = OP;
 		else
 			_tkn->type = ARG;
-		_tkn->optype = PIPE;		//TODO si e sposile no asignar nada si no es un op
+		_tkn->optype = PIPE;		//TODO si es posible no asignar nada si no es un op
 		if (_tkn->string[0] != '|')
 			_tkn->optype = REDIR;
 		_prev = _lst;
@@ -66,7 +64,6 @@ static void	_extract_token(char *start, char *end)
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_addfree(ft_substr(start, 0, length));
 	tkn->string = sh_addfree(ft_strtrim(substr, WHSPC_CHRS));
-	//TODO @@@ 1 parser: "echo _    " mas de un espacio al final genera porqueria...printf("%s\n", tkn->string);
 	tmp = sh_addfree(ft_lstnew(tkn));
 	if (!sh->tkn_lst)
 		sh->tkn_lst = tmp;
@@ -102,6 +99,7 @@ void	parse(char *raw)
 	char	*start;
 	char	dlmt;
 
+	raw = sh_addfree(ft_strtrim(raw, WHSPC_CHRS));
 	if (*raw == '\0')
 		return ;
 	dlmt = SPC_CH;

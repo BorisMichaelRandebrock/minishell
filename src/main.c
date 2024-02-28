@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/28 11:19:51 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 14:14:49 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 #include "minishell.h"
 #include <readline/history.h>
 #include <readline/readline.h>
+
+
+static void _testprint(void *tkn)
+{
+	t_token * _tkn = tkn;
+	printf("%s\n", _tkn->string);
+}
 
 int	main(int argc, char *argv[], char *sys_env[])
 {
@@ -24,23 +31,13 @@ int	main(int argc, char *argv[], char *sys_env[])
 	sh = new_sh(sys_env);
 	while (sh->is_running)
 	{
-		sh->raw = sh_addfree(ft_strdup("echo \"$_ @@@ $_ \" pum "));
-
-
-		//TODO @@@@@@@@@@@@@@ problemas parser y expand:
-
-		//TODO @@@ 1 parser:    "echo _    " mas de un espacio al final genera porqueria...
-		//TODO @@@ 2 expand:69   "echo $_" variables uera de comillas...peta!
-
-
-
-
-
+		sh->raw = sh_addfree(ft_strdup(" \"$X   $X'asd'\"  "));
 		// sh->raw = sh_addfree(readline("🐌 minishell> "));
 		parse(sh->raw);
 		typify_token(sh->tkn_lst);
 		ft_lstiter(sh->tkn_lst, expand_var);
-
+		ft_lstiter(sh->tkn_lst, dequote_token);
+		ft_lstiter(sh->tkn_lst, _testprint);
 
 
 		//sequence_cmd(sh, sh->tkn_lst);
