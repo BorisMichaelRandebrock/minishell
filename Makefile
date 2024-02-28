@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/26 19:55:40 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/28 17:32:35 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,8 @@ OBJ_DIR			:= obj/
 BIN_DIR			:= bin/
 NAME			:= minishell
 HDRS 			:= minishell.h
-SRCS 			:= main.c shell.c enviorment.c utils.c parser.c command.c\
-				get_next_line.c expand.c	# cd.c echo.c pwd.c
+SRCS 			:= main.c shell.c enviorment.c utils.c parser.c\
+				expand.c 	# command.c get_next_line.c cd.c echo.c pwd.c
 OBJS			:= $(SRCS:.c=.o)
 
 LIBFT_DIR		:= src/libft/
@@ -82,12 +82,12 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-#TODO ft_strjoin, ft_strlen update(fran)
+#TODO borrar test.sh
+#TODO ft_strjoin, ft_strlen, ft_strnstr, ft_is_whspc update(fran)
 #TODO armonizar malloc con sh_calloc (utils)
 #TODO limpieza includes
 #TODO retirar .vscode de git
 #TODO retirar las funciones libft no utilizadas
 #TODO resolver que pasa cuando no se recompilan slos cambios de una libreria o make anidado
 #TODO montar clase iter (fran)
-#TODO update nueva funcion libft ft_is_whspc
 #TODO repasar tema del history, es mas complejo...mirar bash manual

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/26 18:39:36 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/27 19:29:28 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@
 #define RD_END 0
 #define WR_END 1
 #define BUFFER_64KB 65536	//TODO poner como variable entorno?
-
-
-
-
-
 
 t_shell	*get_shell(void)
 {

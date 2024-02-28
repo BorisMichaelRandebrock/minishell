@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/26 20:08:37 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 19:41:59 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 #include "minishell.h"
 #include <readline/history.h>
 #include <readline/readline.h>
+
+
+static void _testprint(void *tkn)
+{
+	t_token * _tkn = tkn;
+	printf("%s\n", _tkn->str);
+}
 
 int	main(int argc, char *argv[], char *sys_env[])
 {
@@ -24,15 +31,14 @@ int	main(int argc, char *argv[], char *sys_env[])
 	sh = new_sh(sys_env);
 	while (sh->is_running)
 	{
-		//sh->raw = sh_addfree(ft_strdup("echo \"hola $PWD O_O\" | echo 'adios'"));
-		sh->raw = sh_addfree(ft_strdup("echo \"home: $_ \""));
+		sh->raw = sh_addfree(ft_strdup(" \"'$X $X'\" "));
 		// sh->raw = sh_addfree(readline("🐌 minishell> "));
 		parse(sh->raw);
 		typify_token(sh->tkn_lst);
-		expand_vars("\"home: $_ \"");
+
+		ft_lstiter(sh->tkn_lst, _testprint);
 		//sequence_cmd(sh, sh->tkn_lst);
 		//sort_sequence(sh->cmd_lst);
-
 		sh->is_running =false;
 	}
 	sh_exit(SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/26 16:58:12 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:37:31 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	sh_exit(int exit_code)
 	t_list	*next;
 
 	sh = get_shell();
-	unlink(sh->env->filename);
 	while (sh->free_lst)
 	{
 		next = sh->free_lst->next;

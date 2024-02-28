@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 17:29:11 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/26 19:23:03 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:31:42 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	is_line(char *buffer)
 	return (0);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int _fd)
 {
 	static char	*resto = NULL;
 	char		buffer[BUFF_1KB + 1];
@@ -88,7 +88,7 @@ char	*get_next_line(int fd)
 	rd = 1;
 	while (!is_line(buffer) && rd != 0)
 	{
-		rd = read(fd, buffer, BUFF_1KB);
+		rd = read(_fd, buffer, BUFF_1KB);
 		if (rd < 0)
 		{
 			if (resto)

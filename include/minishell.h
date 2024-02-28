@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/26 18:28:14 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 19:34:38 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef enum e_optype
 
 typedef struct s_token
 {
-	char		*string;
+	char		*str;
 	t_tkntype	type;
 	t_optype	optype;
 }	t_token;
@@ -78,20 +78,14 @@ typedef struct s_shell
 {
 	bool	is_running;
 	char	*raw;
-	t_env	*env;
+	char	**env;
 	t_list	*free_lst;
 	t_list	*tkn_lst;
 	t_list	*cmd_lst;
 }	t_shell;
 
-typedef struct s_env
-{
-	char	*filename;
-	int		fd;
-}	t_env;
-
 t_shell		*new_sh(char **sys_env);
-t_env		*new_env(char **sys_env);
+char		**new_env(char **sys_env);
 char		*read_env(char *var_name);
 void		parse( char *raw);
 t_shell		*get_shell();
@@ -100,8 +94,8 @@ void		sh_perror(int error_code);
 void		sh_exit(int exit_code);
 void		*sh_addfree(void *alloc);
 void		typify_token(t_list *tkn_lst);
-void		expand_vars(char *tkn_str);
-void		sequence_cmd(t_shell *sh, t_list *tkn_lst);
+void		expand_var(t_token *tkn);
+void		sequence_cmd(t_shell *sh™, t_list *tkn_lst);
 void		sort_sequence(t_list *cmd_lst);
 char		*get_next_line(int fd);
 

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/24 14:12:00 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 13:49:13 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 //TODO el sort debe cumplir todos los modos validos
 /*
+
+	//TODO OJO << no funciona a files!!!
 
 	// Pipes entre comandos, derecha a izquierda
 	echo test | cat -e

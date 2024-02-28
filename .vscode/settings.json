@@ -25,6 +25,7 @@
 		"stdlib.h": "c",
 		"unistd.h": "c",
 		"fcntl.h": "c",
-		"locale": "c"
+		"locale": "c",
+		"sstream": "c"
 	}
 }

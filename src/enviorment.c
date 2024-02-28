@@ -6,14 +6,10 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/26 20:04:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:21:01 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include "minishell.h"
 #include "libft.h"
 
@@ -27,66 +23,48 @@ char	*read_env(char *var_name)
 {
 	t_shell	*sh;
 	char	*match;
-	char	*_env_var;
-
-	_env_var= sh_addfree(ft_strjoin(var_name, "="));
-	sh = get_shell();
-	sh->env->fd = open(sh->env->filename, O_RDONLY);
-	while (sh->env->fd)
-	{
-		match = ft_strnstr(get_next_line(sh->env->fd),
-				_env_var, ft_strlen(_env_var));
-		if (match)
-			sh->env->fd = close(sh->env->fd);
-	}
-	return (match);
-}
-
-static char	*_get_sys_var(char **env, const char *var_def)
-{
 	int		i;
-	size_t	match_sz;
-	char	*match;
-	char	*var;
 
+	sh = get_shell();
 	i = 0;
-	while (env[i])
+	while (sh->env[i])
 	{
-		match = ft_strnstr(env[i], var_def, ft_strlen(var_def));
+		match = ft_strnstr(sh->env[i], var_name, ft_strlen(var_name));
 		if (match)
 		{
-			match_sz = ft_strlen(match) + NUL_SZ;
-			var = sh_calloc(1, match_sz);
-			ft_strlcpy(var, match, match_sz);
-			return (var);
+			match = ft_strchr(match, '=') + CH_SZ;
+			match = sh_addfree(ft_strdup(match));
+			return (match);
 		}
 		i++;
 	}
 	return (NULL);
 }
 
-//TODO proteger  y crear wrap para gestionar archivos open, etc...
-t_env	*new_env(char **env)
+char	**new_env(char **sys_env)
 {
 	static char	*defs[4] = {PATH_DEF, PWD_DEF, OLD_PWD_DEF, LAST_PROC_DEF};
-	char		*var;
-	t_env		*new;
-	size_t		def_sz;
 	size_t		i;
+	size_t		j;
+	char		*match;
+	char		**env;
 
-	new = sh_calloc(1, sizeof(t_env));
-	new->filename = sh_addfree(ft_strdup("env"));
-	new->fd = open(new->filename, O_RDWR | O_APPEND | O_CREAT, 0777);
-	i = 0;
-	while (i < 4)
+	env = sh_calloc(5, sizeof(char *));
+	i = -1;
+	j = -1;
+	while (++i < 4)
 	{
-		var = _get_sys_var(env, defs[i]);
-		def_sz = ft_strlen(var);
-		write(new->fd, var, def_sz);
-		write(new->fd, NL_STR, CH_SZ);
-		i++;
+		while (sys_env[++j])
+		{
+			match = ft_strnstr(sys_env[j], defs[i], ft_strlen(defs[i]));
+			if (match)
+			{
+				env[i] = sh_addfree(ft_strdup(match));
+				break ;
+			}
+		}
+		j = -1;
 	}
-	write(new->fd, LAST_EXIT_DEF, 2);
-	close(new->fd);
-	return (new);
+	env[i] = sh_addfree(ft_strdup(LAST_EXIT_DEF));
+	return (env);
 }
