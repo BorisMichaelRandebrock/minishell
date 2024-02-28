@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/27 19:52:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 11:20:37 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,12 @@ size_t	_rebuild_token(t_token *tkn, char *var_name, size_t str_sz, size_t pos[2]
 	return (pos[START] + exp_sz - CH_SZ);
 }
 
-
 void expand_var(void *tkn)
 {
 	t_token	*_tkn;
 	size_t	pos[2];
 	size_t	str_sz;
 	char	var_name[BUFF_1KB];
-
-	//TODO @@@ 2 expand: "echo $_" variables uera de comillas...peta!
 
 	_tkn = (t_token *)tkn;
 	ft_memcpy(pos, (size_t[]){0, 0}, sizeof(pos));
@@ -66,7 +63,9 @@ void expand_var(void *tkn)
 		if (_tkn->string[pos[POS]] == DOLL_CH)
 		{
 			pos[START] = pos[POS];
-			while (_tkn->string[pos[POS]] != SPC_CH && _tkn->string[pos[POS]] != DQU_CH) //TODO @@@@@@@@@@@@ condicion para $ si next es nul char
+			while (_tkn->string[pos[POS]] != SPC_CH
+				&& _tkn->string[pos[POS]] != NUL_CH
+				&& _tkn->string[pos[POS]] != DQU_CH)
 				pos[POS]++;
 			ft_strlcpy(var_name, &_tkn->string[pos[START] + CH_SZ],
 				(pos[POS] - pos[START]));
