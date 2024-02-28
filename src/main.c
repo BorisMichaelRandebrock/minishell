@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/28 14:23:05 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 19:41:59 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 static void _testprint(void *tkn)
 {
 	t_token * _tkn = tkn;
-	printf("%s\n", _tkn->string);
+	printf("%s\n", _tkn->str);
 }
 
 int	main(int argc, char *argv[], char *sys_env[])
@@ -31,15 +31,12 @@ int	main(int argc, char *argv[], char *sys_env[])
 	sh = new_sh(sys_env);
 	while (sh->is_running)
 	{
-		sh->raw = sh_addfree(ft_strdup(" \"$_    s    $X'asd'\"  "));
+		sh->raw = sh_addfree(ft_strdup(" \"'$X $X'\" "));
 		// sh->raw = sh_addfree(readline("🐌 minishell> "));
 		parse(sh->raw);
 		typify_token(sh->tkn_lst);
-		ft_lstiter(sh->tkn_lst, expand_var);
-		ft_lstiter(sh->tkn_lst, dequote_token);
+
 		ft_lstiter(sh->tkn_lst, _testprint);
-
-
 		//sequence_cmd(sh, sh->tkn_lst);
 		//sort_sequence(sh->cmd_lst);
 		sh->is_running =false;

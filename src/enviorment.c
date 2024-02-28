@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/27 19:28:23 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:21:01 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,11 @@ char	*read_env(char *var_name)
 	{
 		match = ft_strnstr(sh->env[i], var_name, ft_strlen(var_name));
 		if (match)
-			return (sh_addfree(ft_strdup(match)));
+		{
+			match = ft_strchr(match, '=') + CH_SZ;
+			match = sh_addfree(ft_strdup(match));
+			return (match);
+		}
 		i++;
 	}
 	return (NULL);
