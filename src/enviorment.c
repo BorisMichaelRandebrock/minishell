@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/28 18:21:01 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:21:38 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #define PWD_DEF			"PWD="
 #define OLD_PWD_DEF		"OLDPWD="
 
-char	*read_env(char *var_name)
+char	*get_evar(char *var_name)
 {
 	t_shell	*sh;
 	char	*match;
@@ -39,6 +39,13 @@ char	*read_env(char *var_name)
 		i++;
 	}
 	return (NULL);
+}
+
+void	set_evar(char *var_name, char *value)
+{
+	//TODO implementar
+	(void)var_name;
+	(void)value;
 }
 
 char	**new_env(char **sys_env)

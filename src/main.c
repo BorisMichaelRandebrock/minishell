@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/28 19:59:33 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/29 17:35:46 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,14 @@
 #include <readline/readline.h>
 
 
-static void _testprint(void *tkn)
+/* static void _testprint(void *cmd)
 {
-	t_token * _tkn = tkn;
-	printf("%s\n", _tkn->str);
-}
+	t_cmd * _cmd = cmd;
+
+	t_token *_tkn;
+	_tkn = _cmd->args->content;
+	printf("%s %s\n", _cmd->cmd->str, _tkn->str);
+} */
 
 int	main(int argc, char *argv[], char *sys_env[])
 {
@@ -31,13 +34,14 @@ int	main(int argc, char *argv[], char *sys_env[])
 	sh = new_sh(sys_env);
 	while (sh->is_running)
 	{
-		sh->raw = sh_addfree(ft_strdup(" \"'$X $X'\" "));
+		sh->input = sh_addfree(ft_strdup("ECHO hola > file1 | CAT -e > file2"));
 		// sh->raw = sh_addfree(readline("🐌 minishell> "));
-		parse(sh->raw);
+		parse(sh->input);
 		typify(sh->tkn_lst);
+		get_pipeline(sh->tkn_lst);
+		exec_pipeline(sh->ppln);
 
-		ft_lstiter(sh->tkn_lst, _testprint);
-		//sequence_cmd(sh, sh->tkn_lst);
+		//ft_lstiter(sh->ppln, _testprint);
 		//sort_sequence(sh->cmd_lst);
 		sh->is_running =false;
 	}

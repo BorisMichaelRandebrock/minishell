@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/28 20:01:22 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:17:34 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*_alloc_expansion(char *str)
 		{
 			_get_var_name(var_name, &str[i]);
 			alloc_sz -= ft_strlen(var_name) + CH_SZ;
-			exp = read_env(var_name);
+			exp = get_evar(var_name);
 			alloc_sz += ft_strlen(exp);
 		}
 		i++;
@@ -68,7 +68,7 @@ void	expand_var(t_token *tkn)
 		if (str[i] == DOLL_CH)
 		{
 			_get_var_name(var_name, &str[i]);
-			exp = read_env(var_name);
+			exp = get_evar(var_name);
 			ft_memcpy(&tkn->str[j], exp, ft_strlen(exp));
 			i += ft_strlen(var_name) + CH_SZ;
 			j += ft_strlen(exp);

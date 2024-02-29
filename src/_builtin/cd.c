@@ -6,15 +6,15 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:50:43 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/23 14:34:04 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:48:58 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_cd(t_prompt *prompt)
+void	cd(t_list	*args)
 {
-	char	*path;
+/* 	char	*path;
 
 	path = ft_split(prompt->_input);
 	if (chdir(path) == -1)
@@ -24,5 +24,5 @@ int	ft_cd(t_prompt *prompt)
 	else
 		printf("cd: %s", getenv("PWD"));
 	free(path);
-	return (SUCCESS);
+	return (SUCCESS); */
 }

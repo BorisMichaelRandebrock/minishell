@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/28 19:59:08 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:18:55 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 # include <stdio.h> //TODO para pruebas retirar
 
 typedef struct s_env t_env;
-
+typedef int (*builtin)(t_list *args);
 
 
 
@@ -70,23 +70,24 @@ typedef struct s_token
 
 typedef struct s_cmd
 {
-	t_token	*name;
+	t_token	*cmd;
 	t_list	*args;
 }	t_cmd;
 
 typedef struct s_shell
 {
 	bool	is_running;
-	char	*raw;
+	char	*input;
 	char	**env;
 	t_list	*free_lst;
 	t_list	*tkn_lst;
-	t_list	*cmd_lst;
+	t_list	*ppln;
 }	t_shell;
 
 t_shell		*new_sh(char **sys_env);
 char		**new_env(char **sys_env);
-char		*read_env(char *var_name);
+char		*get_evar(char *var_name);
+void		set_evar(char *var_name, char *value);
 void		parse( char *raw);
 t_shell		*get_shell();
 void		*sh_calloc(size_t num, size_t size);
@@ -95,8 +96,16 @@ void		sh_exit(int exit_code);
 void		*sh_addfree(void *alloc);
 void		typify(t_list *tkn_lst);
 void		expand_var(t_token *tkn);
-void		sequence_cmd(t_shell *sh™, t_list *tkn_lst);
-void		sort_sequence(t_list *cmd_lst);
+void		get_pipeline(t_list *tkn_lst);
+void		exec_pipeline(t_list *ppln);
 char		*get_next_line(int fd);
+void		echo(t_list *args);
+void		cd(t_list *args);
+void		pwd(t_list *args);
+void		export(t_list *args);
+void		unset(t_list *args);
+void		env(t_list *args);
+void		exit(t_list *args);
+
 
 #endif

@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/02/28 20:05:27 by fmontser         ###   ########.fr        #
+#    Updated: 2024/02/29 14:25:46 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ BIN_DIR			:= bin/
 NAME			:= minishell
 HDRS 			:= minishell.h
 SRCS 			:= main.c shell.c enviorment.c utils.c parser.c\
-				expander.c 	# command.c get_next_line.c cd.c echo.c pwd.c
+				expander.c pipeline.c #get_next_line.c cd.c echo.c pwd.c
 OBJS			:= $(SRCS:.c=.o)
 
 LIBFT_DIR		:= src/libft/
