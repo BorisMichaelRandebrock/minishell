@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/01 18:09:01 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/01 18:55:05 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ static void	_exec_pipeline(t_list	*ppln)
 	t_cmd			*_cmd;
 	int				i;
 
-	int j = 0;
-
 	i = 0;
 	while(ppln)
 	{
@@ -74,9 +72,6 @@ static void	_exec_pipeline(t_list	*ppln)
 		}
 		i = 0;
 		ppln = ppln->next;
-		//TODO test borrar
-		if (j++ == 0)
-			printf("piped: %s", shell_buffer);
 	}
 }
 

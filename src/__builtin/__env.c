@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   __env.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/01 18:56:08 by fmontser         ###   ########.fr       */
+/*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
+/*   Updated: 2024/03/01 18:52:45 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <unistd.h>
 #include "minishell.h"
-#include <readline/history.h>
-#include <readline/readline.h>
 
-int	main(int argc, char *argv[], char *sys_env[])
+//TODO return errors?
+int	__env(t_list *args, int fd)
 {
 	t_shell	*sh;
+	int		i;
 
-	(void)argc;
-	(void)argv;
-	sh = new_sh(sys_env);
-	while (sh->is_running)
+	sh = get_shell();
+	i = 0;
+	(void)args;
+	while (sh->env[i])
 	{
-		sh->input = sh_addfree(ft_strdup("env | echo 'no env!'"));
-		// sh->raw = sh_addfree(readline("🐌 minishell> "));
-		parse(sh->input);
-		typify(sh->tkn_lst);
-		run_pipeline(sh->tkn_lst);
-
-		sh->is_running =false;
+		write(fd, sh->env[i], ft_strlen(sh->env[i]));
+		write(fd, "\n", 1);
+		i++;
 	}
+	close(fd);
 	sh_exit(SUCCESS);
+	return (SUCCESS);
 }
