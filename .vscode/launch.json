@@ -10,19 +10,18 @@
 			"program": "${workspaceFolder}/bin/minishell",
 			"args": [],
 			"preLaunchTask": "make",
-			"postDebugTask": "rem env",
+			//"postDebugTask": "rem env",
 			"stopAtEntry": false,
 			"externalConsole": false,
 			"cwd": "${fileDirname}",
 			"environment": [],
-			"MIMode": "lldb"
+			"MIMode": "lldb",
 		},
 		{
 			"name": "(lldb) Attach",
 			"type": "cppdbg",
 			"request": "attach",
 			"program": "${workspaceFolder}/bin/minishell",
-			"preLaunchTask": "make",
 			"processId": "${command:pickProcess}",
 			"MIMode": "lldb"
 		},

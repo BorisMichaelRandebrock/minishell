@@ -6,49 +6,90 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/29 18:00:50 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/01 18:09:01 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
+#include <unistd.h>
 #include "minishell.h"
 
-/*
+#define LAST_EXIT_EVAR "?"
 
-	echo hola > file | cat -e > file200
+void	_exec_builtin(t_bltin bltin, t_cmd *cmd, char *shell_buffer)
+{
+	pid_t	bltin_pid;
+	int		exit_code;
+	int		pipefd[2];
+	int		fd;
 
+	//TODO @@@@@@@ añadir shell_buffer a  args si existe contenido.
+	pipe(pipefd); //TODO debe cerrarse si no hay uso??
+	fd = STDOUT_FILENO;
+	if (cmd->is_piped)
+		fd = pipefd[WR];
+	bltin_pid = fork();
+	if (bltin_pid == 0)
+	{
+		(bltin)(cmd->args, fd);
+	}
+	else if (cmd->is_piped)
+	{
+		wait3(&exit_code, 0 ,NULL);
+		read(pipefd[RD], shell_buffer, BUFSIZ);
+		close(pipefd[RD]);
+		set_evar(LAST_EXIT_EVAR, sh_addfree(ft_itoa(exit_code)));
+	}
 
-	echo hola | cat -e
+}
 
-	echo > file	// redir exec
-	[output (fd)] cat // redir exec
+static char	_to_lower(unsigned int ignore, char c)
+{
+	(void)ignore;
+	return (ft_tolower(c));
+}
 
+static void	_exec_pipeline(t_list	*ppln)
+{
+	static t_bltin	bltin_ptr[7] = {__echo, __cd, __pwd, __export, __unset, __env, __exit};
+	static char		*bltin_id[7] = {"echo","cd","pwd","export","unset","env","exit"};
+	char			shell_buffer[BUFSIZ];
+	t_cmd			*_cmd;
+	int				i;
 
+	int j = 0;
 
-	REDIRS	2			PIPELINES 1
-	------				---------
-	echo hola			echo hola
-	>					|
-	file				cat -e
-
- */
-
-
-//Creates a cmd sequence and stores it in shell parameters
-//TODO esto supone que la lista esta bien pasada
-
-
-
+	i = 0;
+	while(ppln)
+	{
+		_cmd = ppln->content;
+		_cmd->cmd->str = sh_addfree(ft_strmapi(_cmd->cmd->str, _to_lower));
+		if (ppln->next)
+			_cmd->is_piped = true;
+		while (bltin_id[i])
+		{
+			if (!ft_strncmp(_cmd->cmd->str, bltin_id[i],ft_strlen(bltin_id[i])))
+				_exec_builtin(bltin_ptr[i], _cmd, shell_buffer);
+			i++;
+		}
+		i = 0;
+		ppln = ppln->next;
+		//TODO test borrar
+		if (j++ == 0)
+			printf("piped: %s", shell_buffer);
+	}
+}
 
 static void	_skip_redirection(t_list *lst)
 {
-	t_token *tkn;
+	t_token	*tkn;
 
 	tkn = lst->content;
 	while ((tkn->type != OP && tkn->optype != PIPE) || lst)
 		lst = lst->next;
 }
 
-void	get_pipeline(t_list *lst)
+void	run_pipeline(t_list *lst)
 {
 	t_shell	*sh;
 	t_token	*_tkn;
@@ -64,6 +105,7 @@ void	get_pipeline(t_list *lst)
 		{
 			cmd = sh_calloc(1, sizeof(t_cmd));
 			cmd->cmd = _tkn;
+			cmd->is_piped = false;
 			ft_lstadd_back(&sh->ppln, sh_addfree(ft_lstnew(cmd)));
 		}
 		else if (_tkn->type == ARG)
@@ -73,57 +115,5 @@ void	get_pipeline(t_list *lst)
 		if (_lst)
 			_lst = _lst->next;
 	}
+	_exec_pipeline(sh->ppln);
 }
-
-char	_to_lower(unsigned int ignore, char c)
-{
-	(void)ignore;
-	return (ft_tolower(c));
-}
-
-void	exec_pipeline(t_list	*ppln)
-{
-	static builtin	bif_funcs[7] = {echo, cd, pwd, export, unset, env, exit};
-	static char		**bif_names = {"echo,cd,pwd,export,unset,env,exit"};
-	char			buff;
-	t_cmd	*_cmd;
-	int		i;
-
-	i = 0;
-	while(ppln)
-	{
-		_cmd = ppln->content;
-		_cmd->cmd->str = sh_addfree(ft_strmapi(_cmd->cmd->str, _to_lower));
-		while (bif_names[i])
-		{
-			buff = bif_names[i];
-			if (!ft_strncmp(_cmd->cmd->str, buff,ft_strlen(buff)))
-				set_evar("?", sh_addfree(ft_itoa((bif_funcs[i])(_cmd->args))));
-		}
-		ppln = ppln->next;
-	}
-}
-
-//TODO el sort debe cumplir todos los modos validos
-/*
-
-	//TODO OJO << no funciona a files!!!
-
-	// Pipes entre comandos, derecha a izquierda
-	echo test > scpript < file
-
-	// Solo para FD direccion de la redireccion...
-	- echo test < file		(fd a encho input)
-	- echo test << END		(heredoc a echo input)
-	- echo test > file		(echo output a fd overwrite all)
-	- echo test >> file		(echo output a fd modo append new line)
-
-	//TODO multiples operadores
-	- echo multitest | cat -e > file
-	- echo multitest > file | cat -e
-
-	//TODO listar no validos
-	- file ? file (cualquier operador entre dos o mas FD)
-	- cmd | fd				(pipes con fd)
-
- */

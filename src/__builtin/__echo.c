@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   __echo.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/14 13:50:43 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/29 15:48:58 by fmontser         ###   ########.fr       */
+/*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
+/*   Updated: 2024/03/01 17:58:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "minishell.h"
 
-void	cd(t_list	*args)
+//TODO return errors?
+int	__echo(t_list *args, int fd)
 {
-/* 	char	*path;
+	t_list	*_args;
+	t_token	*tkn;
 
-	path = ft_split(prompt->_input);
-	if (chdir(path) == -1)
+	_args = args;
+	while (_args)
 	{
-		printf("cd: %s: No such file or directory\n", path);
+		tkn = _args->content;
+		write(fd, tkn->str, ft_strlen(tkn->str));
+		if (_args->next)
+			write(fd, " ", 1);
+		_args = _args->next;
 	}
-	else
-		printf("cd: %s", getenv("PWD"));
-	free(path);
-	return (SUCCESS); */
+	write(fd, "\n", 1);
+	close(fd);
+	sh_exit(SUCCESS);
+	return (SUCCESS);
 }

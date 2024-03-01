@@ -6,13 +6,16 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/29 16:18:55 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:58:24 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # define BUFF_1KB 1024
+
+# define RD 0
+# define WR 1
 
 # define INIT -100
 # define MEM_ERROR -10
@@ -43,7 +46,7 @@
 # include <stdio.h> //TODO para pruebas retirar
 
 typedef struct s_env t_env;
-typedef int (*builtin)(t_list *args);
+typedef int (*t_bltin)(t_list *args, int wpipe);
 
 
 
@@ -72,6 +75,7 @@ typedef struct s_cmd
 {
 	t_token	*cmd;
 	t_list	*args;
+	bool	is_piped;
 }	t_cmd;
 
 typedef struct s_shell
@@ -96,16 +100,15 @@ void		sh_exit(int exit_code);
 void		*sh_addfree(void *alloc);
 void		typify(t_list *tkn_lst);
 void		expand_var(t_token *tkn);
-void		get_pipeline(t_list *tkn_lst);
+void		run_pipeline(t_list *tkn_lst);
 void		exec_pipeline(t_list *ppln);
 char		*get_next_line(int fd);
-void		echo(t_list *args);
-void		cd(t_list *args);
-void		pwd(t_list *args);
-void		export(t_list *args);
-void		unset(t_list *args);
-void		env(t_list *args);
-void		exit(t_list *args);
-
+int			__echo(t_list *args, int fd);
+int			__cd(t_list *args, int fd);
+int			__pwd(t_list *args, int fd);
+int			__export(t_list *args, int fd);
+int			__unset(t_list *args, int fd);
+int			__env(t_list *args, int fd);
+int			__exit(t_list *args, int fd);
 
 #endif
