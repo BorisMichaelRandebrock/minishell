@@ -6,13 +6,16 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/28 19:59:08 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:58:24 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # define BUFF_1KB 1024
+
+# define RD 0
+# define WR 1
 
 # define INIT -100
 # define MEM_ERROR -10
@@ -43,7 +46,7 @@
 # include <stdio.h> //TODO para pruebas retirar
 
 typedef struct s_env t_env;
-
+typedef int (*t_bltin)(t_list *args, int wpipe);
 
 
 
@@ -70,23 +73,25 @@ typedef struct s_token
 
 typedef struct s_cmd
 {
-	t_token	*name;
+	t_token	*cmd;
 	t_list	*args;
+	bool	is_piped;
 }	t_cmd;
 
 typedef struct s_shell
 {
 	bool	is_running;
-	char	*raw;
+	char	*input;
 	char	**env;
 	t_list	*free_lst;
 	t_list	*tkn_lst;
-	t_list	*cmd_lst;
+	t_list	*ppln;
 }	t_shell;
 
 t_shell		*new_sh(char **sys_env);
 char		**new_env(char **sys_env);
-char		*read_env(char *var_name);
+char		*get_evar(char *var_name);
+void		set_evar(char *var_name, char *value);
 void		parse( char *raw);
 t_shell		*get_shell();
 void		*sh_calloc(size_t num, size_t size);
@@ -95,8 +100,15 @@ void		sh_exit(int exit_code);
 void		*sh_addfree(void *alloc);
 void		typify(t_list *tkn_lst);
 void		expand_var(t_token *tkn);
-void		sequence_cmd(t_shell *sh™, t_list *tkn_lst);
-void		sort_sequence(t_list *cmd_lst);
+void		run_pipeline(t_list *tkn_lst);
+void		exec_pipeline(t_list *ppln);
 char		*get_next_line(int fd);
+int			__echo(t_list *args, int fd);
+int			__cd(t_list *args, int fd);
+int			__pwd(t_list *args, int fd);
+int			__export(t_list *args, int fd);
+int			__unset(t_list *args, int fd);
+int			__env(t_list *args, int fd);
+int			__exit(t_list *args, int fd);
 
 #endif
