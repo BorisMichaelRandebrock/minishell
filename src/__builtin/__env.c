@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/01 18:52:45 by fmontser         ###   ########.fr       */
+/*   Created: 2024/03/01 19:20:14 by fmontser          #+#    #+#             */
+/*   Updated: 2024/03/01 20:35:28 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	__env(t_list *args, int fd)
 		write(fd, "\n", 1);
 		i++;
 	}
-	close(fd);
-	sh_exit(SUCCESS);
+	if (fd > SYS_FDS)
+		close(fd);
+	//sh_exit(SUCCESS);
 	return (SUCCESS);
 }

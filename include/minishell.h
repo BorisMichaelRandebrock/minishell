@@ -6,38 +6,40 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/01 18:53:25 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/01 19:18:02 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# define BUFF_1KB 1024
 
-# define RD 0
-# define WR 1
+# define SYS_FDS	2
+# define RD			0
+# define WR			1
 
-# define INIT -100
-# define MEM_ERROR -10
-# define NULL_ERROR -11
+# define INIT		-100
+# define MEM_ERROR	-10
+# define NULL_ERROR	-11
 
-# define SUCCESS 0
-# define FAILURE 1
+# define SUCCESS	0
+# define FAILURE	1
+
 # define CH_SZ	1
 
-# define DOLL_CH '$'
-# define NUL_CH '\0'
-# define SPC_CH ' '
-# define TAB_CH '\t'
-# define SQU_CH '\''
-# define NL_CH '\n'
-# define DQU_CH '"'
-# define PIP_CH '|'
-# define OUT_CH '>'
-# define IN_CH '<'
-# define APP_STR ">>"
-# define HER_STR "<<"
-# define NL_STR "\n"
+# define DOLL_CH	'$'
+# define NUL_CH		'\0'
+# define SPC_CH		' '
+# define TAB_CH		'\t'
+# define SQU_CH		'\''
+# define NL_CH		'\n'
+# define DQU_CH		'"'
+# define PIP_CH		'|'
+# define OUT_CH		'>'
+# define IN_CH		'<'
+
+# define APP_STR	">>"
+# define HER_STR	"<<"
+# define NL_STR		"\n"
 
 # include <signal.h>
 # include <stdbool.h>
