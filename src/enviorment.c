@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/04 15:26:19 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/04 19:35:00 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	set_evar(char *var_name, char *value)
 	while (sh->env[i])
 	{
 		vcount++;
-		match = ft_strnstr(sh->env[i], var_name, ft_strlen(var_name));
+		match = ft_strnstr(sh->env[i], full_var_name, ft_strlen(full_var_name));
 		if (match)
 		{
 			sh->env[i] = sh_addfree(ft_strjoin(full_var_name, value));
@@ -66,8 +66,8 @@ void	set_evar(char *var_name, char *value)
 		}
 		i++;
 	}
-	//TODO @@@@@@ crear una funcion que redimensione un array bidimensional ft_rszarray(char **dst, char **src, int new_sz);
-	//sh->env[i] = sh_addfree(ft_strjoin(full_var_name, value));
+	sh_addfree(ft_rszarray(sh->env, i - 2)); //TODO @@@@@@@@@@@@@@@ arreglar porqueria en la memoria
+	sh->env[i] = sh_addfree(ft_strjoin(full_var_name, value));
 }
 
 char	**new_env(char **sys_env)

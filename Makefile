@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/03/04 16:47:10 by fmontser         ###   ########.fr        #
+#    Updated: 2024/03/04 19:16:05 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ PERF_FLAGS		:= #-O3
 CC_FLAGS		:= -Wall -Werror -Wextra -g -c $(PERF_FLAGS)
 STD_LIBS		:= -lreadline
 TEST_LEAKS		:= leaks -atExit --
+TEST_VLEAKS		:= valgrind --show-error-list=no  --trace-children=no
 
 CLEAN_TARGETS	=	$(wildcard $(addprefix $(OBJ_DIR), $(OBJS)))
 FCLEAN_TARGETS	= $(wildcard $(addprefix $(BIN_DIR), $(NAME)))
@@ -72,6 +73,9 @@ test: all
 tleaks: all
 	@$(TEST_LEAKS) ./$(BIN_DIR)$(NAME) $(TEST_ARGS)
 
+tvleaks: all
+	@$(TEST_VLEAKS) ./$(BIN_DIR)$(NAME) $(TEST_ARGS)
+
 clean:
 	@$(foreach item,$(CLEAN_TARGETS),echo "$(COLOR_RED)delete file: $(item)$(COLOR_END)"; rm $(item);)
 	@make clean -C $(LIBFT_DIR)
@@ -85,7 +89,7 @@ re: fclean all
 .PHONY: all clean fclean re
 
 #TODO borrar test.sh
-#TODO ft_strjoin, ft_strlen, ft_strnstr, ft_is_whspc update(fran)
+#TODO ft_strjoin, ft_strlen, ft_strnstr, ft_is_whspc update(fran),  ft_rszarray, libft.h, makefile
 #TODO armonizar malloc con sh_calloc (utils)
 #TODO limpieza includes
 #TODO retirar .vscode de git

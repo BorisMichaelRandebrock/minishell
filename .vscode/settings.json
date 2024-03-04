@@ -26,6 +26,7 @@
 		"unistd.h": "c",
 		"fcntl.h": "c",
 		"locale": "c",
-		"sstream": "c"
+		"sstream": "c",
+		"wait.h": "c"
 	}
 }

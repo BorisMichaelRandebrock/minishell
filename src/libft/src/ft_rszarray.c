@@ -1,38 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   __env.c                                            :+:      :+:    :+:   */
+/*   ft_rszarray.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 19:20:14 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/04 19:20:51 by fmontser         ###   ########.fr       */
+/*   Created: 2024/03/04 19:01:22 by fmontser          #+#    #+#             */
+/*   Updated: 2024/03/04 19:32:51 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "minishell.h"
+#include <stdlib.h>
+#include "libft.h"
 
-//TODO return errors?
-int	__env(t_list *args, int fd)
+char **ft_rszarray(char **src, int new_sz)
 {
-	t_shell	*sh;
-	int		i;
+	char	**buffer;
+	size_t	i;
 
-	sh = get_shell();
+	buffer = ft_calloc(new_sz, sizeof(char *));
 	i = 0;
-	(void)args;
-	while (sh->env[i])
+	while (src[i])
 	{
-		write(fd, sh->env[i], ft_strlen(sh->env[i]));
-		if (sh->env[i + 1])
-			write(fd, "\n", 1);
+		if (buffer[i])
+			buffer[i] = src[i];
 		i++;
 	}
-	if (fd == STDOUT_FILENO)
-		write(fd, "\n", 1);
-	if (fd > SYS_FDS)
-		close(fd);
-	//sh_exit(SUCCESS);
-	return (SUCCESS);
+	buffer[i] = NULL;
+	//free(src);
+	return (buffer);
 }
+
