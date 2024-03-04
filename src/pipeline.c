@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/01 19:17:07 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/04 16:42:23 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,25 @@ void	_exec_builtin(t_bltin bltin, t_cmd *cmd, char *shell_buffer)
 	int		exit_code;
 	int		pipefd[2];
 	int		fd;
+	t_token	_tkn;
 
-	//TODO @@@@@@@ añadir shell_buffer a  args si existe contenido.
-	pipe(pipefd); //TODO debe cerrarse si no hay uso??
+	_tkn.str = shell_buffer;
+	pipe(pipefd);
 	fd = STDOUT_FILENO;
 	if (cmd->is_piped)
 		fd = pipefd[WR];
+	else if (!cmd->is_piped && *_tkn.str)
+		ft_lstadd_back(&cmd->args, sh_addfree(ft_lstnew(&_tkn)));
 	bltin_pid = fork();
 	if (bltin_pid == 0)
-	{
 		(bltin)(cmd->args, fd);
-	}
 	else if (cmd->is_piped)
 	{
-		wait3(&exit_code, 0 ,NULL);
+		wait3(&exit_code, 0, NULL);
 		read(pipefd[RD], shell_buffer, BUFSIZ);
 		close(pipefd[RD]);
 		set_evar(LAST_EXIT_EVAR, sh_addfree(ft_itoa(exit_code)));
 	}
-
 }
 
 static char	_to_lower(unsigned int ignore, char c)
@@ -51,23 +51,25 @@ static char	_to_lower(unsigned int ignore, char c)
 
 static void	_exec_pipeline(t_list	*ppln)
 {
-	static t_bltin	bltin_ptr[7] = {__echo, __cd, __pwd, __export, __unset, __env, __exit};
-	static char		*bltin_id[7] = {"echo","cd","pwd","export","unset","env","exit"};
+	static t_bltin	bltn_ptr[7] = {__echo, __cd, __pwd, __export,
+		__unset, __env, __exit};
+	static char		*bltn_id[7] = {"echo", "cd", "pwd", "export",
+		"unset", "env", "exit"};
 	char			shell_buffer[BUFSIZ];
 	t_cmd			*_cmd;
 	int				i;
 
 	i = 0;
-	while(ppln)
+	while (ppln)
 	{
 		_cmd = ppln->content;
 		_cmd->cmd->str = sh_addfree(ft_strmapi(_cmd->cmd->str, _to_lower));
 		if (ppln->next)
 			_cmd->is_piped = true;
-		while (bltin_id[i])
+		while (bltn_id[i])
 		{
-			if (!ft_strncmp(_cmd->cmd->str, bltin_id[i],ft_strlen(bltin_id[i])))
-				_exec_builtin(bltin_ptr[i], _cmd, shell_buffer);
+			if (!ft_strncmp(_cmd->cmd->str, bltn_id[i], ft_strlen(bltn_id[i])))
+				_exec_builtin(bltn_ptr[i], _cmd, shell_buffer);
 			i++;
 		}
 		i = 0;
@@ -84,16 +86,16 @@ static void	_skip_redirection(t_list *lst)
 		lst = lst->next;
 }
 
-void	run_pipeline(t_list *lst)
+void	run_pipeline(t_list *tkn_lst)
 {
 	t_shell	*sh;
 	t_token	*_tkn;
 	t_cmd	*cmd;
 	t_list	*_lst;
 
-	_lst = lst;
+	_lst = tkn_lst;
 	sh = get_shell();
-	while(_lst)
+	while (_lst)
 	{
 		_tkn = _lst->content;
 		if (_tkn->type == CMD)

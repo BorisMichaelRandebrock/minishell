@@ -12,7 +12,7 @@
 			"preLaunchTask": "make",
 			//"postDebugTask": "rem env",
 			"stopAtEntry": false,
-			"externalConsole": false,
+			"externalConsole": true,
 			"cwd": "${fileDirname}",
 			"environment": [],
 			"MIMode": "lldb",

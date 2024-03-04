@@ -7,13 +7,6 @@ int	__cd(t_list *args, int wpipe)
 	return (0);
 }
 
-int	__pwd(t_list *args, int wpipe)
-{
-	(void)args;
-	(void)wpipe;
-	return (0);
-}
-
 int	__unset(t_list *args, int wpipe)
 {
 	(void)args;

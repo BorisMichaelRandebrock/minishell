@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/03/01 19:21:58 by fmontser         ###   ########.fr        #
+#    Updated: 2024/03/04 16:47:10 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ BIN_DIR			:= bin/
 NAME			:= minishell
 HDRS 			:= minishell.h
 SRCS 			:= main.c shell.c enviorment.c utils.c parser.c expander.c\
-					pipeline.c __echo.c __env.c __export.c __placeholder.c
+					pipeline.c __echo.c __env.c __export.c __pwd.c\
+				__placeholder.c
 					#get_next_line.c
 OBJS			:= $(SRCS:.c=.o)
 
