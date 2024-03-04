@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/01 18:01:01 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/01 20:33:07 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,6 @@
 #include "minishell.h"
 #include <readline/history.h>
 #include <readline/readline.h>
-
-
-/* static void _testprint(void *cmd)
-{
-	t_cmd * _cmd = cmd;
-
-	t_token *_tkn;
-	_tkn = _cmd->args->content;
-	printf("%s %s\n", _cmd->cmd->str, _tkn->str);
-} */
 
 int	main(int argc, char *argv[], char *sys_env[])
 {
@@ -34,42 +24,18 @@ int	main(int argc, char *argv[], char *sys_env[])
 	sh = new_sh(sys_env);
 	while (sh->is_running)
 	{
-		sh->input = sh_addfree(ft_strdup("ECHO ola \"que\" | Echo 'ase' tu"));
+		sh->input = sh_addfree(ft_strdup("env | echo 'no env!'"));
 		// sh->raw = sh_addfree(readline("🐌 minishell> "));
 		parse(sh->input);
 		typify(sh->tkn_lst);
-		run_pipeline(sh->tkn_lst);
+		__env(NULL,1);
+		set_evar("_", "/ola/que/ase");
+		__env(NULL,1);
+		set_evar("TVAR", "temporal var");
+		__env(NULL,1);
+		//run_pipeline(sh->tkn_lst);
 
-		//ft_lstiter(sh->ppln, _testprint);
-		//sort_sequence(sh->cmd_lst);
 		sh->is_running =false;
 	}
 	sh_exit(SUCCESS);
 }
-
-/* TEST token list */
-/*
-	while (sh->tkn_lst)
-	{
-		printf("%s\n", ((t_token *)sh->tkn_lst->content)->string);
-		sh->tkn_lst = sh->tkn_lst->next;
-	}
-	break ;
- */
-
-
-/*TEST cmd list */
-/* 		while (sh->cmd_lst)
-		{
-			t_cmd	*scmd = (t_cmd *)sh->cmd_lst->content;
-			t_list	*alist = (t_list *)scmd->args;
-
-			printf("%s -", scmd->name->string);
-			while (alist)
-			{
-				printf(" %s", ((t_token *)alist->content)->string);
-				alist = alist->next;
-			}
-			printf("\n");
-			sh->cmd_lst = sh->cmd_lst->next;
-		} */

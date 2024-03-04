@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/29 16:17:34 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/01 19:16:46 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*_alloc_expansion(char *str)
 	size_t	i;
 	char	*exp;
 	char	*alloc;
-	char	var_name[BUFF_1KB];
+	char	var_name[BUFSIZ];
 
 	alloc_sz = ft_strlen(str);
 	i = 0;
@@ -57,7 +57,7 @@ void	expand_var(t_token *tkn)
 	int		j;
 	char	*str;
 	char	*exp;
-	char	var_name[BUFF_1KB];
+	char	var_name[BUFSIZ];
 
 	str = tkn->str;
 	tkn->str = _alloc_expansion(tkn->str);

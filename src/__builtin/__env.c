@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   __echo.c                                           :+:      :+:    :+:   */
+/*   __env.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/01 19:18:19 by fmontser         ###   ########.fr       */
+/*   Created: 2024/03/01 19:20:14 by fmontser          #+#    #+#             */
+/*   Updated: 2024/03/01 20:35:28 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,22 @@
 #include "minishell.h"
 
 //TODO return errors?
-int	__echo(t_list *args, int fd)
+int	__env(t_list *args, int fd)
 {
-	t_list	*_args;
-	t_token	*tkn;
+	t_shell	*sh;
+	int		i;
 
-	_args = args;
-	while (_args)
+	sh = get_shell();
+	i = 0;
+	(void)args;
+	while (sh->env[i])
 	{
-		tkn = _args->content;
-		write(fd, tkn->str, ft_strlen(tkn->str));
-		if (_args->next)
-			write(fd, " ", 1);
-		_args = _args->next;
+		write(fd, sh->env[i], ft_strlen(sh->env[i]));
+		write(fd, "\n", 1);
+		i++;
 	}
-	write(fd, "\n", 1);
 	if (fd > SYS_FDS)
 		close(fd);
-	sh_exit(SUCCESS);
+	//sh_exit(SUCCESS);
 	return (SUCCESS);
 }
