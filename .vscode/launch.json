@@ -1,29 +1,26 @@
 {
-	"version": "0.2.0",
-	"configurations":
-	[
-
+	"configurations": [
 		{
-			"name": "(lldb) Iniciar",
+			"name": "Launch",
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/bin/minishell",
 			"args": [],
-			"preLaunchTask": "make",
-			//"postDebugTask": "rem env",
 			"stopAtEntry": false,
-			"externalConsole": true,
 			"cwd": "${fileDirname}",
 			"environment": [],
+			"externalConsole": false,
 			"MIMode": "lldb",
+			"preLaunchTask": "make"
 		},
 		{
-			"name": "(lldb) Attach",
-			"type": "cppdbg",
-			"request": "attach",
+			"type": "lldb",
+			"request": "launch",
+			"name": "Launch CodeLldb",
 			"program": "${workspaceFolder}/bin/minishell",
-			"processId": "${command:pickProcess}",
-			"MIMode": "lldb"
-		},
+			"args": [],
+			"cwd": "${fileDirname}",
+			"preLaunchTask": "make"
+		}
 	]
-  }
+}

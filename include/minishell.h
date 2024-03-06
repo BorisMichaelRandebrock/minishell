@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/01 19:18:02 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/06 22:49:58 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@
 # define SUCCESS	0
 # define FAILURE	1
 
-# define CH_SZ	1
+# define IDX_OFFST	1
+# define CH_SZ		1
 
 # define DOLL_CH	'$'
 # define NUL_CH		'\0'
@@ -85,6 +86,7 @@ typedef struct s_shell
 	bool	is_running;
 	char	*input;
 	char	**env;
+	size_t	env_sz;
 	t_list	*free_lst;
 	t_list	*tkn_lst;
 	t_list	*ppln;
@@ -97,6 +99,7 @@ void		set_evar(char *var_name, char *value);
 void		parse( char *raw);
 t_shell		*get_shell();
 void		*sh_calloc(size_t num, size_t size);
+void		*sh_ralloc(void *old, size_t new_sizeof);
 void		sh_perror(int error_code);
 void		sh_exit(int exit_code);
 void		*sh_addfree(void *alloc);

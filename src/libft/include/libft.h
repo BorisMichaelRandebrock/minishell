@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 22:49:16 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/04 19:22:48 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:03:00 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,5 @@ int		ft_fsize(char *file_path);
 void	*ft_fload(char *file_path, int file_size);
 bool	ft_fexists(char *file_path);
 bool	ft_is_whspc(char c);
-char	**ft_rszarray(char **src, int new_sz);
 
 #endif

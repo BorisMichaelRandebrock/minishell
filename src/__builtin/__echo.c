@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/04 18:00:59 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/06 21:57:52 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,9 @@ int	__echo(t_list *args, int fd)
 			write(fd, " ", 1);
 		_args = _args->next;
 	}
-	write(fd, "\0", 1);
 	if (fd == STDOUT_FILENO)
 		write(fd, "\n", 1);
 	if (fd > SYS_FDS)
 		close(fd);
-	sh_exit(SUCCESS);
 	return (SUCCESS);
 }
