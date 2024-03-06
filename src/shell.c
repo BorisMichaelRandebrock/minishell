@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/04 15:02:54 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/06 22:08:58 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #define RD_END 0
 #define WR_END 1
 #define BUFFER_64KB 65536	//TODO poner como variable entorno?
+#define DFLT_ENV_SZ 5
 
 t_shell	*get_shell(void)
 {
@@ -41,6 +42,7 @@ t_shell	*new_sh(char **sys_env)
 	sh = get_shell();
 	sh->is_running = true;
 	sh->env = new_env(sys_env);
+	sh->env_sz = DFLT_ENV_SZ;
 	return (sh);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/06 00:36:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/06 22:56:11 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #define PATH_DEF		"PATH="
 #define PWD_DEF			"PWD="
 #define OLD_PWD_DEF		"OLDPWD="
+#define NEW_VAR_SZ		1
 
 char	*get_evar(char *var_name)
 {
@@ -52,7 +53,7 @@ void	set_evar(char *var_name, char *value)
 	sh = get_shell();
 	full_var_name = sh_addfree(ft_strjoin(var_name, "="));
 	i = 0;
-	while (sh->env[i])
+	while (i < sh->env_sz)
 	{
 		match = ft_strnstr(sh->env[i], full_var_name, ft_strlen(full_var_name));
 		if (match)
@@ -62,11 +63,9 @@ void	set_evar(char *var_name, char *value)
 		}
 		i++;
 	}
-	//TODO arreglar guarrada.
-	char **tmp;
-	tmp = realloc(sh->env, (i + 1) * sizeof(char *));
-	sh->env = tmp;
+	sh->env = sh_ralloc(sh->env, (i + NEW_VAR_SZ) * sizeof(char *));
 	sh->env[i] = sh_addfree(ft_strjoin(full_var_name, value));
+	sh->env_sz++;
 }
 
 char	**new_env(char **sys_env)

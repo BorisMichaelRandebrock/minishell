@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/28 16:37:31 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/06 22:50:14 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,21 @@ void	*sh_calloc(size_t num, size_t size)
 	else
 		ft_lstadd_front(&sh->free_lst, ft_lstnew(alloc));
 	return (alloc);
+}
+
+void	*sh_ralloc(void *old, size_t new_sizeof)
+{
+	void	*ralloc;
+
+	if (!old)
+		return (sh_calloc(1, new_sizeof));
+	if (!new_sizeof)
+		return (old);
+	ralloc = sh_calloc(1, new_sizeof);
+	if (!ralloc)
+		return (NULL);
+	ft_memcpy(ralloc, old, new_sizeof);
+	return (ralloc);
 }
 
 void	*sh_addfree(void *alloc)

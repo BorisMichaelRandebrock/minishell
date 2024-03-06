@@ -1,12 +1,25 @@
 {
 	"configurations": [
 		{
-			"type": "lldb",
-			"request": "launch",
 			"name": "Launch",
+			"type": "cppdbg",
+			"request": "launch",
 			"program": "${workspaceFolder}/bin/minishell",
 			"args": [],
-			"cwd": "${workspaceFolder}",
+			"stopAtEntry": false,
+			"cwd": "${fileDirname}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "lldb",
+			"preLaunchTask": "make"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Launch CodeLldb",
+			"program": "${workspaceFolder}/bin/minishell",
+			"args": [],
+			"cwd": "${fileDirname}",
 			"preLaunchTask": "make"
 		}
 	]

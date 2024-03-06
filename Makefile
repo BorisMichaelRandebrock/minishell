@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/03/04 19:16:05 by fmontser         ###   ########.fr        #
+#    Updated: 2024/03/06 22:36:41 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -88,12 +88,11 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-#TODO borrar test.sh
+#TODO repasar tema del history, es mas complejo...mirar bash manual
+#TODO la gestion de memoria es valida pero no me convence...
 #TODO ft_strjoin, ft_strlen, ft_strnstr, ft_is_whspc update(fran),  ft_rszarray, libft.h, makefile
-#TODO armonizar malloc con sh_calloc (utils)
 #TODO limpieza includes
 #TODO retirar .vscode de git
 #TODO retirar las funciones libft no utilizadas
 #TODO resolver que pasa cuando no se recompilan slos cambios de una libreria o make anidado
-#TODO montar clase iter (fran)
-#TODO repasar tema del history, es mas complejo...mirar bash manual
+
