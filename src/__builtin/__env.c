@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:14 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/04 19:20:51 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/05 22:28:12 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@ int	__env(t_list *args, int fd)
 		write(fd, sh->env[i], ft_strlen(sh->env[i]));
 		if (sh->env[i + 1])
 			write(fd, "\n", 1);
+		else
+			write(fd, "\0", 1);
 		i++;
 	}
 	if (fd == STDOUT_FILENO)
 		write(fd, "\n", 1);
 	if (fd > SYS_FDS)
 		close(fd);
-	//sh_exit(SUCCESS);
+	sh_exit(SUCCESS);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/04 19:35:00 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/06 00:36:09 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,14 @@ void	set_evar(char *var_name, char *value)
 {
 	t_shell	*sh;
 	char	*match;
-	size_t	vcount;
-	size_t	i;
-
 	char	*full_var_name;
+	size_t	i;
 
 	sh = get_shell();
 	full_var_name = sh_addfree(ft_strjoin(var_name, "="));
-	vcount = 0;
 	i = 0;
 	while (sh->env[i])
 	{
-		vcount++;
 		match = ft_strnstr(sh->env[i], full_var_name, ft_strlen(full_var_name));
 		if (match)
 		{
@@ -66,7 +62,10 @@ void	set_evar(char *var_name, char *value)
 		}
 		i++;
 	}
-	sh_addfree(ft_rszarray(sh->env, i - 2)); //TODO @@@@@@@@@@@@@@@ arreglar porqueria en la memoria
+	//TODO arreglar guarrada.
+	char **tmp;
+	tmp = realloc(sh->env, (i + 1) * sizeof(char *));
+	sh->env = tmp;
 	sh->env[i] = sh_addfree(ft_strjoin(full_var_name, value));
 }
 

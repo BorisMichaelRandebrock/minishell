@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/04 18:39:52 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:41:55 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 			exit_code = WEXITSTATUS(exit_code);
 		read(pipefd[RD], shell_buffer, BUFSIZ);
 		close(pipefd[RD]);
-		set_evar(LAST_EXIT_EVAR, sh_addfree(ft_itoa(exit_code)));
+		//TODO set_evar(LAST_EXIT_EVAR, sh_addfree(ft_itoa(exit_code)));
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/01 19:18:02 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/05 22:42:33 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@
 # define SUCCESS	0
 # define FAILURE	1
 
-# define CH_SZ	1
+# define IDX_OFFST	1
+# define CH_SZ		1
 
 # define DOLL_CH	'$'
 # define NUL_CH		'\0'
