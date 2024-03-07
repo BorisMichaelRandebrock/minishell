@@ -6,26 +6,69 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/06 22:56:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/07 14:04:17 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
+#define VAR_NAME	0
+#define VALUE		1
 
-//TODO return errors?
+static void	_free(char	**evar)
+{
+	if (evar)
+	{
+		free(evar[VAR_NAME]);
+		free(evar[VALUE]);
+		free(evar);
+	}
+}
+
+static bool	_print_error(char *evar)
+{
+	write(STDERR_FILENO, "export: not valid in this context: ", 36);
+	write(STDERR_FILENO, evar, ft_strlen(evar));
+	write(STDERR_FILENO, "\n", 1);
+	return (true);
+}
+
+static bool	_check_evar(bool *eflag, char *evar, t_list **_args)
+{
+	if (!ft_strchr(evar, '='))
+	{
+		if (!*eflag)
+			*eflag = _print_error(evar);
+		*_args = (*_args)->next;
+		return (true);
+	}
+	return (false);
+}
+
 int	__export(t_list *args, int fd)
 {
-	(void)args;
-	(void)fd;
-	/*
-		NOTA: no implementar opciones.
+	t_list	*_args;
+	t_token	*tkn;
+	bool	eflag;
+	char	**evar;
 
-		1. Sin argumentos
-			- export sin argumentos muestra una lista de todas las variables de shell que han sido exportadas como variables de entorno.
-			- env muestra todas las variables de entorno disponibles en el entorno actual del shell, incluyendo aquellas que han sido exportadas y aquellas que no.
-		2. Con argumentos
-			- crea una nuevas varaibles de entorno si no existen, de lo contrario las sobreescribe. args:  VAR1=asdasd VAR2=lllll ...
-	*/
+	evar = NULL;
+	eflag = false;
+	_args = args;
+	if (!args)
+		__env(NULL, fd);
+	else
+	{
+		while (_args)
+		{
+			tkn = _args->content;
+			if (_check_evar(&eflag, tkn->str, &_args))
+				continue ;
+			evar = ft_split(tkn->str, '=');
+			set_evar(evar[VAR_NAME], evar[VALUE]);
+			_args = _args->next;
+		}
+	}
+	_free(evar);
 	return (SUCCESS);
 }
