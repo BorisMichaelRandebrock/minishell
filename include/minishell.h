@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 15:44:57 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:23:19 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,6 @@
 
 typedef struct s_env t_env;
 typedef int (*t_bltin)(t_list *args, int wpipe);
-
-
-
 
 typedef enum e_tkntype
 {
