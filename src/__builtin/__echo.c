@@ -6,21 +6,33 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/06 21:57:52 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/07 12:40:13 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
 
+#define N_OPT "-n"
 //TODO return errors?
-//TODO option -n
+static bool	_n_opt_check(t_token *tkn, t_list **_args)
+{
+	if (!ft_strncmp(tkn->str, N_OPT, 2))
+	{
+		*_args = (*_args)->next;
+		return (true);
+	}
+	return (false);
+}
+
 int	__echo(t_list *args, int fd)
 {
 	t_list	*_args;
 	t_token	*tkn;
+	bool	nflag;
 
 	_args = args;
+	nflag = _n_opt_check(_args->content, &_args);
 	while (_args)
 	{
 		tkn = _args->content;
@@ -30,7 +42,8 @@ int	__echo(t_list *args, int fd)
 		_args = _args->next;
 	}
 	if (fd == STDOUT_FILENO)
-		write(fd, "\n", 1);
+		if (!nflag)
+			write(fd, "\n", 1);
 	if (fd > SYS_FDS)
 		close(fd);
 	return (SUCCESS);
