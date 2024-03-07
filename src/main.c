@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 11:53:36 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/07 14:17:27 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int argc, char *argv[], char *sys_env[])
 		parse(sh->input);
 		typify(sh->tkn_lst);
 		run_pipeline(sh->tkn_lst);
-		//sh->is_running = false;
+		sh->is_running = false;
 	}
 	sh_exit(SUCCESS);
 }

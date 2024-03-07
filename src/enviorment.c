@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/06 22:56:11 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/07 15:54:40 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ char	*get_evar(char *var_name)
 void	set_evar(char *var_name, char *value)
 {
 	t_shell	*sh;
-	char	*match;
 	char	*full_var_name;
 	size_t	i;
 
@@ -55,8 +54,7 @@ void	set_evar(char *var_name, char *value)
 	i = 0;
 	while (i < sh->env_sz)
 	{
-		match = ft_strnstr(sh->env[i], full_var_name, ft_strlen(full_var_name));
-		if (match)
+		if (ft_strnstr(sh->env[i], full_var_name, ft_strlen(full_var_name)))
 		{
 			sh->env[i] = sh_addfree(ft_strjoin(full_var_name, value));
 			return ;
@@ -66,6 +64,34 @@ void	set_evar(char *var_name, char *value)
 	sh->env = sh_ralloc(sh->env, (i + NEW_VAR_SZ) * sizeof(char *));
 	sh->env[i] = sh_addfree(ft_strjoin(full_var_name, value));
 	sh->env_sz++;
+}
+
+void	unset_evar(char *var_name)
+{
+	t_shell	*sh;
+	char	*full_var_name;
+	size_t	i;
+	size_t	j;
+
+	sh = get_shell();
+	full_var_name = sh_addfree(ft_strjoin(var_name, "="));
+	i = 0;
+	while (i < sh->env_sz)
+	{
+		if (ft_strnstr(sh->env[i], full_var_name, ft_strlen(full_var_name)))
+		{
+			j = i;
+			while (j < sh->env_sz)
+			{
+				sh->env[j] = sh->env[j + 1];
+				j++;
+			}
+			sh->env = sh_ralloc(sh->env, (j - NEW_VAR_SZ) * sizeof(char *));
+			sh->env_sz--;
+			return ;
+		}
+		i++;
+	}
 }
 
 char	**new_env(char **sys_env)
