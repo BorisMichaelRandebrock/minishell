@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/06 22:49:58 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/07 15:44:57 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ t_shell		*new_sh(char **sys_env);
 char		**new_env(char **sys_env);
 char		*get_evar(char *var_name);
 void		set_evar(char *var_name, char *value);
+void		unset_evar(char *var_name);
 void		parse( char *raw);
 t_shell		*get_shell();
 void		*sh_calloc(size_t num, size_t size);

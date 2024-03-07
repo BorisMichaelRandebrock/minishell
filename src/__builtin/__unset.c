@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   __export.c                                         :+:      :+:    :+:   */
+/*   __unset.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 16:05:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:01:34 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,61 +15,25 @@
 #define VAR_NAME	0
 #define VALUE		1
 
-static void	_free(char	**evar)
-{
-	if (evar)
-	{
-		free(evar[VAR_NAME]);
-		free(evar[VALUE]);
-		free(evar);
-	}
-}
-
-static bool	_print_error(char *evar)
-{
-	write(STDERR_FILENO, "export: not valid in this context: ", 36);
-	write(STDERR_FILENO, evar, ft_strlen(evar));
-	write(STDERR_FILENO, "\n", 1);
-	return (true);
-}
-
-static bool	_check_evar(bool *eflag, char *evar, t_list **_args)
-{
-	if (!ft_strchr(evar, '='))
-	{
-		if (!*eflag)
-			*eflag = _print_error(evar);
-		*_args = (*_args)->next;
-		return (true);
-	}
-	return (false);
-}
-
-int	__export(t_list *args, int fd)
+int	__unset(t_list *args, int fd)
 {
 	t_list	*_args;
 	t_token	*tkn;
-	bool	eflag;
-	char	**evar;
 
-	eflag = false;
 	_args = args;
 	if (!args)
-		__env(NULL, fd);
+	{
+		write(fd, "unset: not enough arguments\n", 29);
+		return (FAILURE);
+	}
 	else
 	{
 		while (_args)
 		{
 			tkn = _args->content;
-			if (_check_evar(&eflag, tkn->str, &_args))
-				continue ;
-			evar = ft_split(tkn->str, '=');
-			set_evar(evar[VAR_NAME], evar[VALUE]);
+			unset_evar(tkn->str);
 			_args = _args->next;
-			_free(evar);
 		}
 	}
-	if (eflag)
-		return (FAILURE);
 	return (SUCCESS);
 }
