@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 15:54:40 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:49:45 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #define PATH_DEF		"PATH="
 #define PWD_DEF			"PWD="
 #define OLD_PWD_DEF		"OLDPWD="
+#define HOME_DEF		"HOME="
 #define NEW_VAR_SZ		1
 
 char	*get_evar(char *var_name)
@@ -96,16 +97,17 @@ void	unset_evar(char *var_name)
 
 char	**new_env(char **sys_env)
 {
-	static char	*defs[4] = {PATH_DEF, PWD_DEF, OLD_PWD_DEF, LAST_PROC_DEF};
+	static char	*defs[5] = {PATH_DEF, PWD_DEF, OLD_PWD_DEF,
+		LAST_PROC_DEF, HOME_DEF};
 	size_t		i;
 	size_t		j;
 	char		*match;
 	char		**env;
 
-	env = sh_calloc(5, sizeof(char *));
+	env = sh_calloc(6, sizeof(char *));
 	i = -1;
 	j = -1;
-	while (++i < 4)
+	while (++i < 5)
 	{
 		while (sys_env[++j])
 		{

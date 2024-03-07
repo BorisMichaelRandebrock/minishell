@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 16:24:53 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:48:47 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@ int	main(int argc, char *argv[], char *sys_env[])
 
 	(void)argc;
 	(void)argv;
+
+/* 	while (sys_env)
+	{
+		printf("%s\n", *sys_env);
+		sys_env++;
+	} */
+
 	sh = new_sh(sys_env);
 	while (sh->is_running)
 	{

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 16:23:19 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:32:51 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@
 # include <stdio.h> //TODO para pruebas retirar
 
 typedef struct s_env t_env;
-typedef int (*t_bltin)(t_list *args, int wpipe);
+typedef int (*t_bltin)(t_list *args, int fd);
+typedef void (*t_cdop)(int fd);
 
 typedef enum e_tkntype
 {
