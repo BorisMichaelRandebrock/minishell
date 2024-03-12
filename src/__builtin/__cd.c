@@ -6,44 +6,46 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:26:03 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 18:15:54 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/12 16:53:03 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
 
-static bool	_print_error(char *arg)
+static int	_print_error(char *arg)
 {
 	write(STDERR_FILENO, "cd: no such file or directory: ", 32);
 	write(STDERR_FILENO, arg, ft_strlen(arg));
 	write(STDERR_FILENO, "\n", 1);
-	return (true);
+	return (FAILURE);
 }
 
 int	__cd(t_list *args, int fd)
 {
-	t_list			*_args;
-	t_token			*tkn;
-	char			buf[BUFSIZ];
-	(void)fd;
+	t_token	*tkn;
+	char	buf[BUFSIZ];
 
-	if(!args)
+	(void)fd;
+	if (!args)
 	{
 		chdir("~");
 		set_evar("PWD", get_evar("HOME"));
 		return (SUCCESS);
 	}
-	_args = args;
-	tkn = _args->content;
-	set_evar("OLD_PWD", getcwd(buf, BUFSIZ));
-
-
-	//TODO @@@@@@ si no encuetra el dir...muestra error
-	int hula = chdir(tkn->str) > 0;
-
-	if (hula)
-		_print_error(tkn->str);
+	tkn = args->content;
+	if (!ft_strncmp(tkn->str, "-", 1))
+	{
+		if (!get_evar("OLD_PWD"))
+		{
+			__pwd(NULL, fd);
+			return (SUCCESS);
+		}
+	}
+	getcwd(buf, BUFSIZ);
+	if (chdir(tkn->str) < 0)
+		return (_print_error(tkn->str));
+	set_evar("OLD_PWD", buf);
 	set_evar("PWD", getcwd(buf, BUFSIZ));
 	return (SUCCESS);
 }
