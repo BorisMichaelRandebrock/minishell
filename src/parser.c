@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/02/28 20:02:37 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/12 19:30:01 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ static void	_extract_token(char *start, char *end)
 	sh = get_shell();
 	length = ++end - start;
 	tkn = sh_calloc(1, sizeof(t_token));
-	substr = sh_addfree(ft_substr(start, 0, length));
-	tkn->str = sh_addfree(ft_strtrim(substr, WHSPC_CHRS));
+	substr = sh_guard(ft_substr(start, 0, length));
+	tkn->str = sh_guard(ft_strtrim(substr, WHSPC_CHRS));
 	if (tkn->str[0] != SQU_CH
 		&& tkn->str[ft_strlen(tkn->str) - 1] != SQU_CH)
 		expand_var(tkn);
 	_dequote_token(tkn);
-	node = sh_addfree(ft_lstnew(tkn));
+	node = sh_guard(ft_lstnew(tkn));
 	if (!sh->tkn_lst)
 		sh->tkn_lst = node;
 	else
@@ -69,9 +69,9 @@ void	_extract_op(char *raw)
 	if ((*raw == '<' || *raw == '>') && *raw == *(raw + 1))
 		op_sz = 2;
 	tkn = sh_calloc(1, sizeof(t_token));
-	substr = sh_addfree(ft_substr(raw, 0, op_sz));
+	substr = sh_guard(ft_substr(raw, 0, op_sz));
 	tkn->str = substr;
-	tmp = sh_addfree(ft_lstnew(tkn));
+	tmp = sh_guard(ft_lstnew(tkn));
 	if (!sh->tkn_lst)
 		sh->tkn_lst = tmp;
 	else
@@ -84,7 +84,7 @@ void	parse(char *raw)
 	char	*start;
 	char	dlmt;
 
-	raw = sh_addfree(ft_strtrim(raw, WHSPC_CHRS));
+	raw = sh_guard(ft_strtrim(raw, WHSPC_CHRS));
 	if (*raw == '\0')
 		return ;
 	dlmt = SPC_CH;

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 17:29:11 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/01 19:12:57 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/12 19:30:01 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	*get_next_line(int _fd)
 			return (NULL);
 		}
 		buffer[rd] = '\0';
-		resto = sh_addfree(ft_strjoin(resto, buffer));
+		resto = sh_guard(ft_strjoin(resto, buffer));
 	}
 	line = get_line(resto);
 	resto = cut_line(resto);

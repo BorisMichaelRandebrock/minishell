@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 11:52:08 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/12 19:30:01 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 	if (cmd->is_piped)
 		fd = pipefd[WR];
 	else if (!cmd->is_piped && *_tkn.str)
-		ft_lstadd_back(&cmd->args, sh_addfree(ft_lstnew(&_tkn)));
+		ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(&_tkn)));
 	exit_code = (bltn)(cmd->args, fd);
 	if (cmd->is_piped)
 	{
 		read(pipefd[RD], shell_buffer, BUFSIZ);
 		close(pipefd[RD]);
-		set_evar(LAST_EXIT_EVAR, sh_addfree(ft_itoa(exit_code)));
+		set_evar(LAST_EXIT_EVAR, sh_guard(ft_itoa(exit_code)));
 	}
 }
 
@@ -60,7 +60,7 @@ static void	_exec_pipeline(t_list	*ppln)
 	while (ppln)
 	{
 		_cmd = ppln->content;
-		_cmd->cmd->str = sh_addfree(ft_strmapi(_cmd->cmd->str, _to_lower));
+		_cmd->cmd->str = sh_guard(ft_strmapi(_cmd->cmd->str, _to_lower));
 		if (ppln->next)
 			_cmd->is_piped = true;
 		while (bltn_id[i])
@@ -100,10 +100,10 @@ void	run_pipeline(t_list *tkn_lst)
 			cmd = sh_calloc(1, sizeof(t_cmd));
 			cmd->cmd = _tkn;
 			cmd->is_piped = false;
-			ft_lstadd_back(&sh->ppln, sh_addfree(ft_lstnew(cmd)));
+			ft_lstadd_back(&sh->ppln, sh_guard(ft_lstnew(cmd)));
 		}
 		else if (_tkn->type == ARG)
-			ft_lstadd_back(&cmd->args, sh_addfree(ft_lstnew(_tkn)));
+			ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(_tkn)));
 		else if (_tkn->type == OP && _tkn->optype != PIPE)
 			_skip_redirection(_lst);
 		if (_lst)

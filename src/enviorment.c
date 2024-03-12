@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 16:49:45 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/12 21:11:13 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,7 @@ char	*get_evar(char *var_name)
 	{
 		match = ft_strnstr(sh->env[i], var_name, ft_strlen(var_name));
 		if (match)
-		{
-			match = ft_strchr(match, '=') + CH_SZ;
-			match = sh_addfree(ft_strdup(match));
-			return (match);
-		}
+			return (ft_strchr(match, '=') + CH_SZ);
 		i++;
 	}
 	return (NULL);
@@ -51,19 +47,19 @@ void	set_evar(char *var_name, char *value)
 	size_t	i;
 
 	sh = get_shell();
-	full_var_name = sh_addfree(ft_strjoin(var_name, "="));
+	full_var_name = sh_guard(ft_strjoin(var_name, "="));
 	i = 0;
 	while (i < sh->env_sz)
 	{
 		if (ft_strnstr(sh->env[i], full_var_name, ft_strlen(full_var_name)))
 		{
-			sh->env[i] = sh_addfree(ft_strjoin(full_var_name, value));
+			sh->env[i] = sh_guard(ft_strjoin(full_var_name, value));
 			return ;
 		}
 		i++;
 	}
 	sh->env = sh_ralloc(sh->env, (i + NEW_VAR_SZ) * sizeof(char *));
-	sh->env[i] = sh_addfree(ft_strjoin(full_var_name, value));
+	sh->env[i] = sh_guard(ft_strjoin(full_var_name, value));
 	sh->env_sz++;
 }
 
@@ -75,7 +71,7 @@ void	unset_evar(char *var_name)
 	size_t	j;
 
 	sh = get_shell();
-	full_var_name = sh_addfree(ft_strjoin(var_name, "="));
+	full_var_name = sh_guard(ft_strjoin(var_name, "="));
 	i = 0;
 	while (i < sh->env_sz)
 	{
@@ -95,31 +91,19 @@ void	unset_evar(char *var_name)
 	}
 }
 
-char	**new_env(char **sys_env)
+char	**new_env(char **sys_env, size_t *env_sz)
 {
-	static char	*defs[5] = {PATH_DEF, PWD_DEF, OLD_PWD_DEF,
-		LAST_PROC_DEF, HOME_DEF};
-	size_t		i;
-	size_t		j;
-	char		*match;
-	char		**env;
+	char	**env;
+	size_t	var_sz;
 
-	env = sh_calloc(6, sizeof(char *));
-	i = -1;
-	j = -1;
-	while (++i < 5)
+	env = sh_calloc(1, sizeof(char *));
+	while (sys_env[*env_sz])
 	{
-		while (sys_env[++j])
-		{
-			match = ft_strnstr(sys_env[j], defs[i], ft_strlen(defs[i]));
-			if (match)
-			{
-				env[i] = sh_addfree(ft_strdup(match));
-				break ;
-			}
-		}
-		j = -1;
+		var_sz = ft_strlen(sys_env[*env_sz]);
+		env = sh_ralloc(env, (*env_sz + NEW_VAR_SZ) * sizeof(char *));
+		env[*env_sz] = sh_calloc(var_sz + NUL_SZ, sizeof(char));
+		ft_memcpy(env[*env_sz], sys_env[*env_sz], var_sz);
+		(*env_sz)++;
 	}
-	env[i] = sh_addfree(ft_strdup(LAST_EXIT_DEF));
 	return (env);
 }

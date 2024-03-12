@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   memutils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/06 22:50:14 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/12 21:07:12 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,62 +21,58 @@ void	sh_perror(int error_code)
 		printf("Memory error, exiting...");
 	if (error_code == NULL_ERROR)
 		printf("NULL error, exiting...");
-	sh_exit(FAILURE);
+	sh_freexit(FAILURE);
 }
 
 //Clean exit from shell
-void	sh_exit(int exit_code)
+void	sh_freexit(int exit_code)
 {
 	t_shell	*sh;
-	t_list	*next;
+	size_t	i;
 
+	i = 0;
 	sh = get_shell();
-	while (sh->free_lst)
-	{
-		next = sh->free_lst->next;
-		ft_lstdelone(sh->free_lst, free);
-		sh->free_lst = next;
-	}
+
+	//TODO free todo el shell
+	while(i < sh->env_sz)
+		free(sh->env[i]);
+	free(sh->env);
+
+	free(sh);
 	exit(exit_code);
 }
 //Initialize shell first (return null), null shell for use
 void	*sh_calloc(size_t num, size_t size)
 {
-	t_shell	*sh;
 	void	*alloc;
 
-	sh = get_shell();
 	alloc = ft_calloc(num, size);
 	if (!alloc)
 		sh_perror(MEM_ERROR);
-	if (!sh->free_lst)
-		sh->free_lst = ft_lstnew(alloc);
-	else
-		ft_lstadd_front(&sh->free_lst, ft_lstnew(alloc));
 	return (alloc);
 }
 
-void	*sh_ralloc(void *old, size_t new_sizeof)
+void	*sh_ralloc(void *old, size_t new_size)
 {
 	void	*ralloc;
 
 	if (!old)
-		return (sh_calloc(1, new_sizeof));
-	if (!new_sizeof)
+		return (sh_calloc(1, new_size));
+	if (new_size == 0)
 		return (old);
-	ralloc = sh_calloc(1, new_sizeof);
+	ralloc = sh_calloc(1, new_size);
 	if (!ralloc)
 		return (NULL);
-	ft_memcpy(ralloc, old, new_sizeof);
+	ft_memcpy(ralloc, old, new_size);
+	if (old)
+		free(old);
 	return (ralloc);
 }
 
-void	*sh_addfree(void *alloc)
+void	*sh_guard(void *alloc)
 {
-	t_shell	*sh;
-
-	sh = get_shell();
-	ft_lstadd_front(&sh->free_lst, ft_lstnew(alloc));
+	if (!alloc)
+		sh_perror(MEM_ERROR);
 	return (alloc);
 }
 

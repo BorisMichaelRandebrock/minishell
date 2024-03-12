@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 17:32:51 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/12 20:14:43 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ typedef struct s_cmd
 
 typedef struct s_shell
 {
-	bool	is_running;
 	char	*input;
 	char	**env;
 	size_t	env_sz;
@@ -97,11 +96,6 @@ void		set_evar(char *var_name, char *value);
 void		unset_evar(char *var_name);
 void		parse( char *raw);
 t_shell		*get_shell();
-void		*sh_calloc(size_t num, size_t size);
-void		*sh_ralloc(void *old, size_t new_sizeof);
-void		sh_perror(int error_code);
-void		sh_exit(int exit_code);
-void		*sh_addfree(void *alloc);
 void		typify(t_list *tkn_lst);
 void		expand_var(t_token *tkn);
 void		run_pipeline(t_list *tkn_lst);
@@ -114,5 +108,10 @@ int			__export(t_list *args, int fd);
 int			__unset(t_list *args, int fd);
 int			__env(t_list *args, int fd);
 int			__exit(t_list *args, int fd);
+void		*sh_calloc(size_t num, size_t size);
+void		*sh_ralloc(void *old, size_t new_sizeof);
+void		sh_freexit(int exit_code);
+void		*sh_guard(void *alloc);
+void		sh_perror(int error_code);
 
 #endif

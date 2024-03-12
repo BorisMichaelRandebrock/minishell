@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/03/07 16:24:37 by fmontser         ###   ########.fr        #
+#    Updated: 2024/03/12 19:20:33 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJ_DIR			:= obj/
 BIN_DIR			:= bin/
 NAME			:= minishell
 HDRS 			:= minishell.h
-SRCS 			:= main.c shell.c enviorment.c utils.c parser.c expander.c\
+SRCS 			:= main.c shell.c enviorment.c memutils.c parser.c expander.c\
 					pipeline.c __echo.c __env.c __export.c __unset.c __pwd.c\
 				__exit.c __cd.c
 
