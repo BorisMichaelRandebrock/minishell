@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/12 21:08:23 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/13 10:31:26 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	main(int argc, char *argv[], char *sys_env[])
 	(void)argc;
 	(void)argv;
 	sh = new_sh(sys_env);
-/* 	set_evar("HOME=", "olaquease");
-	printf("%s\n", get_evar("HOME=")); */
+	set_evar("HOME=", "olaquease");
+	printf("%s\n", get_evar("HOME="));
 	sh_freexit(SUCCESS);
 	while (1)
 	{

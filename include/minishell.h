@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/12 20:14:43 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/13 10:42:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ typedef struct s_shell
 }	t_shell;
 
 t_shell		*new_sh(char **sys_env);
-char		**new_env(char **sys_env);
+char		**new_env(char **sys_env, size_t *env_sz);
 char		*get_evar(char *var_name);
 void		set_evar(char *var_name, char *value);
 void		unset_evar(char *var_name);
@@ -111,7 +111,7 @@ int			__exit(t_list *args, int fd);
 void		*sh_calloc(size_t num, size_t size);
 void		*sh_ralloc(void *old, size_t new_sizeof);
 void		sh_freexit(int exit_code);
-void		*sh_guard(void *alloc);
+void		*sh_guard(void *alloc, void *nullable_old);
 void		sh_perror(int error_code);
 
 #endif

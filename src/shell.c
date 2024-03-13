@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/12 21:12:44 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/13 10:24:25 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,5 @@ t_shell	*new_sh(char **sys_env)
 
 	sh = get_shell();
 	sh->env = new_env(sys_env, &sh->env_sz);
-	//TODO @@@@@@@@@  continuar con el refactor aqui!!!
 	return (sh);
 }

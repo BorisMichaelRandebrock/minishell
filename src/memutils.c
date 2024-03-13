@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/12 21:07:12 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/13 10:42:55 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ void	sh_freexit(int exit_code)
 
 	//TODO free todo el shell
 	while(i < sh->env_sz)
+	{
 		free(sh->env[i]);
+		i++;
+	}
 	free(sh->env);
 
 	free(sh);
@@ -69,8 +72,10 @@ void	*sh_ralloc(void *old, size_t new_size)
 	return (ralloc);
 }
 
-void	*sh_guard(void *alloc)
+void	*sh_guard(void *alloc, void *nullable_old)
 {
+	if (nullable_old)
+		free(nullable_old);
 	if (!alloc)
 		sh_perror(MEM_ERROR);
 	return (alloc);
