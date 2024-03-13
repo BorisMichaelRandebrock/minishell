@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/13 10:42:39 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/13 12:57:13 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,19 +84,19 @@ typedef struct s_shell
 	char	*input;
 	char	**env;
 	size_t	env_sz;
-	t_list	*free_lst;
 	t_list	*tkn_lst;
 	t_list	*ppln;
 }	t_shell;
 
-t_shell		*new_sh(char **sys_env);
+t_shell		*new_shell(char **sys_env);
+void		free_shell(void);
 char		**new_env(char **sys_env, size_t *env_sz);
 char		*get_evar(char *var_name);
 void		set_evar(char *var_name, char *value);
 void		unset_evar(char *var_name);
-void		parse( char *raw);
+void		free_env(void);
+void		tokenizer(char *input, t_list *tkn_list);
 t_shell		*get_shell();
-void		typify(t_list *tkn_lst);
 void		expand_var(t_token *tkn);
 void		run_pipeline(t_list *tkn_lst);
 void		exec_pipeline(t_list *ppln);

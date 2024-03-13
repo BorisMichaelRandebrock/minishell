@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/01 19:16:46 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/13 12:04:36 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,5 @@ void	expand_var(t_token *tkn)
 		else
 			tkn->str[j++] = str[i++];
 	}
+	free(str);
 }

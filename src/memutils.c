@@ -6,23 +6,13 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/13 10:42:55 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:29:23 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <unistd.h>
 #include "minishell.h"
 #include "libft.h"
-
-void	sh_perror(int error_code)
-{
-	if (error_code == MEM_ERROR)
-		printf("Memory error, exiting...");
-	if (error_code == NULL_ERROR)
-		printf("NULL error, exiting...");
-	sh_freexit(FAILURE);
-}
 
 //Clean exit from shell
 void	sh_freexit(int exit_code)
@@ -32,19 +22,11 @@ void	sh_freexit(int exit_code)
 
 	i = 0;
 	sh = get_shell();
-
-	//TODO free todo el shell
-	while(i < sh->env_sz)
-	{
-		free(sh->env[i]);
-		i++;
-	}
-	free(sh->env);
-
-	free(sh);
+	free_env();
+	free_shell();
 	exit(exit_code);
 }
-//Initialize shell first (return null), null shell for use
+//Protected allocation with calloc
 void	*sh_calloc(size_t num, size_t size)
 {
 	void	*alloc;
@@ -54,7 +36,7 @@ void	*sh_calloc(size_t num, size_t size)
 		sh_perror(MEM_ERROR);
 	return (alloc);
 }
-
+//Protected reallocation with calloc
 void	*sh_ralloc(void *old, size_t new_size)
 {
 	void	*ralloc;
@@ -71,7 +53,7 @@ void	*sh_ralloc(void *old, size_t new_size)
 		free(old);
 	return (ralloc);
 }
-
+//Protect allocations, nullable_old free old
 void	*sh_guard(void *alloc, void *nullable_old)
 {
 	if (nullable_old)
