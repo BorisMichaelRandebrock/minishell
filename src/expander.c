@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/13 12:04:36 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/14 12:24:15 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ static void	_get_var_name(char *var_name, char *str)
 		i++;
 	}
 	ft_strlcpy(var_name, &str[1], i);
+	var_name[i++] = EQ_CH;
+	var_name[i] = NUL_CH;
 }
-
+//TODO  BUG!! los varnames necesitan el '=' al final!
 char	*_alloc_expansion(char *str)
 {
 	size_t	alloc_sz;
@@ -41,16 +43,16 @@ char	*_alloc_expansion(char *str)
 		if (str[i] == DOLL_CH)
 		{
 			_get_var_name(var_name, &str[i]);
-			alloc_sz -= ft_strlen(var_name) + CH_SZ;
+			alloc_sz -= ft_strlen(var_name - EQ_CH) + CH_SZ;
 			exp = get_evar(var_name);
 			alloc_sz += ft_strlen(exp);
 		}
 		i++;
 	}
-	alloc = sh_calloc(1, alloc_sz);
+	alloc = sh_calloc(1, alloc_sz + NUL_SZ);
 	return (alloc);
 }
-
+//TODO @@@@ BUG!! los varnames necesitan el '=' al final!
 void	expand_var(t_token *tkn)
 {
 	int		i;
@@ -65,17 +67,16 @@ void	expand_var(t_token *tkn)
 	j = 0;
 	while (str[i])
 	{
-		if (str[i] == DOLL_CH)
+		if (str[i] != DOLL_CH)
+			tkn->str[j++] = str[i++];
+		else
 		{
 			_get_var_name(var_name, &str[i]);
 			exp = get_evar(var_name);
 			ft_memcpy(&tkn->str[j], exp, ft_strlen(exp));
-			i += ft_strlen(var_name) + CH_SZ;
+			i += ft_strlen(var_name - EQ_CH) + CH_SZ;
 			j += ft_strlen(exp);
-			continue ;
 		}
-		else
-			tkn->str[j++] = str[i++];
 	}
 	free(str);
 }

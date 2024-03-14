@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/13 14:36:56 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/14 11:24:40 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,14 @@ static void _free_iteration(void)
 {
 	t_shell *sh;
 	t_token *tkn;
+	t_cmd	*cmd;
 	t_list	*node;
+	t_list	*subnode;
 	t_list	*prev_node;
 
-	// free tokens
 	sh = get_shell();
+
+	// free tokens
 	node = sh->tkn_lst;
 	while(node)
 	{
@@ -36,6 +39,27 @@ static void _free_iteration(void)
 		node = node->next;
 		free(prev_node);
 	}
+	sh->tkn_lst = NULL;
+
+	//free commands
+	node = sh->ppln;
+	while(node)
+	{
+		cmd = node->content;
+		//free arglist
+		subnode = cmd->args;
+		while (subnode)
+		{
+			prev_node = subnode;
+			subnode = subnode->next;
+			free(prev_node);
+		}
+		free(cmd);
+		prev_node = node;
+		node = node->next;
+		free(prev_node);
+	}
+	sh->ppln = NULL;
 }
 
 int	main(int argc, char *argv[], char *sys_env[])
@@ -48,12 +72,10 @@ int	main(int argc, char *argv[], char *sys_env[])
 	while (1)
 	{
 		sh->input = sh_guard(readline("🐌 minishell> "), NULL);
-		tokenizer(sh->input, sh->tkn_lst);
-		//run_pipeline(sh->tkn_lst);
+		tokenizer(sh->input);
+		run_pipeline(sh->tkn_lst);
 		_free_iteration();
-		sh_freexit(0);
 	}
+	sh_freexit(SUCCESS);
 	return (SUCCESS);
 }
-
-

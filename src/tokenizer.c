@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/13 14:29:13 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/13 21:01:59 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #define NQUOTES 2
 
 //TODO es posible  mejorar la integracion de este
-static void	_typify(t_list *tkn_lst)
+static void	_typify(void)
 {
 	t_list	*_prev;
 	t_list	*_lst;
@@ -25,7 +25,7 @@ static void	_typify(t_list *tkn_lst)
 	t_token	*_prev_tkn;
 
 	_prev = NULL;
-	_lst = tkn_lst;
+	_lst = get_shell()->tkn_lst;
 	while (_lst)
 	{
 		_tkn = (t_token *)_lst->content;
@@ -41,7 +41,6 @@ static void	_typify(t_list *tkn_lst)
 		if (_tkn->str[0] != '|')
 			_tkn->optype = REDIR;
 		_prev = _lst;
-		_tkn = (t_token *)_lst->next;
 		_lst = _lst->next;
 	}
 }
@@ -71,7 +70,7 @@ static void	_extract_token(char *start, char *end)
 	char	*substr;
 
 	sh = get_shell();
-	length = ++end - start;
+	length = (end+1) - start;
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_guard(ft_substr(start, 0, length), NULL);
 	tkn->str = sh_guard(ft_strtrim(substr, WHSPC_CHRS), substr);
@@ -80,7 +79,7 @@ static void	_extract_token(char *start, char *end)
 		expand_var(tkn);
 	_dequote_token(tkn);
 	node = sh_guard(ft_lstnew(tkn), NULL);
-	if (!sh->tkn_lst) //TODO simpleficar gestion lista (solo addback)
+	if (!sh->tkn_lst)
 		sh->tkn_lst = node;
 	else
 		ft_lstadd_back(&sh->tkn_lst, node);
@@ -102,20 +101,22 @@ void	_extract_op_token(char *input)
 	substr = sh_guard(ft_substr(input, 0, op_sz), NULL);
 	tkn->str = substr;
 	tmp = sh_guard(ft_lstnew(tkn), NULL);
-	if (!sh->tkn_lst)	//TODO simpleficar gestion lista (solo addback)
+	if (!sh->tkn_lst)
 		sh->tkn_lst = tmp;
 	else
 		ft_lstadd_back(&sh->tkn_lst, tmp);
 }
 
-// Parse a input prompt into token list
-void	tokenizer(char *raw_input, t_list *tkn_lst)
+
+// Parse a input prompt into a token list
+void	tokenizer(char *input)
 {
-	char	*input;
-	char	*start;
+	char	*_free_input;
+	char	*tkn_start;
 	char	dlmt;
 
-	input = sh_guard(ft_strtrim(raw_input, WHSPC_CHRS), raw_input);
+	input = sh_guard(ft_strtrim(input, WHSPC_CHRS), input);
+	_free_input = input;
 	while (*input)
 	{
 		dlmt = SPC_CH;
@@ -127,58 +128,13 @@ void	tokenizer(char *raw_input, t_list *tkn_lst)
 			_extract_op_token(input);
 		else
 		{
-			start = input;
+			tkn_start = input;
 			while (*(++input) != dlmt && *input)
 				;
-			_extract_token(start, input);
+			_extract_token(tkn_start, input);
 		}
 		input++;
 	}
-	free(input);
-	_typify(tkn_lst);
+	free(_free_input);
+	_typify();
 }
-//TODO intentar integrar typify en el parser...cambiar a tokenizer..
-
-
-
-/*
-	t_shell *sh = get_shell();
-	while(sh->tkn_lst)
-	{
-		printf("%s\n", ((t_token *)sh->tkn_lst->content)->str);
-		sh->tkn_lst = sh->tkn_lst->next;
-	}
-
- */
-
-//BAK
-/*
-void	parse(char *input)
-{
-	char	*start;
-	char	*buffer;
-	char	dlmt;
-
-	if (*input == '\0')
-		return ;
-	buffer = sh_guard(ft_strtrim(input, WHSPC_CHRS), input);
-	input = buffer;
-	dlmt = SPC_CH;
-	while (ft_strchr(WHSPC_CHRS, *input))
-		input++;
-	if (*input == DQU_CH || *input == SQU_CH)
-		dlmt = *input;
-	if (*input == '<' || *input == '>' || *input == '|')
-	{
-		_extract_op(input);
-		return (parse(++input));
-	}
-	start = input;
-	while (*(++input) != dlmt && *input)
-		;
-	_extract_token(start, input);
-	parse(++input);
-	if (buffer)
-		free(buffer);
-}
- */

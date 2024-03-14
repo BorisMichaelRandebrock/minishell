@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/13 11:06:11 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/14 12:23:47 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 #define OLD_PWD_DEF		"OLDPWD="
 #define HOME_DEF		"HOME="
 #define NEW_VAR_SZ		1
-
 
 void	free_env(void)
 {
@@ -38,6 +37,7 @@ void	free_env(void)
 	free(sh->env);
 }
 
+//var_name format must be 'VAR='
 char	*get_evar(char *var_name)
 {
 	t_shell	*sh;
@@ -56,6 +56,7 @@ char	*get_evar(char *var_name)
 	return (NULL);
 }
 
+//var_name format must be 'VAR='
 void	set_evar(char *var_name, char *value)
 {
 	t_shell	*sh;
@@ -77,6 +78,7 @@ void	set_evar(char *var_name, char *value)
 	sh->env_sz++;
 }
 
+//var_name format must be 'VAR='
 void	unset_evar(char *var_name)
 {
 	t_shell	*sh;

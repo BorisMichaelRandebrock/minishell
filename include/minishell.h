@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/13 12:57:13 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/14 12:11:03 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define PIP_CH		'|'
 # define OUT_CH		'>'
 # define IN_CH		'<'
+# define EQ_CH		'='
 
 # define APP_STR	">>"
 # define HER_STR	"<<"
@@ -95,7 +96,7 @@ char		*get_evar(char *var_name);
 void		set_evar(char *var_name, char *value);
 void		unset_evar(char *var_name);
 void		free_env(void);
-void		tokenizer(char *input, t_list *tkn_list);
+void		tokenizer(char *input);
 t_shell		*get_shell();
 void		expand_var(t_token *tkn);
 void		run_pipeline(t_list *tkn_lst);

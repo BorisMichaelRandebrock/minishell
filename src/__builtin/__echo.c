@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/07 12:40:13 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/14 12:18:58 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static bool	_n_opt_check(t_token *tkn, t_list **_args)
 	}
 	return (false);
 }
-
+//TODO bugs en segunda instancia...
 int	__echo(t_list *args, int fd)
 {
 	t_list	*_args;

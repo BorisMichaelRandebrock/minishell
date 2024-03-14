@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/13 11:08:47 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/14 11:31:38 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	_exec_pipeline(t_list	*ppln)
 	while (ppln)
 	{
 		_cmd = ppln->content;
-		_cmd->cmd->str = sh_guard(ft_strmapi(_cmd->cmd->str, _to_lower), NULL);
+		_cmd->cmd->str = sh_guard(ft_strmapi(_cmd->cmd->str, _to_lower), _cmd->cmd->str);
 		if (ppln->next)
 			_cmd->is_piped = true;
 		while (bltn_id[i])
