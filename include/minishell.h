@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 17:32:51 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/14 12:11:03 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define PIP_CH		'|'
 # define OUT_CH		'>'
 # define IN_CH		'<'
+# define EQ_CH		'='
 
 # define APP_STR	">>"
 # define HER_STR	"<<"
@@ -81,28 +82,22 @@ typedef struct s_cmd
 
 typedef struct s_shell
 {
-	bool	is_running;
 	char	*input;
 	char	**env;
 	size_t	env_sz;
-	t_list	*free_lst;
 	t_list	*tkn_lst;
 	t_list	*ppln;
 }	t_shell;
 
-t_shell		*new_sh(char **sys_env);
-char		**new_env(char **sys_env);
+t_shell		*new_shell(char **sys_env);
+void		free_shell(void);
+char		**new_env(char **sys_env, size_t *env_sz);
 char		*get_evar(char *var_name);
 void		set_evar(char *var_name, char *value);
 void		unset_evar(char *var_name);
-void		parse( char *raw);
+void		free_env(void);
+void		tokenizer(char *input);
 t_shell		*get_shell();
-void		*sh_calloc(size_t num, size_t size);
-void		*sh_ralloc(void *old, size_t new_sizeof);
-void		sh_perror(int error_code);
-void		sh_exit(int exit_code);
-void		*sh_addfree(void *alloc);
-void		typify(t_list *tkn_lst);
 void		expand_var(t_token *tkn);
 void		run_pipeline(t_list *tkn_lst);
 void		exec_pipeline(t_list *ppln);
@@ -114,5 +109,10 @@ int			__export(t_list *args, int fd);
 int			__unset(t_list *args, int fd);
 int			__env(t_list *args, int fd);
 int			__exit(t_list *args, int fd);
+void		*sh_calloc(size_t num, size_t size);
+void		*sh_ralloc(void *old, size_t new_sizeof);
+void		sh_freexit(int exit_code);
+void		*sh_guard(void *alloc, void *nullable_old);
+void		sh_perror(int error_code);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 16:05:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/14 12:22:00 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ static bool	_check_evar(bool *eflag, char *evar, t_list **_args)
 	}
 	return (false);
 }
-
+//TODO BUG! no aplica el '=' a la nueva variable
+//TODO los nombres de variables deben ser en MAYUSCULAS
 int	__export(t_list *args, int fd)
 {
 	t_list	*_args;

@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   __pwd.c                                            :+:      :+:    :+:   */
+/*   exception.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/04 16:29:40 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/14 11:38:56 by fmontser         ###   ########.fr       */
+/*   Created: 2024/03/13 11:24:17 by fmontser          #+#    #+#             */
+/*   Updated: 2024/03/13 11:25:46 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include <stdio.h>
 #include "minishell.h"
 
-int	__pwd(t_list *args, int fd)
+void	sh_perror(int error_code)
 {
-	char	*pwd;
-
-	(void)args;
-	pwd = get_evar("PWD=");
-	write(fd, pwd, ft_strlen(pwd));
-	write(fd, "\n", 1);
-	return(SUCCESS);
+	if (error_code == MEM_ERROR)
+		printf("Memory error, exiting...");
+	if (error_code == NULL_ERROR)
+		printf("NULL error, exiting...");
+	sh_freexit(FAILURE);
 }

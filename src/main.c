@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 16:48:47 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/14 11:24:40 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,66 @@
 #include <readline/readline.h>
 #include <unistd.h>
 
+//TODO estructurar...
+static void _free_iteration(void)
+{
+	t_shell *sh;
+	t_token *tkn;
+	t_cmd	*cmd;
+	t_list	*node;
+	t_list	*subnode;
+	t_list	*prev_node;
+
+	sh = get_shell();
+
+	// free tokens
+	node = sh->tkn_lst;
+	while(node)
+	{
+		tkn = node->content;
+		free(tkn->str);
+		free(tkn);
+		prev_node = node;
+		node = node->next;
+		free(prev_node);
+	}
+	sh->tkn_lst = NULL;
+
+	//free commands
+	node = sh->ppln;
+	while(node)
+	{
+		cmd = node->content;
+		//free arglist
+		subnode = cmd->args;
+		while (subnode)
+		{
+			prev_node = subnode;
+			subnode = subnode->next;
+			free(prev_node);
+		}
+		free(cmd);
+		prev_node = node;
+		node = node->next;
+		free(prev_node);
+	}
+	sh->ppln = NULL;
+}
+
 int	main(int argc, char *argv[], char *sys_env[])
 {
 	t_shell	*sh;
 
 	(void)argc;
 	(void)argv;
-
-/* 	while (sys_env)
+	sh = new_shell(sys_env);
+	while (1)
 	{
-		printf("%s\n", *sys_env);
-		sys_env++;
-	} */
-
-	sh = new_sh(sys_env);
-	while (sh->is_running)
-	{
-		//sh->input = sh_addfree(ft_strdup("env"));
-		sh->input = sh_addfree(readline("🐌 minishell> "));
-		parse(sh->input);
-		typify(sh->tkn_lst);
+		sh->input = sh_guard(readline("🐌 minishell> "), NULL);
+		tokenizer(sh->input);
 		run_pipeline(sh->tkn_lst);
-		//sh->is_running = false;
+		_free_iteration();
 	}
-	sh_exit(SUCCESS);
+	sh_freexit(SUCCESS);
+	return (SUCCESS);
 }
-
-
