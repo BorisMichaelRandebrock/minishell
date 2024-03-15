@@ -6,17 +6,43 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/13 12:11:27 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:31:48 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <unistd.h>
 #include "minishell.h"
 #include "libft.h"
 
 #define DFLT_ENV_SZ 5
 
-void		free_shell(void)
+void	set_prompt(void)
+{
+	t_list	args;
+	char	buffer[BUFSIZ];
+	char	*prompt;
+	int		i;
+
+	getcwd(buffer, BUFSIZ);
+	i = ft_strlen(buffer);
+	while(i >= 0)
+	{
+		if (buffer[i] == '/')
+		{
+			i++;
+			break ;
+		}
+		i--;
+	}
+	prompt = sh_guard(ft_strjoin("PROMPT=", &buffer[i]), NULL);
+	prompt = sh_guard(ft_strjoin(prompt, " 🐌> "), prompt);
+	args.content = &(t_token){ .str = prompt, .type = ARG};
+	args.next = NULL;
+	__export(&args, 0);
+}
+
+void	free_shell(void)
 {
 	t_shell	*sh;
 
@@ -40,6 +66,7 @@ t_shell	*new_shell(char **sys_env)
 	t_shell	*sh;
 
 	sh = get_shell();
-	sh->env = new_env(sys_env, &sh->env_sz);
+	new_env(sh, sys_env, &sh->env_sz);
+	set_prompt();
 	return (sh);
 }

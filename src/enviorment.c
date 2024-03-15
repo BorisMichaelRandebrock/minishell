@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/14 12:23:47 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:29:11 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 #include "libft.h"
 #include <unistd.h>
 
-#define LAST_PROC_DEF	"_="
-#define LAST_EXIT_DEF	"?="
-#define PATH_DEF		"PATH="
-#define PWD_DEF			"PWD="
-#define OLD_PWD_DEF		"OLDPWD="
-#define HOME_DEF		"HOME="
 #define NEW_VAR_SZ		1
 
 void	free_env(void)
@@ -91,6 +85,7 @@ void	unset_evar(char *var_name)
 	{
 		if (ft_strnstr(sh->env[i], var_name, ft_strlen(var_name)))
 		{
+			free(sh->env[i]);
 			j = i;
 			while (j < sh->env_sz)
 			{
@@ -105,10 +100,11 @@ void	unset_evar(char *var_name)
 	}
 }
 
-char	**new_env(char **sys_env, size_t *env_sz)
+void	new_env(t_shell *sh, char **sys_env, size_t *env_sz)
 {
 	char	**env;
 	size_t	var_sz;
+	t_list args;
 
 	env = sh_calloc(1, sizeof(char *));
 	while (sys_env[*env_sz])
@@ -119,5 +115,8 @@ char	**new_env(char **sys_env, size_t *env_sz)
 		ft_memcpy(env[*env_sz], sys_env[*env_sz], var_sz);
 		(*env_sz)++;
 	}
-	return (env);
+	sh->env = env;
+	args.content = &(t_token){ .str = "?=", .type = ARG};
+	args.next = NULL;
+	__export(&args, 0);
 }

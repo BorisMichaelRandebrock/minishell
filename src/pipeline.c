@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/14 11:31:38 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/15 14:14:09 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
  #include <sys/wait.h>
 #include "minishell.h"
 
-#define LAST_EXIT_EVAR "?"
-
 void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 {
-	int		exit_code;
+	char	*exit_code;
 	int		pipefd[2];
 	int		fd;
 	t_token	_tkn;
@@ -31,13 +29,14 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 		fd = pipefd[WR];
 	else if (!cmd->is_piped && *_tkn.str)
 		ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(&_tkn), NULL));
-	exit_code = (bltn)(cmd->args, fd);
+	exit_code = ft_itoa((bltn)(cmd->args, fd));
 	if (cmd->is_piped)
 	{
 		read(pipefd[RD], shell_buffer, BUFSIZ);
 		close(pipefd[RD]);
-		set_evar(LAST_EXIT_EVAR, sh_guard(ft_itoa(exit_code), NULL));
 	}
+	set_evar("?=", sh_guard(exit_code, NULL));
+	free(exit_code);
 }
 
 static char	_to_lower(unsigned int ignore, char c)
@@ -55,13 +54,14 @@ static void	_exec_pipeline(t_list	*ppln)
 	char			shell_buffer[BUFSIZ];
 	t_cmd			*_cmd;
 	int				i;
+	t_list	*_ppln = ppln;
 
 	i = 0;
-	while (ppln)
+	while (_ppln)
 	{
-		_cmd = ppln->content;
+		_cmd = _ppln->content;
 		_cmd->cmd->str = sh_guard(ft_strmapi(_cmd->cmd->str, _to_lower), _cmd->cmd->str);
-		if (ppln->next)
+		if (_ppln->next)
 			_cmd->is_piped = true;
 		while (bltn_id[i])
 		{
@@ -70,7 +70,7 @@ static void	_exec_pipeline(t_list	*ppln)
 			i++;
 		}
 		i = 0;
-		ppln = ppln->next;
+		_ppln = _ppln->next;
 	}
 }
 

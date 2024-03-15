@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/14 11:24:40 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:58:29 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <unistd.h>
 
 //TODO estructurar...
-static void _free_iteration(void)
+void free_iteration(void)
 {
 	t_shell *sh;
 	t_token *tkn;
@@ -61,7 +61,6 @@ static void _free_iteration(void)
 	}
 	sh->ppln = NULL;
 }
-
 int	main(int argc, char *argv[], char *sys_env[])
 {
 	t_shell	*sh;
@@ -71,11 +70,12 @@ int	main(int argc, char *argv[], char *sys_env[])
 	sh = new_shell(sys_env);
 	while (1)
 	{
-		sh->input = sh_guard(readline("🐌 minishell> "), NULL);
+		sh->input = sh_guard(readline(get_evar("PROMPT=")), NULL);
 		tokenizer(sh->input);
 		run_pipeline(sh->tkn_lst);
-		_free_iteration();
+		free_iteration();
 	}
 	sh_freexit(SUCCESS);
+
 	return (SUCCESS);
 }

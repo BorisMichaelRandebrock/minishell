@@ -27,6 +27,20 @@
 		"fcntl.h": "c",
 		"locale": "c",
 		"sstream": "c",
-		"wait.h": "c"
+		"wait.h": "c",
+		"__functional_base": "c",
+		"__node_handle": "c",
+		"algorithm": "c",
+		"atomic": "c",
+		"chrono": "c",
+		"__memory": "c",
+		"functional": "c",
+		"limits": "c",
+		"memory": "c",
+		"optional": "c",
+		"ratio": "c",
+		"system_error": "c",
+		"tuple": "c",
+		"type_traits": "c"
 	}
 }
