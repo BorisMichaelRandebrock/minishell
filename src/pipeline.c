@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/15 14:14:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/15 19:13:22 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,17 @@ void	run_pipeline(t_list *tkn_lst)
 	t_token	*_tkn;
 	t_cmd	*cmd;
 	t_list	*_lst;
+
+	t_list *debug = tkn_lst;
+
+
+	//TODO @@@@@@@@@@@ continuar la busqueda del bicho maldito
+	int i = 1;
+	while(debug)
+	{
+		printf("%i", i++);
+		debug = debug->next;
+	}
 
 	_lst = tkn_lst;
 	sh = get_shell();
