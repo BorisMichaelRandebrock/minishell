@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/15 17:31:48 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/17 18:57:29 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@
 void	set_prompt(void)
 {
 	t_list	args;
-	char	buffer[BUFSIZ];
+	char	buffer[BUF_1KB];
 	char	*prompt;
 	int		i;
 
-	getcwd(buffer, BUFSIZ);
+	getcwd(buffer, BUF_1KB);
 	i = ft_strlen(buffer);
 	while(i >= 0)
 	{
@@ -40,6 +40,7 @@ void	set_prompt(void)
 	args.content = &(t_token){ .str = prompt, .type = ARG};
 	args.next = NULL;
 	__export(&args, 0);
+	free(prompt);
 }
 
 void	free_shell(void)

@@ -6,12 +6,15 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/15 16:39:07 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/17 19:02:02 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# define BUF_1MB	1048576
+# define BUF_1KB	1024
 
 # define SYS_FDS	2
 # define RD			0

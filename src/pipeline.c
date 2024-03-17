@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/15 19:13:22 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/17 19:01:57 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 	t_token	_tkn;
 
 	_tkn.str = shell_buffer;
+	shell_buffer[ft_strlen(shell_buffer)] = '\0';
 	pipe(pipefd);
 	fd = STDOUT_FILENO;
 	if (cmd->is_piped)
@@ -32,7 +33,8 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 	exit_code = ft_itoa((bltn)(cmd->args, fd));
 	if (cmd->is_piped)
 	{
-		read(pipefd[RD], shell_buffer, BUFSIZ);
+		read(pipefd[RD], shell_buffer, BUF_1MB);
+		shell_buffer[ft_strlen(shell_buffer)] = '\0';
 		close(pipefd[RD]);
 	}
 	set_evar("?=", sh_guard(exit_code, NULL));
@@ -49,9 +51,9 @@ static void	_exec_pipeline(t_list	*ppln)
 {
 	static t_bltin	bltn_ptr[7] = {__echo, __cd, __pwd, __export,
 		__unset, __env, __exit};
-	static char		*bltn_id[7] = {"echo", "cd", "pwd", "export",
-		"unset", "env", "exit"};
-	char			shell_buffer[BUFSIZ];
+	static char		*bltn_id[8] = {"echo", "cd", "pwd", "export",
+		"unset", "env", "exit", NULL}; //BUG end with NULL!
+	char			shell_buffer[BUF_1MB];
 	t_cmd			*_cmd;
 	int				i;
 	t_list	*_ppln = ppln;
@@ -65,7 +67,7 @@ static void	_exec_pipeline(t_list	*ppln)
 			_cmd->is_piped = true;
 		while (bltn_id[i])
 		{
-			if (!ft_strncmp(_cmd->cmd->str, bltn_id[i], ft_strlen(bltn_id[i])))
+			if (!ft_strncmp(_cmd->cmd->str, bltn_id[i], ft_strlen(bltn_id[i]) + NUL_SZ)) //BUG tiene que se identico! + nul
 				_exec_builtin(bltn_ptr[i], _cmd, shell_buffer);
 			i++;
 		}
@@ -89,17 +91,6 @@ void	run_pipeline(t_list *tkn_lst)
 	t_token	*_tkn;
 	t_cmd	*cmd;
 	t_list	*_lst;
-
-	t_list *debug = tkn_lst;
-
-
-	//TODO @@@@@@@@@@@ continuar la busqueda del bicho maldito
-	int i = 1;
-	while(debug)
-	{
-		printf("%i", i++);
-		debug = debug->next;
-	}
 
 	_lst = tkn_lst;
 	sh = get_shell();
