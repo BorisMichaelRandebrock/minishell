@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/15 18:48:17 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/17 19:18:32 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	_typify(void)
 			_tkn->type = OP;
 		else
 			_tkn->type = ARG;
-		_tkn->optype = PIPE;		//TODO si es posible no asignar nada si no es un op
+		_tkn->optype = PIPE;		//FIXME si es posible no asignar nada si no es un op
 		if (_tkn->str[0] != '|')
 			_tkn->optype = REDIR;
 		_prev = _lst;
@@ -65,31 +65,25 @@ static void	_extract_token(char *start, char *end)
 {
 	t_shell	*sh;
 	t_token	*tkn;
-	t_list	*node;
 	size_t	length;
 	char	*substr;
 
 	sh = get_shell();
-	length = (end+1) - start; //TODO check si pasa algo raro!
+	length = (end+1) - start;
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_guard(ft_substr(start, 0, length), NULL);
 	tkn->str = sh_guard(ft_strtrim(substr, WHSPC_CHRS), substr);
 	if (tkn->str[0] != SQU_CH
-		&& tkn->str[ft_strlen(tkn->str) - 1] != SQU_CH)
+		&& tkn->str[ft_strlen(tkn->str) - 1] != SQU_CH) //FIXME ya no funciona la expansion!
 		expand_var(tkn);
 	_dequote_token(tkn);
-	node = sh_guard(ft_lstnew(tkn), NULL);
-	if (!sh->tkn_lst)
-		sh->tkn_lst = node;
-	else
-		ft_lstadd_back(&sh->tkn_lst, node);
+	ft_lstadd_back(&sh->tkn_lst, sh_guard(ft_lstnew(tkn), NULL));
 }
 
 void	_extract_op_token(char *input)
 {
 	t_shell	*sh;
 	t_token	*tkn;
-	t_list	*tmp;
 	char	*substr;
 	int		op_sz;
 
@@ -100,41 +94,37 @@ void	_extract_op_token(char *input)
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_guard(ft_substr(input, 0, op_sz), NULL);
 	tkn->str = substr;
-	tmp = sh_guard(ft_lstnew(tkn), NULL);
-	if (!sh->tkn_lst)
-		sh->tkn_lst = tmp;
-	else
-		ft_lstadd_back(&sh->tkn_lst, tmp);
+	ft_lstadd_back(&sh->tkn_lst, sh_guard(ft_lstnew(tkn), NULL));
 }
 
 
 // Parse a input prompt into a token list
 void	tokenizer(char *input)
 {
-	char	*_free_input;
+	char	*_input;
 	char	*tkn_start;
 	char	dlmt;
 
-	input = sh_guard(ft_strtrim(input, WHSPC_CHRS), input);
-	_free_input = input;
-	while (*input)
+	//input = sh_guard(ft_strtrim(input, WHSPC_CHRS), input); //BUG trimado inecesario!
+	_input = input;
+	while (*_input)
 	{
 		dlmt = SPC_CH;
-		while (ft_strchr(WHSPC_CHRS, *input))
-			input++;
-		if (*input == DQU_CH || *input == SQU_CH)
-			dlmt = *input;
-		if (*input == '<' || *input == '>' || *input == '|')
-			_extract_op_token(input);
+		while (ft_strchr(WHSPC_CHRS, *_input))
+			_input++;
+		if (*_input == DQU_CH || *_input == SQU_CH)
+			dlmt = *_input;
+		if (*_input == '<' || *_input == '>' || *_input == '|')
+			_extract_op_token(_input);
 		else
 		{
-			tkn_start = input;
-			while (*(++input) != dlmt && *input)
+			tkn_start = _input;
+			while (*(++_input) != dlmt && *_input)
 				;
-			_extract_token(tkn_start, input);
+			_extract_token(tkn_start, _input);
 		}
-		input++;
+		_input++;
 	}
-	free(_free_input);
+	free(input);
 	_typify();
 }

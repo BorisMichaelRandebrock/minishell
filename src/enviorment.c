@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/15 17:29:11 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/17 16:56:04 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	new_env(t_shell *sh, char **sys_env, size_t *env_sz)
 		(*env_sz)++;
 	}
 	sh->env = env;
-	args.content = &(t_token){ .str = "?=", .type = ARG};
+	args.content = &(t_token){ .str = "?=0", .type = ARG};
 	args.next = NULL;
 	__export(&args, 0);
 }

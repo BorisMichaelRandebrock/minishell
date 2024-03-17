@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/15 19:06:46 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/17 20:03:03 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <unistd.h>
 
 //TODO estructurar...
+
 void free_iteration(void)
 {
 	t_shell *sh;
@@ -61,6 +62,7 @@ void free_iteration(void)
 	}
 	sh->ppln = NULL;
 }
+
 int	main(int argc, char *argv[], char *sys_env[])
 {
 	t_shell	*sh;
@@ -77,6 +79,5 @@ int	main(int argc, char *argv[], char *sys_env[])
 		free_iteration();
 	}
 	sh_freexit(SUCCESS);
-
 	return (SUCCESS);
 }
