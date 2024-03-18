@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/17 19:01:57 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/18 16:22:10 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	_exec_pipeline(t_list	*ppln)
 			_cmd->is_piped = true;
 		while (bltn_id[i])
 		{
-			if (!ft_strncmp(_cmd->cmd->str, bltn_id[i], ft_strlen(bltn_id[i]) + NUL_SZ)) //BUG tiene que se identico! + nul
+			if (!ft_strncmp(_cmd->cmd->str, bltn_id[i], ft_strlen(bltn_id[i]) + NUL_SZ)) //BUG strncmp tiene que se identico! + nul
 				_exec_builtin(bltn_ptr[i], _cmd, shell_buffer);
 			i++;
 		}
