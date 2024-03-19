@@ -6,13 +6,14 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/17 16:56:04 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:11:24 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include <unistd.h>
+#include <string.h>
 
 #define NEW_VAR_SZ		1
 
@@ -70,6 +71,7 @@ void	set_evar(char *var_name, char *value)
 	sh->env = sh_ralloc(sh->env, (i + NEW_VAR_SZ) * sizeof(char *));
 	sh->env[i] = sh_guard(ft_strjoin(var_name, value), NULL);
 	sh->env_sz++;
+	//TODO //BUG añadir nulo al final
 }
 
 //var_name format must be 'VAR='

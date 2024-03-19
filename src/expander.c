@@ -6,77 +6,74 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/17 18:45:26 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:29:51 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	_get_var_name(char *var_name, char *str)
+#define START	0
+#define END		1
+
+char	*_get_var_name(char *str)
+{
+	char	*var_name;
+	size_t	i;
+
+	var_name = sh_guard(ft_strdup(++str), NULL); //TODO si aparece el dollar...
+	i = 0;
+	while (var_name[i] && var_name[i] != SPC_CH && var_name[i] != DQU_CH
+		&& var_name[i] != '$')
+		i++;
+	var_name[i++] = '=';
+	var_name[i] = '\0';
+	return (var_name);
+}
+int	_get_var_end(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] && str[i] != SPC_CH && str[i] != SQU_CH && str[i] != DQU_CH)
-	{
-		if (str[i] == DOLL_CH && i > 0)
-			break ;
+	while (str[i] && str[i] != SPC_CH && str[i] != DQU_CH)
 		i++;
-	}
-	ft_strlcpy(var_name, &str[1], i);
-	var_name[i++] = EQ_CH;
-	var_name[i] = NUL_CH;
+	return (i);
 }
 
-char	*_alloc_expansion(char *str)
+void	_expand_var(t_token *tkn)
 {
-	size_t	alloc_sz;
-	size_t	i;
-	char	*exp;
-	char	*alloc;
-	char	var_name[BUF_1KB];
-
-	alloc_sz = ft_strlen(str);
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == DOLL_CH)
-		{
-			_get_var_name(var_name, &str[i]);
-			alloc_sz -= ft_strlen(var_name - EQ_CH) + CH_SZ;
-			exp = get_evar(var_name);
-			alloc_sz += ft_strlen(exp);
-		}
-		i++;
-	}
-	alloc = sh_calloc(1, alloc_sz + NUL_SZ);
-	return (alloc);
-}
-
-void	expand_var(t_token *tkn)
-{
+	char	_str[BUF_1KB + NUL_SZ];
+	char	*name;
+	char	*value;
 	int		i;
 	int		j;
-	char	*str;
-	char	*exp;
-	char	var_name[BUF_1KB];
 
-	str = tkn->str;
-	tkn->str = _alloc_expansion(tkn->str);
 	i = 0;
 	j = 0;
-	while (str[i])
+	ft_memset(_str, '\0', BUF_1KB);
+	while(tkn->str[i])
 	{
-		if (str[i] != DOLL_CH)
-			tkn->str[j++] = str[i++];
-		else
+		if (tkn->str[i] == '$')
 		{
-			_get_var_name(var_name, &str[i]);
-			exp = get_evar(var_name);
-			ft_memcpy(&tkn->str[j], exp, ft_strlen(exp));
-			i += ft_strlen(var_name - EQ_CH) + CH_SZ;
-			j += ft_strlen(exp);
+			name = _get_var_name(&tkn->str[i]);
+			value = get_evar(name);
+			while(value && *value)
+				_str[j++] = *(value++);
+			i += ft_strlen(name);
+			free(name);
 		}
+		if (tkn->str[i] != '$')
+			_str[j++] = tkn->str[i++];
 	}
-	free(str);
+	tkn->str = sh_guard(ft_strdup(_str), tkn->str);
+}
+void	token_expansion(t_token *tkn)
+{
+	size_t	i;
+	size_t	size;
+
+	i = 0;
+	size = ft_strlen(tkn->str);
+	if (tkn->str[i] == SQU_CH && tkn->str[size - IDX_OFFST] == SQU_CH)
+		return ;
+	_expand_var(tkn);
 }

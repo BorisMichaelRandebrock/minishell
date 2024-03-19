@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/17 19:02:02 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/18 14:51:33 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void		set_evar(char *var_name, char *value);
 void		unset_evar(char *var_name);
 void		tokenizer(char *input);
 t_shell		*get_shell();
-void		expand_var(t_token *tkn);
+void		token_expansion(t_token *tkn);
 void		run_pipeline(t_list *tkn_lst);
 void		exec_pipeline(t_list *ppln);
 char		*get_next_line(int fd);

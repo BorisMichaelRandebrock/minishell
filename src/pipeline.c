@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/17 19:01:57 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 12:22:25 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ static char	_to_lower(unsigned int ignore, char c)
 
 static void	_exec_pipeline(t_list	*ppln)
 {
-	static t_bltin	bltn_ptr[7] = {__echo, __cd, __pwd, __export,
-		__unset, __env, __exit};
+	static t_bltin	bltn_ptr[8] = {__echo, __cd, __pwd, __export,
+		__unset, __env, __exit, NULL};
 	static char		*bltn_id[8] = {"echo", "cd", "pwd", "export",
-		"unset", "env", "exit", NULL}; //BUG end with NULL!
+		"unset", "env", "exit", NULL};
 	char			shell_buffer[BUF_1MB];
 	t_cmd			*_cmd;
 	int				i;
@@ -67,7 +67,7 @@ static void	_exec_pipeline(t_list	*ppln)
 			_cmd->is_piped = true;
 		while (bltn_id[i])
 		{
-			if (!ft_strncmp(_cmd->cmd->str, bltn_id[i], ft_strlen(bltn_id[i]) + NUL_SZ)) //BUG tiene que se identico! + nul
+			if (!ft_strncmp(_cmd->cmd->str, bltn_id[i], ft_strlen(bltn_id[i]) + NUL_SZ))
 				_exec_builtin(bltn_ptr[i], _cmd, shell_buffer);
 			i++;
 		}

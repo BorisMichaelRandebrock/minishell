@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/17 19:18:32 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 13:01:23 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,7 @@ static void	_extract_token(char *start, char *end)
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_guard(ft_substr(start, 0, length), NULL);
 	tkn->str = sh_guard(ft_strtrim(substr, WHSPC_CHRS), substr);
-	if (tkn->str[0] != SQU_CH
-		&& tkn->str[ft_strlen(tkn->str) - 1] != SQU_CH) //FIXME ya no funciona la expansion!
-		expand_var(tkn);
+	token_expansion(tkn); //TODO @@@@@@@@@@ repasar y encontrar el problema de memoria!!!
 	_dequote_token(tkn);
 	ft_lstadd_back(&sh->tkn_lst, sh_guard(ft_lstnew(tkn), NULL));
 }
@@ -105,7 +103,6 @@ void	tokenizer(char *input)
 	char	*tkn_start;
 	char	dlmt;
 
-	//input = sh_guard(ft_strtrim(input, WHSPC_CHRS), input); //BUG trimado inecesario!
 	_input = input;
 	while (*_input)
 	{
