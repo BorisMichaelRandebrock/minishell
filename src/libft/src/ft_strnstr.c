@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 12:44:54 by fmontser          #+#    #+#             */
-/*   Updated: 2024/02/28 12:22:42 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 14:38:48 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	size_t	j;
 
 	i = 0;
-	if (*big == '\0' || big == NULL)
+	if (!big || *big == '\0')
 		return (NULL);
-	if (*little == '\0' || little == NULL )
+	if (!little || *little == '\0' )
 	{
 		return ((char *)big);
 	}

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/18 18:07:14 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 13:01:23 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void	tokenizer(char *input)
 	char	*tkn_start;
 	char	dlmt;
 
-	//input = sh_guard(ft_strtrim(input, WHSPC_CHRS), input); //BUG trimado inecesario!
 	_input = input;
 	while (*_input)
 	{
