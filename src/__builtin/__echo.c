@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/17 19:07:48 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:54:55 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 //TODO return errors?
 static bool	_n_opt_check(t_token *tkn, t_list **_args)
 {
-	if (!ft_strncmp(tkn->str, N_OPT, 3)) //BUG compare nul!
+	if (!ft_strncmp(tkn->str, N_OPT, 3))
 	{
 		*_args = (*_args)->next;
 		return (true);

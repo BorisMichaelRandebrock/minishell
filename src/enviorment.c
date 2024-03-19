@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/19 16:11:24 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 17:15:49 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	free_env(void)
 
 	sh = get_shell();
 	i = 0;
-	while(i < sh->env_sz)
+	while(sh->env[i])
 	{
 		free(sh->env[i]);
 		i++;
@@ -59,7 +59,7 @@ void	set_evar(char *var_name, char *value)
 
 	sh = get_shell();
 	i = 0;
-	while (i < sh->env_sz)
+	while (sh->env[i])
 	{
 		if (ft_strnstr(sh->env[i], var_name, ft_strlen(var_name)))
 		{
@@ -68,10 +68,9 @@ void	set_evar(char *var_name, char *value)
 		}
 		i++;
 	}
-	sh->env = sh_ralloc(sh->env, (i + NEW_VAR_SZ) * sizeof(char *));
-	sh->env[i] = sh_guard(ft_strjoin(var_name, value), NULL);
-	sh->env_sz++;
-	//TODO //BUG añadir nulo al final
+	sh->env = sh_ralloc(sh->env, (i + NEW_VAR_SZ + NUL_SZ) * sizeof(char *));
+	sh->env[i++] = sh_guard(ft_strjoin(var_name, value), NULL);
+	sh->env[i] = NULL; //TODO suspicious...
 }
 
 //var_name format must be 'VAR='
@@ -83,39 +82,41 @@ void	unset_evar(char *var_name)
 
 	sh = get_shell();
 	i = 0;
-	while (i < sh->env_sz)
+	while (sh->env[i])
 	{
-		if (ft_strnstr(sh->env[i], var_name, ft_strlen(var_name)))
+		if (ft_strnstr(sh->env[i], var_name, ft_strlen(var_name) + NUL_CH))
 		{
 			free(sh->env[i]);
 			j = i;
-			while (j < sh->env_sz)
+			while (sh->env[j])
 			{
 				sh->env[j] = sh->env[j + 1];
 				j++;
 			}
 			sh->env = sh_ralloc(sh->env, (j - NEW_VAR_SZ) * sizeof(char *));
-			sh->env_sz--;
+			sh->env[j] = NULL;
 			return ;
 		}
 		i++;
 	}
 }
 
-void	new_env(t_shell *sh, char **sys_env, size_t *env_sz)
+void	new_env(t_shell *sh, char **sys_env)
 {
 	char	**env;
 	size_t	var_sz;
+	size_t	i;
 	t_list args;
 
+	i = 0;
 	env = sh_calloc(1, sizeof(char *));
-	while (sys_env[*env_sz])
+	while (sys_env[i])
 	{
-		var_sz = ft_strlen(sys_env[*env_sz]);
-		env = sh_ralloc(env, (*env_sz + NEW_VAR_SZ) * sizeof(char *));
-		env[*env_sz] = sh_calloc(var_sz + NUL_SZ, sizeof(char));
-		ft_memcpy(env[*env_sz], sys_env[*env_sz], var_sz);
-		(*env_sz)++;
+		var_sz = ft_strlen(sys_env[i]);
+		env = sh_ralloc(env, (i + NEW_VAR_SZ) * sizeof(char *));
+		env[i] = sh_calloc(var_sz + NUL_SZ, sizeof(char));
+		ft_memcpy(env[i], sys_env[i], var_sz);
+		i++;
 	}
 	sh->env = env;
 	args.content = &(t_token){ .str = "?=0", .type = ARG};

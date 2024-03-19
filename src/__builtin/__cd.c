@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:26:03 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/17 18:45:26 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:54:56 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ int	__cd(t_list *args, int fd)
 	else
 	{
 		tkn = args->content;
-		if (!ft_strncmp(tkn->str, "-", 2)) //BUG compare! nul!
+		if (!ft_strncmp(tkn->str, "-", 2))
 		{
 			if (!get_evar("OLDPWD="))
 				_chdir(get_evar("HOME="));
 			else
 				_chdir(get_evar("OLDPWD="));
 		}
-		else if (!ft_strncmp(tkn->str, "~", 2)) //BUG compare! nul!
+		else if (!ft_strncmp(tkn->str, "~", 2))
 			_chdir(get_evar("HOME="));
 		else
 			_chdir(tkn->str);

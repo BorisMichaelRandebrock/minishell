@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/18 14:51:33 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 17:04:16 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,13 @@ typedef struct s_shell
 {
 	char	*input;
 	char	**env;
-	size_t	env_sz;
 	t_list	*tkn_lst;
 	t_list	*ppln;
 }	t_shell;
 
 t_shell		*new_shell(char **sys_env);
 void		set_prompt(void);
-void		new_env(t_shell *sh, char **sys_env, size_t *env_sz);
+void		new_env(t_shell *sh, char **sys_env);
 char		*get_evar(char *var_name);
 void		set_evar(char *var_name, char *value);
 void		unset_evar(char *var_name);

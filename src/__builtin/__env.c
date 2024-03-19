@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:14 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/07 16:11:20 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 17:07:37 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int	__env(t_list *args, int fd)
 	(void)args;
 	sh = get_shell();
 	i = 0;
-	while (i < sh->env_sz)
+	while (sh->env[i])
 	{
 		write(fd, sh->env[i], ft_strlen(sh->env[i]));
-		if (++i < sh->env_sz)
+		if (sh->env[++i])
 			write(fd, "\n", 1);
 	}
 	if (fd == STDOUT_FILENO)

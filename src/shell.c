@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/17 18:57:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 17:07:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_shell	*new_shell(char **sys_env)
 	t_shell	*sh;
 
 	sh = get_shell();
-	new_env(sh, sys_env, &sh->env_sz);
+	new_env(sh, sys_env);
 	set_prompt();
 	return (sh);
 }
