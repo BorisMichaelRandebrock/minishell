@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/19 14:40:01 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:29:51 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ char	*_get_var_name(char *str)
 
 	var_name = sh_guard(ft_strdup(++str), NULL); //TODO si aparece el dollar...
 	i = 0;
-	while (var_name[i] && var_name[i] != SPC_CH && var_name[i] != DQU_CH)
+	while (var_name[i] && var_name[i] != SPC_CH && var_name[i] != DQU_CH
+		&& var_name[i] != '$')
 		i++;
 	var_name[i++] = '=';
 	var_name[i] = '\0';
@@ -37,9 +38,6 @@ int	_get_var_end(char *str)
 		i++;
 	return (i);
 }
-
-//TODO @@@@@@@@@ sale del programa !!!!
-// echo "hola $U adios"
 
 void	_expand_var(t_token *tkn)
 {
@@ -58,14 +56,15 @@ void	_expand_var(t_token *tkn)
 		{
 			name = _get_var_name(&tkn->str[i]);
 			value = get_evar(name);
-			while(*value)
+			while(value && *value)
 				_str[j++] = *(value++);
 			i += ft_strlen(name);
 			free(name);
 		}
-		_str[j++] = tkn->str[i++];
+		if (tkn->str[i] != '$')
+			_str[j++] = tkn->str[i++];
 	}
-	tkn->str = sh_guard(ft_strdup(_str), tkn->str); //TODO  LEAKS
+	tkn->str = sh_guard(ft_strdup(_str), tkn->str);
 }
 void	token_expansion(t_token *tkn)
 {

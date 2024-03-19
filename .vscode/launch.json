@@ -12,15 +12,6 @@
 			"externalConsole": true,
 			"MIMode": "lldb",
 			"preLaunchTask": "make"
-		},
-		{
-			"type": "lldb",
-			"request": "launch",
-			"name": "Launch CodeLldb",
-			"program": "${workspaceFolder}/bin/minishell",
-			"args": [],
-			"cwd": "${fileDirname}",
-			"preLaunchTask": "make"
 		}
 	]
 }
