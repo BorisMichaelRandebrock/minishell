@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/19 19:12:20 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:59:05 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static char	_to_lower(unsigned int ignore, char c)
 	return (ft_tolower(c));
 }
 
+//TODO al ejecutar un builtin o un proceso nuevo hay que actualizar la variable de entorno $_ que recoge el ultimo ejecutado
 //TODO @@@@@@@@ rdirecciones
 
 /* echo DDDX > file >> file2 | cat
@@ -57,10 +58,10 @@ es en realidad una especi de fork por cada operador...
 
 static void	_exec_pipeline(t_list	*ppln)
 {
-	static t_bltin	bltn_ptr[8] = {__echo, __cd, __pwd, __export,
-		__unset, __env, __exit, NULL};
-	static char		*bltn_id[8] = {"echo", "cd", "pwd", "export",
-		"unset", "env", "exit", NULL};
+	static t_bltin	bltn_ptr[9] = {__echo, __cd, __pwd, __export,
+		__unset, __env, __exit, __history, NULL};
+	static char		*bltn_id[9] = {"echo", "cd", "pwd", "export",
+		"unset", "env", "exit", "history", NULL};
 	char			shell_buffer[BUF_1MB + NUL_SZ];
 	t_cmd			*_cmd;
 	int				i;

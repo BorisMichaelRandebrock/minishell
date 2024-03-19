@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/19 17:37:15 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:52:06 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ int			__export(t_list *args, int fd);
 int			__unset(t_list *args, int fd);
 int			__env(t_list *args, int fd);
 int			__exit(t_list *args, int fd);
+int			__history(t_list *args, int fd);
 void		*sh_calloc(size_t num, size_t size);
 void		*sh_ralloc(void *old, size_t new_sizeof);
 void		sh_freexit(int exit_code);
