@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/19 18:54:20 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:12:20 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,15 @@ static char	_to_lower(unsigned int ignore, char c)
 	(void)ignore;
 	return (ft_tolower(c));
 }
+
+//TODO @@@@@@@@ rdirecciones
+
+/* echo DDDX > file >> file2 | cat
+
+es en realidad una especi de fork por cada operador...
+
+*/
+
 
 static void	_exec_pipeline(t_list	*ppln)
 {
