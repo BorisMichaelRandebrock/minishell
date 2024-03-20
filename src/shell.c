@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/19 17:07:39 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/20 23:14:22 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@
 
 void	set_prompt(void)
 {
-	t_list	args;
 	char	buffer[BUF_1KB];
 	char	*prompt;
 	int		i;
+	t_list	arg;
+	t_token	tkn;
 
 	getcwd(buffer, BUF_1KB);
 	i = ft_strlen(buffer);
@@ -37,20 +38,12 @@ void	set_prompt(void)
 	}
 	prompt = sh_guard(ft_strjoin("PROMPT=", &buffer[i]), NULL);
 	prompt = sh_guard(ft_strjoin(prompt, " 🐌> "), prompt);
-	args.content = &(t_token){ .str = prompt, .type = ARG};
-	args.next = NULL;
-	__export(&args, 0);
+	tkn.str = prompt;
+	tkn.type = ARG;
+	arg.content = &tkn;
+	arg.next = NULL;
+	__export(&arg, STDOUT_FILENO);
 	free(prompt);
-}
-
-void	free_shell(void)
-{
-	t_shell	*sh;
-
-	sh = get_shell();
-
-	//TODO free el resto de cosas...
-	free(sh);
 }
 
 t_shell	*get_shell(void)
@@ -68,6 +61,5 @@ t_shell	*new_shell(char **sys_env)
 
 	sh = get_shell();
 	new_env(sh, sys_env);
-	set_prompt();
 	return (sh);
 }

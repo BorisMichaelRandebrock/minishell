@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 18:20:59 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/20 22:00:03 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,13 @@ static void _add_redirection(t_list *lst, t_list *rdrs)
 			return ;
 		else
 		{
+			ft_lstadd_back(&rdrs, sh_guard(ft_lstnew(rdr), NULL));
 			_add_redirection(lst->next, rdrs);
-			break ;
+			return ;
 		}
 		lst = lst->next;
 	}
-	if (!rdrs) //TODO @@@@@ la lista esta invertida
-		rdrs = sh_guard(ft_lstnew(rdr), NULL);
-	else
-		ft_lstadd_front(&rdrs, sh_guard(ft_lstnew(rdr), NULL));
+	ft_lstadd_back(&rdrs, sh_guard(ft_lstnew(rdr), NULL));
 }
 
 
