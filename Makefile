@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/03/19 19:52:31 by fmontser         ###   ########.fr        #
+#    Updated: 2024/03/20 11:50:39 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,6 +89,7 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
+#TODO	set_evar("_=", cmd->tkn->str); para procesos!!!
 #TODO repasar tema del history, es mas complejo...mirar bash manual
 #TODO la gestion de memoria es valida pero no me convence...
 #TODO ft_strjoin, ft_strlen, ft_strnstr, ft_is_whspc update(fran),  ft_rszarray, libft.h, makefile
