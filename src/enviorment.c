@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 12:58:15 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/20 17:46:22 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	set_evar(char *var_name, char *value)
 	}
 	sh->env = sh_ralloc(sh->env, (i + NEW_VAR_SZ + NUL_SZ) * sizeof(char *));
 	sh->env[i++] = sh_guard(ft_strjoin(var_name, value), NULL);
-	sh->env[i] = NULL; //TODO suspicious...
+	sh->env[i] = NULL;
 }
 
 //var_name format must be 'VAR='

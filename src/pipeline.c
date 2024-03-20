@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 13:47:13 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/20 18:20:59 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 	pipe(pipefd);
 	fd = STDOUT_FILENO;
 	if (cmd->is_piped)
+	{
 		fd = pipefd[WR];
-	ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(&_tkn), NULL));
+		ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(&_tkn), NULL));
+	}
 	exit_code = ft_itoa((bltn)(cmd->args, fd));
 	if (cmd->is_piped)
 	{
@@ -45,16 +47,6 @@ static char	_to_lower(unsigned int ignore, char c)
 	(void)ignore;
 	return (ft_tolower(c));
 }
-
-//TODO al ejecutar un builtin o un proceso nuevo hay que actualizar la variable de entorno $_ que recoge el ultimo ejecutado
-//TODO @@@@@@@@ rdirecciones
-
-/* echo DDDX > file >> file2 | cat
-
-es en realidad una especi de fork por cada operador...
-
-*/
-
 
 static void	_exec_pipeline(t_list	*ppln)
 {
@@ -87,14 +79,6 @@ static void	_exec_pipeline(t_list	*ppln)
 	}
 }
 
-/* static void	_skip_redirection(t_list *lst)
-{
-	t_token	*tkn;
-
-	tkn = lst->content;
-	while ((tkn->type != OP && tkn->optype != PIPE) || lst)
-		lst = lst->next;
-} */
 
 // echo gola > file a1 a2 > file2 a3 a4
 
@@ -109,20 +93,25 @@ static void _add_redirection(t_list *lst, t_list *rdrs)
 	rdr = sh_calloc(1, sizeof(t_rdr));
 	rdr->tkn = tkn;
 	lst = lst->next;
-	while(tkn && tkn->type != PIPE)
+	tkn = lst->content;
+	while(lst)
 	{
 		tkn = lst->content;
 		if (tkn->type == ARG)
 			ft_lstadd_back(&rdr->args, sh_guard(ft_lstnew(tkn), NULL));
-		else if (tkn->type != PIPE)
-		{
-			_add_redirection(lst, rdrs);
-			ft_lstadd_front(&rdrs, sh_guard(ft_lstnew(rdr), NULL));
-		}
-		else
+		else if (tkn->type == PIPE)
 			return ;
+		else
+		{
+			_add_redirection(lst->next, rdrs);
+			break ;
+		}
 		lst = lst->next;
 	}
+	if (!rdrs) //TODO @@@@@ la lista esta invertida
+		rdrs = sh_guard(ft_lstnew(rdr), NULL);
+	else
+		ft_lstadd_front(&rdrs, sh_guard(ft_lstnew(rdr), NULL));
 }
 
 
@@ -147,7 +136,9 @@ void	run_pipeline(t_list *tkn_lst)
 			ft_lstadd_back(&sh->ppln, sh_guard(ft_lstnew(cmd), NULL));
 		}
 		else if (_tkn->type == ARG)
+		{
 			ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(_tkn), NULL));
+		}
 		else if (_tkn->type != PIPE)
 		{
 			_add_redirection(_lst->next, cmd->rdrs);
