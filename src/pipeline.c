@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 11:48:55 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/20 13:47:13 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,46 @@ static void	_exec_pipeline(t_list	*ppln)
 	}
 }
 
-static void	_skip_redirection(t_list *lst)
+/* static void	_skip_redirection(t_list *lst)
 {
 	t_token	*tkn;
 
 	tkn = lst->content;
 	while ((tkn->type != OP && tkn->optype != PIPE) || lst)
 		lst = lst->next;
+} */
+
+// echo gola > file a1 a2 > file2 a3 a4
+
+// echo gola > file a1 a2 | echo
+
+static void _add_redirection(t_list *lst, t_list *rdrs)
+{
+	t_rdr	*rdr;
+	t_token *tkn;
+
+	tkn = lst->content;
+	rdr = sh_calloc(1, sizeof(t_rdr));
+	rdr->tkn = tkn;
+	lst = lst->next;
+	while(tkn && tkn->type != PIPE)
+	{
+		tkn = lst->content;
+		if (tkn->type == ARG)
+			ft_lstadd_back(&rdr->args, sh_guard(ft_lstnew(tkn), NULL));
+		else if (tkn->type != PIPE)
+		{
+			_add_redirection(lst, rdrs);
+			ft_lstadd_front(&rdrs, sh_guard(ft_lstnew(rdr), NULL));
+		}
+		else
+			return ;
+		lst = lst->next;
+	}
 }
 
+
+// echo hola > file  sfsdf| echo
 void	run_pipeline(t_list *tkn_lst)
 {
 	t_shell	*sh;
@@ -117,8 +148,11 @@ void	run_pipeline(t_list *tkn_lst)
 		}
 		else if (_tkn->type == ARG)
 			ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(_tkn), NULL));
-		else if (_tkn->type == OP && _tkn->optype != PIPE)
-			_skip_redirection(_lst);
+		else if (_tkn->type != PIPE)
+		{
+			_add_redirection(_lst->next, cmd->rdrs);
+			continue ;
+		}
 		if (_lst)
 			_lst = _lst->next;
 	}

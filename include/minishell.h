@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/19 19:52:06 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/20 13:55:15 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,26 +60,31 @@ typedef enum e_tkntype
 {
 	CMD,
 	ARG,
-	OP
+	RDAPP,
+	RDHDOC,
+	RDOUT = 62,
+	RDIN = 60,
+	PIPE = 124
 }	t_tkntype;
-
-typedef enum e_optype
-{
-	PIPE,
-	REDIR
-}	t_optype;
 
 typedef struct s_token
 {
 	char		*str;
 	t_tkntype	type;
-	t_optype	optype;
 }	t_token;
+
+typedef struct s_rdr
+{
+	t_token	*tkn;
+	t_list	*args;
+}	t_rdr;
 
 typedef struct s_cmd
 {
 	t_token	*tkn;
 	t_list	*args;
+	t_list	*rdrs; //TODO free!!!
+
 	bool	is_piped;
 }	t_cmd;
 
