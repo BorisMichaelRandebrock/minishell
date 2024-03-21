@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/19 19:52:06 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/21 11:57:00 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,26 +60,31 @@ typedef enum e_tkntype
 {
 	CMD,
 	ARG,
-	OP
+	RDAPP,
+	RDHDOC,
+	RDOUT = 62,
+	RDIN = 60,
+	PIPE = 124
 }	t_tkntype;
-
-typedef enum e_optype
-{
-	PIPE,
-	REDIR
-}	t_optype;
 
 typedef struct s_token
 {
 	char		*str;
 	t_tkntype	type;
-	t_optype	optype;
 }	t_token;
+
+typedef struct s_rdr
+{
+	t_token	*op;
+	t_list	*args;
+}	t_rdr;
 
 typedef struct s_cmd
 {
 	t_token	*tkn;
 	t_list	*args;
+	t_list	*rdrs; //TODO free!!!
+
 	bool	is_piped;
 }	t_cmd;
 
@@ -102,7 +107,7 @@ t_shell		*get_shell();
 void		token_expansion(t_token *tkn);
 void		run_pipeline(t_list *tkn_lst);
 void		exec_pipeline(t_list *ppln);
-char		*get_next_line(int fd);
+void		process_redirs(t_cmd *cmd, char *buffer);
 int			__echo(t_list *args, int fd);
 int			__cd(t_list *args, int fd);
 int			__pwd(t_list *args, int fd);
@@ -114,9 +119,9 @@ int			__history(t_list *args, int fd);
 void		*sh_calloc(size_t num, size_t size);
 void		*sh_ralloc(void *old, size_t new_sizeof);
 void		sh_freexit(int exit_code);
-void		free_iteration(void);
-void		free_env(void);
-void		free_shell(void);
+void		sh_free_iter(void);
+void		sh_free_env(void);
+void		sh_free_shell(void);
 void		*sh_guard(void *alloc, void *nullable_old);
 void		sh_perror(int error_code);
 

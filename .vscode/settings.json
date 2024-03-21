@@ -42,6 +42,7 @@
 		"system_error": "c",
 		"tuple": "c",
 		"type_traits": "c",
-		"typeinfo": "c"
+		"typeinfo": "c",
+		"complex": "c"
 	}
 }

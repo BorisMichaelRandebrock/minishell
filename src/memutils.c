@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/19 16:58:18 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/20 22:28:19 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,6 @@
 #include "minishell.h"
 #include "libft.h"
 
-//Clean exit from shell
-void	sh_freexit(int exit_code)
-{
-	t_shell	*sh;
-	size_t	i;
-
-	i = 0;
-	sh = get_shell();
-	free_iteration();
-	free_env();
-	free_shell();
-	exit(exit_code);
-}
 //Protected allocation with calloc
 void	*sh_calloc(size_t num, size_t size)
 {

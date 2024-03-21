@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/19 17:15:49 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/21 11:21:48 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,6 @@
 #include <string.h>
 
 #define NEW_VAR_SZ		1
-
-void	free_env(void)
-{
-	t_shell	*sh;
-	size_t	i;
-
-	sh = get_shell();
-	i = 0;
-	while(sh->env[i])
-	{
-		free(sh->env[i]);
-		i++;
-	}
-	free(sh->env);
-}
 
 //var_name format must be 'VAR='
 char	*get_evar(char *var_name)
@@ -70,7 +55,7 @@ void	set_evar(char *var_name, char *value)
 	}
 	sh->env = sh_ralloc(sh->env, (i + NEW_VAR_SZ + NUL_SZ) * sizeof(char *));
 	sh->env[i++] = sh_guard(ft_strjoin(var_name, value), NULL);
-	sh->env[i] = NULL; //TODO suspicious...
+	sh->env[i] = NULL;
 }
 
 //var_name format must be 'VAR='
@@ -84,7 +69,7 @@ void	unset_evar(char *var_name)
 	i = 0;
 	while (sh->env[i])
 	{
-		if (ft_strnstr(sh->env[i], var_name, ft_strlen(var_name) + NUL_CH))
+		if (ft_strnstr(sh->env[i], var_name, ft_strlen(var_name)))
 		{
 			free(sh->env[i]);
 			j = i;
@@ -105,21 +90,28 @@ void	new_env(t_shell *sh, char **sys_env)
 {
 	char	**env;
 	size_t	var_sz;
+	size_t	count;
 	size_t	i;
-	t_list args;
+	t_list	arg;
+	t_token	tkn;
 
+	count = 0;
 	i = 0;
-	env = sh_calloc(1, sizeof(char *));
-	while (sys_env[i])
+	while (sys_env[count])
+		count++;
+	env = sh_calloc(count, sizeof(char *));
+	while (i < count)
 	{
 		var_sz = ft_strlen(sys_env[i]);
-		env = sh_ralloc(env, (i + NEW_VAR_SZ) * sizeof(char *));
 		env[i] = sh_calloc(var_sz + NUL_SZ, sizeof(char));
-		ft_memcpy(env[i], sys_env[i], var_sz);
+		ft_memcpy(env[i], sys_env[i], var_sz + NUL_SZ);
 		i++;
 	}
+	env[i] = NULL;
 	sh->env = env;
-	args.content = &(t_token){ .str = "?=0", .type = ARG};
-	args.next = NULL;
-	__export(&args, 0);
+	set_prompt();
+ 	tkn.str = "?=0";
+	arg.content = &tkn;
+	arg.next = NULL;
+	__export(&arg, STDOUT_FILENO);
 }

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/19 13:01:23 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:44:57 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,19 @@ static void	_typify(void)
 		if (_prev == NULL || _prev_tkn->str[0] == '|')
 			_tkn->type = CMD;
 		else if (*_tkn->str == '<' || *_tkn->str == '>' || *_tkn->str == '|')
-			_tkn->type = OP;
+		{
+			if (*(_tkn->str + 1) == *_tkn->str)
+			{
+				if (*_tkn->str == '<')
+					_tkn->type = RDHDOC;
+				else if (*_tkn->str == '>')
+					_tkn->type = RDAPP;
+			}
+			else
+				_tkn->type = *_tkn->str;
+		}
 		else
 			_tkn->type = ARG;
-		_tkn->optype = PIPE;		//FIXME si es posible no asignar nada si no es un op
-		if (_tkn->str[0] != '|')
-			_tkn->optype = REDIR;
 		_prev = _lst;
 		_lst = _lst->next;
 	}
@@ -73,12 +80,12 @@ static void	_extract_token(char *start, char *end)
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_guard(ft_substr(start, 0, length), NULL);
 	tkn->str = sh_guard(ft_strtrim(substr, WHSPC_CHRS), substr);
-	token_expansion(tkn); //TODO @@@@@@@@@@ repasar y encontrar el problema de memoria!!!
+	token_expansion(tkn);
 	_dequote_token(tkn);
 	ft_lstadd_back(&sh->tkn_lst, sh_guard(ft_lstnew(tkn), NULL));
 }
 
-void	_extract_op_token(char *input)
+char	*_extract_op_token(char *input)
 {
 	t_shell	*sh;
 	t_token	*tkn;
@@ -91,8 +98,11 @@ void	_extract_op_token(char *input)
 		op_sz = 2;
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_guard(ft_substr(input, 0, op_sz), NULL);
+	if (op_sz == 2)
+		input++;
 	tkn->str = substr;
 	ft_lstadd_back(&sh->tkn_lst, sh_guard(ft_lstnew(tkn), NULL));
+	return(input);
 }
 
 
@@ -112,7 +122,7 @@ void	tokenizer(char *input)
 		if (*_input == DQU_CH || *_input == SQU_CH)
 			dlmt = *_input;
 		if (*_input == '<' || *_input == '>' || *_input == '|')
-			_extract_op_token(_input);
+			_input = _extract_op_token(_input);
 		else
 		{
 			tkn_start = _input;

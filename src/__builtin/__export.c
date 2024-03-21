@@ -6,14 +6,14 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/15 13:17:41 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/20 23:14:29 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
 #define NAME	0
-#define VALUE		1
+#define VALUE	1
 
 static void	_free(char	**evar)
 {
