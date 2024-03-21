@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:45:27 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 16:35:22 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/21 16:38:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	process_redirs(t_cmd *cmd, char *shell_buffer)
 		}
 		else if (rdr->op->type == RDIN)
 		{
-			//TODO cuando hagamos los procesos externos
+			//TODO cuando hagamos los procesos externoss
 		}
 		else if (rdr->op->type == RDHDOC)
 		{
