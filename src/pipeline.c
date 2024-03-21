@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 22:00:03 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/21 16:26:06 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,12 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 	shell_buffer[ft_strlen(shell_buffer)] = '\0';
 	pipe(pipefd);
 	fd = STDOUT_FILENO;
-	if (cmd->is_piped)
-	{
+	if (cmd->is_piped || cmd->rdrs)
 		fd = pipefd[WR];
+	else
 		ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(&_tkn), NULL));
-	}
 	exit_code = ft_itoa((bltn)(cmd->args, fd));
-	if (cmd->is_piped)
+	if (cmd->is_piped || cmd->rdrs)
 	{
 		read(pipefd[RD], shell_buffer, BUF_1MB);
 		shell_buffer[ft_strlen(shell_buffer)] = '\0';
@@ -74,42 +73,38 @@ static void	_exec_pipeline(t_list	*ppln)
 				_exec_builtin(bltn_ptr[i], _cmd, shell_buffer);
 			i++;
 		}
+		process_redirs(_cmd, shell_buffer);
 		i = 0;
 		_ppln = _ppln->next;
 	}
 }
 
-
-// echo gola > file a1 a2 > file2 a3 a4
-
-// echo gola > file a1 a2 | echo
-
-static void _add_redirection(t_list *lst, t_list *rdrs)
+static t_list *_add_redirection(t_list *tkn_lst, t_cmd *cmd)
 {
 	t_rdr	*rdr;
 	t_token *tkn;
 
-	tkn = lst->content;
+	tkn = tkn_lst->content;
 	rdr = sh_calloc(1, sizeof(t_rdr));
-	rdr->tkn = tkn;
-	lst = lst->next;
-	tkn = lst->content;
-	while(lst)
+	rdr->op = tkn;
+	tkn_lst = tkn_lst->next;
+	while(tkn_lst)
 	{
-		tkn = lst->content;
+		tkn = tkn_lst->content;
 		if (tkn->type == ARG)
 			ft_lstadd_back(&rdr->args, sh_guard(ft_lstnew(tkn), NULL));
 		else if (tkn->type == PIPE)
-			return ;
+			return (tkn_lst);
 		else
 		{
-			ft_lstadd_back(&rdrs, sh_guard(ft_lstnew(rdr), NULL));
-			_add_redirection(lst->next, rdrs);
-			return ;
+			ft_lstadd_back(&cmd->rdrs, sh_guard(ft_lstnew(rdr), NULL));
+			_add_redirection(tkn_lst->next, cmd);
+			return (tkn_lst);
 		}
-		lst = lst->next;
+		tkn_lst = tkn_lst->next;
 	}
-	ft_lstadd_back(&rdrs, sh_guard(ft_lstnew(rdr), NULL));
+	ft_lstadd_back(&cmd->rdrs, sh_guard(ft_lstnew(rdr), NULL));
+	return (tkn_lst);
 }
 
 
@@ -120,7 +115,9 @@ void	run_pipeline(t_list *tkn_lst)
 	t_token	*_tkn;
 	t_cmd	*cmd;
 	t_list	*_lst;
+	bool	rflag;
 
+	rflag = false;
 	_lst = tkn_lst;
 	sh = get_shell();
 	while (_lst)
@@ -128,22 +125,21 @@ void	run_pipeline(t_list *tkn_lst)
 		_tkn = _lst->content;
 		if (_tkn->type == CMD)
 		{
+			rflag = false;
 			cmd = sh_calloc(1, sizeof(t_cmd));
 			cmd->tkn = _tkn;
 			cmd->is_piped = false;
 			ft_lstadd_back(&sh->ppln, sh_guard(ft_lstnew(cmd), NULL));
 		}
-		else if (_tkn->type == ARG)
-		{
+		else if (_tkn->type == ARG && !rflag)
 			ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(_tkn), NULL));
-		}
 		else if (_tkn->type != PIPE)
 		{
-			_add_redirection(_lst->next, cmd->rdrs);
-			continue ;
+			rflag = true;
+			_lst = _add_redirection(_lst, cmd);
+			continue ; //TODO recoger el avance, TEMA listas subrogadas
 		}
-		if (_lst)
-			_lst = _lst->next;
+		_lst = _lst->next;
 	}
 	_exec_pipeline(sh->ppln);
 }

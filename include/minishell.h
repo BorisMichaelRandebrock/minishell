@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 23:12:11 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/21 11:57:00 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ typedef struct s_token
 
 typedef struct s_rdr
 {
-	t_token	*tkn;
+	t_token	*op;
 	t_list	*args;
 }	t_rdr;
 
@@ -107,7 +107,7 @@ t_shell		*get_shell();
 void		token_expansion(t_token *tkn);
 void		run_pipeline(t_list *tkn_lst);
 void		exec_pipeline(t_list *ppln);
-char		*get_next_line(int fd);
+void		process_redirs(t_cmd *cmd, char *buffer);
 int			__echo(t_list *args, int fd);
 int			__cd(t_list *args, int fd);
 int			__pwd(t_list *args, int fd);

@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/03/20 22:16:56 by fmontser         ###   ########.fr        #
+#    Updated: 2024/03/21 11:45:47 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ BIN_DIR			:= bin/
 NAME			:= minishell
 HDRS 			:= minishell.h
 SRCS 			:=	main.c shell.c enviorment.c memutils.c tokenizer.c expander.c \
-					pipeline.c exception.c free.c \
+					pipeline.c redirs.c exception.c free.c \
 					__echo.c __env.c __export.c __unset.c __pwd.c __exit.c __cd.c \
 					__history.c
 
@@ -89,6 +89,7 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
+#TODO probar a pasar argumentos a minishell ej. ls | ./minishell... no debe petar!
 #TODO	set_evar("_=", cmd->tkn->str); para procesos!!!
 #TODO repasar tema del history, es mas complejo...mirar bash manual
 #TODO la gestion de memoria es valida pero no me convence...
