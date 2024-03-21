@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/21 13:44:57 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:51:42 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ static void	_typify(void)
 		_tkn = (t_token *)_lst->content;
 		if (_prev)
 			_prev_tkn = (t_token *)_prev->content;
-		if (_prev == NULL || _prev_tkn->str[0] == '|')
-			_tkn->type = CMD;
-		else if (*_tkn->str == '<' || *_tkn->str == '>' || *_tkn->str == '|')
+		if (*_tkn->str == '<' || *_tkn->str == '>' || *_tkn->str == '|')
 		{
 			if (*(_tkn->str + 1) == *_tkn->str)
 			{
@@ -45,6 +43,8 @@ static void	_typify(void)
 			else
 				_tkn->type = *_tkn->str;
 		}
+		else if (_prev == NULL || _prev_tkn->str[0] == '|')
+			_tkn->type = CMD;
 		else
 			_tkn->type = ARG;
 		_prev = _lst;

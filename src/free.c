@@ -6,13 +6,12 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 22:16:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 23:00:59 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/21 18:06:21 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
-
 
 
 void	sh_free_shell(void)
@@ -72,6 +71,13 @@ void sh_free_iter(void)
 		cmd = node->content;
 		//free arglist
 		subnode = cmd->args;
+		while (subnode)
+		{
+			prev_node = subnode;
+			subnode = subnode->next;
+			free(prev_node);
+		}
+		subnode = cmd->rdrs;
 		while (subnode)
 		{
 			prev_node = subnode;

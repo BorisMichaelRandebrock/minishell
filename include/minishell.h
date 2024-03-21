@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 11:57:00 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:55:56 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct s_cmd
 {
 	t_token	*tkn;
 	t_list	*args;
-	t_list	*rdrs; //TODO free!!!
+	t_list	*rdrs;
 
 	bool	is_piped;
 }	t_cmd;

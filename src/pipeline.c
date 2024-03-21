@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 16:26:06 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:52:12 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ static void	_exec_pipeline(t_list	*ppln)
 				_exec_builtin(bltn_ptr[i], _cmd, shell_buffer);
 			i++;
 		}
-		process_redirs(_cmd, shell_buffer);
+		if (_cmd->rdrs)
+			process_redirs(_cmd, shell_buffer);
 		i = 0;
 		_ppln = _ppln->next;
 	}
@@ -94,12 +95,12 @@ static t_list *_add_redirection(t_list *tkn_lst, t_cmd *cmd)
 		if (tkn->type == ARG)
 			ft_lstadd_back(&rdr->args, sh_guard(ft_lstnew(tkn), NULL));
 		else if (tkn->type == PIPE)
-			return (tkn_lst);
+			break ;
 		else
 		{
 			ft_lstadd_back(&cmd->rdrs, sh_guard(ft_lstnew(rdr), NULL));
 			_add_redirection(tkn_lst->next, cmd);
-			return (tkn_lst);
+			break ;
 		}
 		tkn_lst = tkn_lst->next;
 	}
@@ -120,6 +121,7 @@ void	run_pipeline(t_list *tkn_lst)
 	rflag = false;
 	_lst = tkn_lst;
 	sh = get_shell();
+	cmd = NULL;
 	while (_lst)
 	{
 		_tkn = _lst->content;
@@ -135,6 +137,13 @@ void	run_pipeline(t_list *tkn_lst)
 			ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(_tkn), NULL));
 		else if (_tkn->type != PIPE)
 		{
+ 			if (!cmd)
+			{
+				cmd = sh_calloc(1, sizeof(t_cmd));
+				cmd->tkn = _tkn;
+				cmd->is_piped = false;
+				ft_lstadd_back(&sh->ppln, sh_guard(ft_lstnew(cmd), NULL));
+			}
 			rflag = true;
 			_lst = _add_redirection(_lst, cmd);
 			continue ; //TODO recoger el avance, TEMA listas subrogadas
