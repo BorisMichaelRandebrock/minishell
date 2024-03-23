@@ -46,6 +46,7 @@
 		"complex": "c",
 		"stddef.h": "c",
 		"fm_memory.h": "c",
-		"fm_lists.h": "c"
+		"fm_lists.h": "c",
+		"fm_string.h": "c"
 	}
 }

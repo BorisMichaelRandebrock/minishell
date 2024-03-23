@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 12:10:36 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 21:36:25 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <readline/readline.h>
 #include <unistd.h>
 #include "minishell.h"
+#include "fm_string.h"
 #include "libft.h"
 
 int	main(int argc, char *argv[], char *sys_env[])

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 14:12:59 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 14:58:09 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	__export(t_list *args, int fd)
 			if (_check_evar(&eflag, tkn->str, &_args))
 				continue ;
 			evar = ft_split(tkn->str, '=');
-			evar[NAME] = sh_guard(ft_strjoin(evar[NAME], "="), evar[NAME]);
+			evar[NAME] = sh_guard(fm_strjoin_(evar[NAME], "="), evar[NAME]);
 			set_evar(evar[NAME], evar[VALUE]);
 			_args = _args->next;
 			_free(evar);

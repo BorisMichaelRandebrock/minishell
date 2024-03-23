@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 10:27:22 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 14:11:13 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 22:48:35 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_fmlst
 	t_fmlst		*next;
 }	t_fmlst;
 
+t_fmlst	*fm_lstfind(t_fmlst *fmlst, void *item);
 t_fmlst	*fm_lstlast(t_fmlst *parent);
 t_fmlst	*fm_lsthead(t_fmlst *parent);
 t_fmlst	*fm_lstnew_(void *item, t_fmlst *nble_fmlst, t_fmlopt opt);

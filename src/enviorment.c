@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 14:11:00 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 21:43:20 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ void	set_evar(char *var_name, char *value)
 	{
 		if (ft_strnstr(sh->env[i], var_name, fm_strlen(var_name)))
 		{
-			sh->env[i] = sh_guard(ft_strjoin(var_name, value), sh->env[i]);
+			sh->env[i] = sh_guard(fm_strjoin_(var_name, value), sh->env[i]);
 			return ;
 		}
 		i++;
 	}
 	sh->env = sh_ralloc(sh->env, (i + NEW_VAR_SZ + NUL_SZ) * sizeof(char *));
-	sh->env[i++] = sh_guard(ft_strjoin(var_name, value), NULL);
+	sh->env[i++] = sh_guard(fm_strjoin_(var_name, value), NULL);
 	sh->env[i] = NULL;
 }
 

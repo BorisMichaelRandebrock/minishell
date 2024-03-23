@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 14:35:42 by fmontser          #+#    #+#              #
-#    Updated: 2024/03/23 14:24:26 by fmontser         ###   ########.fr        #
+#    Updated: 2024/03/23 15:01:43 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ HDRS 			:= fm_string.h fm_memory.h fm_lists.h
 SRCS 			:= \
 	fm_malloc.c fm_calloc.c fm_realloc.c\
 	fm_lstnew.c fm_lstfree.c fm_lstwipe.c fm_lstlast.c fm_lsthead.c\
-	fm_strlen.c\
+	fm_strlen.c fm_strjoin.c\
 	#main.c
 
 OBJS 			:= $(SRCS:%.c=%.o)

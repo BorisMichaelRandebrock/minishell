@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fm_lib.h                                           :+:      :+:    :+:   */
+/*   fm_lstfind.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/22 10:27:22 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 12:43:52 by fmontser         ###   ########.fr       */
+/*   Created: 2024/03/23 23:02:13 by fmontser          #+#    #+#             */
+/*   Updated: 2024/03/23 23:06:28 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FM_STRING_H
-# define FM_STRING_H
+#include "fm_lists.h"
 
-# include <stddef.h>
-
-size_t	fm_strlen(const char *s);
-
-#endif
+t_fmlst	*fm_lstfind(t_fmlst *fmlst, void *item)
+{
+	//TODO @@@@@@@@ implementar
+}

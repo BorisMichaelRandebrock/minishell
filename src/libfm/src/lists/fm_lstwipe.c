@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 14:04:23 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 14:23:06 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 22:02:04 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	fm_lstwipe(t_fmlst *parent)
 		parent = _node;
 		if (_node->nested)
 			fm_lstwipe(_node->item);
-		else
+		else if (_node->item)
 			free(_node->item);
 		_node = _node->next;
 		free(parent);
