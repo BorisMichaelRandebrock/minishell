@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/03/22 22:46:22 by fmontser         ###   ########.fr        #
+#    Updated: 2024/03/23 14:20:45 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,12 +100,10 @@ re: fclean all
 .PHONY: all clean fclean re
 
 #TODO probar a pasar argumentos a minishell ej. ls | ./minishell... no debe petar!
-#TODO	set_evar("_=", cmd->tkn->str); para procesos!!!
 #TODO repasar tema del history, es mas complejo...mirar bash manual
-#TODO la gestion de memoria es valida pero no me convence...
 #TODO ft_strjoin, ft_strlen, ft_strnstr, ft_is_whspc update(fran),  ft_rszarray, libft.h, makefile
 #TODO limpieza includes
 #TODO retirar .vscode de git
 #TODO retirar las funciones libft no utilizadas
 #TODO resolver que pasa cuando no se recompilan slos cambios de una libreria o make anidado
-
+#TODO repasar el makefile, refactor el metodo de gestionar los directorios (fran)

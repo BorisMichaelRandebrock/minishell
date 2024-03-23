@@ -6,14 +6,15 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:45:27 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 18:44:28 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 14:09:53 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "minishell.h"
+#include "fm_string.h"
 
 
 void	process_redirs(t_cmd *cmd, char *shell_buffer)
@@ -43,7 +44,7 @@ void	process_redirs(t_cmd *cmd, char *shell_buffer)
 				{
 					write(fd, " ", 1);
 					arg = rdr->args->content;
-					write(fd, arg->str, ft_strlen(arg->str));
+					write(fd, arg->str, fm_strlen(arg->str));
 					rdr->args = rdr->args->next;
 				}
 			close(fd);

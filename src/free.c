@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 22:16:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 18:06:21 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 12:10:43 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void sh_free_iter(void)
 	sh = get_shell();
 
 	// free tokens
-	node = sh->tkn_lst;
+	node = sh->tknlst;
 	while(node)
 	{
 		tkn = node->content;
@@ -62,10 +62,10 @@ void sh_free_iter(void)
 		node = node->next;
 		free(prev_node);
 	}
-	sh->tkn_lst = NULL;
+	sh->tknlst = NULL;
 
 	//free commands
-	node = sh->ppln;
+	node = sh->pplnlst;
 	while(node)
 	{
 		cmd = node->content;
@@ -89,7 +89,7 @@ void sh_free_iter(void)
 		node = node->next;
 		free(prev_node);
 	}
-	sh->ppln = NULL;
+	sh->pplnlst = NULL;
 }
 
 //Clean exit from shell

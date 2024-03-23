@@ -6,14 +6,17 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 22:12:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 14:11:00 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "libft.h"
 #include <unistd.h>
 #include <string.h>
+#include "minishell.h"
+#include "libft.h"
+#include "fm_memory.h"
+#include "fm_lists.h"
+#include "fm_string.h"
 
 #define NEW_VAR_SZ		1
 
@@ -28,7 +31,7 @@ char	*get_evar(char *var_name)
 	i = 0;
 	while (sh->env[i])
 	{
-		match = ft_strnstr(sh->env[i], var_name, ft_strlen(var_name));
+		match = ft_strnstr(sh->env[i], var_name, fm_strlen(var_name));
 		if (match)
 			return (ft_strchr(match, '=') + CH_SZ);
 		i++;
@@ -46,7 +49,7 @@ void	set_evar(char *var_name, char *value)
 	i = 0;
 	while (sh->env[i])
 	{
-		if (ft_strnstr(sh->env[i], var_name, ft_strlen(var_name)))
+		if (ft_strnstr(sh->env[i], var_name, fm_strlen(var_name)))
 		{
 			sh->env[i] = sh_guard(ft_strjoin(var_name, value), sh->env[i]);
 			return ;
@@ -69,7 +72,7 @@ void	unset_evar(char *var_name)
 	i = 0;
 	while (sh->env[i])
 	{
-		if (ft_strnstr(sh->env[i], var_name, ft_strlen(var_name)))
+		if (ft_strnstr(sh->env[i], var_name, fm_strlen(var_name)))
 		{
 			free(sh->env[i]);
 			j = i;
@@ -99,11 +102,13 @@ void	new_env(t_shell *sh, char **sys_env)
 	i = 0;
 	while (sys_env[count])
 		count++;
-	env = sh_calloc(count, sizeof(char *));
+	env = fm_calloc_(count + NUL_SZ * sizeof(char), sh_perror, MEM_ERROR);
+	fm_lstnew_(env, sh->exitlst, O_APP);
 	while (i < count)
 	{
-		var_sz = ft_strlen(sys_env[i]);
-		env[i] = sh_calloc(var_sz + NUL_SZ, sizeof(char));
+		var_sz = fm_strlen(sys_env[i]);
+		env[i] = fm_calloc_(var_sz + NUL_SZ * sizeof(char), sh_perror, MEM_ERROR);
+		sh_calloc(var_sz + NUL_SZ, sizeof(char));
 		ft_memcpy(env[i], sys_env[i], var_sz + NUL_SZ);
 		i++;
 	}

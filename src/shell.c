@@ -6,13 +6,16 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 23:14:22 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 14:07:41 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
 #include "minishell.h"
+#include "fm_memory.h"
+#include "fm_lists.h"
+#include "fm_string.h"
 #include "libft.h"
 
 #define DFLT_ENV_SZ 5
@@ -26,7 +29,7 @@ void	set_prompt(void)
 	t_token	tkn;
 
 	getcwd(buffer, BUF_1KB);
-	i = ft_strlen(buffer);
+	i = fm_strlen(buffer);
 	while(i >= 0)
 	{
 		if (buffer[i] == '/')
@@ -51,7 +54,10 @@ t_shell	*get_shell(void)
 	static t_shell	*shell = NULL;
 
 	if (!shell)
-		shell = sh_guard(ft_calloc(1, sizeof(t_shell)), NULL);
+	{
+		shell = fm_calloc_(sizeof(t_shell),sh_perror, MEM_ERROR);
+		fm_lstnew_(shell, shell->exitlst, O_CREATE);
+	}
 	return (shell);
 }
 

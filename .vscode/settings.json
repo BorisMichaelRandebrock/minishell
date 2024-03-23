@@ -43,6 +43,9 @@
 		"tuple": "c",
 		"type_traits": "c",
 		"typeinfo": "c",
-		"complex": "c"
+		"complex": "c",
+		"stddef.h": "c",
+		"fm_memory.h": "c",
+		"fm_lists.h": "c"
 	}
 }

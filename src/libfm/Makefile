@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 14:35:42 by fmontser          #+#    #+#              #
-#    Updated: 2024/03/22 22:50:18 by fmontser         ###   ########.fr        #
+#    Updated: 2024/03/23 14:24:26 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,20 @@ MAKEFILE		:= Makefile
 ROOT_DIR		:= $(CURDIR)/
 INC_DIR			:= include/
 SRC_DIR			:= src/
+STR_DIR			:= src/string
+MEM_DIR			:= src/memory
+LST_DIR			:= src/lists
 OBJ_DIR			:= obj/
 LIB_DIR			:= lib/
 BIN_DIR			:= bin/
 BIN_NAME		:= program
 NAME			:= libfm.a
-HDRS 			:= fm_lib.h fm_alloc.h fm_list.h
-SRCS 			:= fm_alloc.c fm_list.c fm_list_free.c #main.c
+HDRS 			:= fm_string.h fm_memory.h fm_lists.h
+SRCS 			:= \
+	fm_malloc.c fm_calloc.c fm_realloc.c\
+	fm_lstnew.c fm_lstfree.c fm_lstwipe.c fm_lstlast.c fm_lsthead.c\
+	fm_strlen.c\
+	#main.c
 
 OBJS 			:= $(SRCS:%.c=%.o)
 LIBS 			:= libfm.a
@@ -31,7 +38,8 @@ W_FLAGS			:= -Wall -Werror -Wextra
 CC_FLAGS 		:= $(W_FLAGS) -g -c
 
 CLEAN_TARGETS = $(wildcard $(addprefix $(OBJ_DIR),$(OBJS)))
-FCLEAN_TARGETS = $(wildcard $(addprefix $(LIB_DIR),$(LIBS))) $(wildcard $(addprefix $(BIN_DIR),$(BIN_NAME)))
+FCLEAN_TARGETS = $(wildcard $(addprefix $(LIB_DIR),$(LIBS)))\
+	$(wildcard $(addprefix $(BIN_DIR),$(BIN_NAME)))
 
 COLOR_GREEN :=\033[0;32m
 COLOR_RED	:=\033[0;31m
@@ -39,7 +47,7 @@ COLOR_BLUE	:=\033[0;34m
 COLOR_END	:=\033[0m
 
 vpath %.h $(INC_DIR)
-vpath %.c $(SRC_DIR) $(ROOT_DIR)
+vpath %.c $(SRC_DIR) $(ROOT_DIR) $(STR_DIR) $(MEM_DIR) $(LST_DIR)
 vpath %.o $(OBJ_DIR)
 vpath %.a $(LIB_DIR)
 

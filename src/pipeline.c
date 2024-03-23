@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 17:52:12 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 14:09:40 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <unistd.h>
  #include <sys/wait.h>
 #include "minishell.h"
+#include "fm_string.h"
 
 void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 {
@@ -23,7 +24,7 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 	t_token	_tkn;
 
 	_tkn.str = shell_buffer;
-	shell_buffer[ft_strlen(shell_buffer)] = '\0';
+	shell_buffer[fm_strlen(shell_buffer)] = '\0';
 	pipe(pipefd);
 	fd = STDOUT_FILENO;
 	if (cmd->is_piped || cmd->rdrs)
@@ -34,7 +35,7 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 	if (cmd->is_piped || cmd->rdrs)
 	{
 		read(pipefd[RD], shell_buffer, BUF_1MB);
-		shell_buffer[ft_strlen(shell_buffer)] = '\0';
+		shell_buffer[fm_strlen(shell_buffer)] = '\0';
 		close(pipefd[RD]);
 	}
 	set_evar("?=", sh_guard(exit_code, NULL));
@@ -69,7 +70,7 @@ static void	_exec_pipeline(t_list	*ppln)
 			_cmd->is_piped = true;
 		while (bltn_id[i])
 		{
-			if (!ft_strncmp(_cmd->tkn->str, bltn_id[i], ft_strlen(bltn_id[i]) + NUL_SZ))
+			if (!ft_strncmp(_cmd->tkn->str, bltn_id[i], fm_strlen(bltn_id[i]) + NUL_SZ))
 				_exec_builtin(bltn_ptr[i], _cmd, shell_buffer);
 			i++;
 		}
@@ -131,7 +132,7 @@ void	run_pipeline(t_list *tkn_lst)
 			cmd = sh_calloc(1, sizeof(t_cmd));
 			cmd->tkn = _tkn;
 			cmd->is_piped = false;
-			ft_lstadd_back(&sh->ppln, sh_guard(ft_lstnew(cmd), NULL));
+			ft_lstadd_back(&sh->pplnlst, sh_guard(ft_lstnew(cmd), NULL));
 		}
 		else if (_tkn->type == ARG && !rflag)
 			ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(_tkn), NULL));
@@ -142,7 +143,7 @@ void	run_pipeline(t_list *tkn_lst)
 				cmd = sh_calloc(1, sizeof(t_cmd));
 				cmd->tkn = _tkn;
 				cmd->is_piped = false;
-				ft_lstadd_back(&sh->ppln, sh_guard(ft_lstnew(cmd), NULL));
+				ft_lstadd_back(&sh->pplnlst, sh_guard(ft_lstnew(cmd), NULL));
 			}
 			rflag = true;
 			_lst = _add_redirection(_lst, cmd);
@@ -150,5 +151,5 @@ void	run_pipeline(t_list *tkn_lst)
 		}
 		_lst = _lst->next;
 	}
-	_exec_pipeline(sh->ppln);
+	_exec_pipeline(sh->pplnlst);
 }

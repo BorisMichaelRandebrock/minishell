@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exception.c                                        :+:      :+:    :+:   */
+/*   fm_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/13 11:24:17 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 12:06:23 by fmontser         ###   ########.fr       */
+/*   Created: 2024/03/23 12:33:04 by fmontser          #+#    #+#             */
+/*   Updated: 2024/03/23 12:45:26 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "minishell.h"
+#include <stddef.h>
 
-void	sh_perror(void *error_msg)
+size_t	fm_strlen(const char *s)
 {
-	printf("%s\n", (char *)error_msg);
-	sh_freexit(FAILURE);
+	size_t	length;
+
+	length = 0;
+	while (s && s[length++])
+		;
+	return (length);
 }

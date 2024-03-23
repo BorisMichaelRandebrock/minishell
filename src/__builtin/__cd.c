@@ -6,17 +6,18 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:26:03 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 23:14:31 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 14:13:45 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
+#include "fm_string.h"
 
 static int	_print_error(char *arg)
 {
 	write(STDERR_FILENO, "cd: no such file or directory: ", 32);
-	write(STDERR_FILENO, arg, ft_strlen(arg));
+	write(STDERR_FILENO, arg, fm_strlen(arg));
 	write(STDERR_FILENO, "\n", 1);
 	return (FAILURE);
 }

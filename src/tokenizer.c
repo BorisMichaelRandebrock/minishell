@@ -6,12 +6,13 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/21 17:51:42 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 14:09:03 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
+#include "fm_string.h"
 
 #define WHSPC_CHRS " \t\n\r\f\v"
 #define NQUOTES 2
@@ -25,7 +26,7 @@ static void	_typify(void)
 	t_token	*_prev_tkn;
 
 	_prev = NULL;
-	_lst = get_shell()->tkn_lst;
+	_lst = get_shell()->tknlst;
 	while (_lst)
 	{
 		_tkn = (t_token *)_lst->content;
@@ -59,11 +60,11 @@ static void	_dequote_token(t_token *tkn)
 	_str = tkn->str;
 	if (tkn->type == ARG || tkn->type == CMD)
 	{
-		if ((_str[0] == DQU_CH && _str[ft_strlen(_str) - 1] == DQU_CH)
-			|| (_str[0] == SQU_CH && _str[ft_strlen(_str) - 1] == SQU_CH))
+		if ((_str[0] == DQU_CH && _str[fm_strlen(_str) - 1] == DQU_CH)
+			|| (_str[0] == SQU_CH && _str[fm_strlen(_str) - 1] == SQU_CH))
 		{
-			ft_memmove(_str, &_str[1], ft_strlen(_str) - NQUOTES);
-			_str[ft_strlen(_str) - NQUOTES] = NUL_CH;
+			ft_memmove(_str, &_str[1], fm_strlen(_str) - NQUOTES);
+			_str[fm_strlen(_str) - NQUOTES] = NUL_CH;
 		}
 	}
 }
@@ -82,7 +83,7 @@ static void	_extract_token(char *start, char *end)
 	tkn->str = sh_guard(ft_strtrim(substr, WHSPC_CHRS), substr);
 	token_expansion(tkn);
 	_dequote_token(tkn);
-	ft_lstadd_back(&sh->tkn_lst, sh_guard(ft_lstnew(tkn), NULL));
+	ft_lstadd_back(&sh->tknlst, sh_guard(ft_lstnew(tkn), NULL));
 }
 
 char	*_extract_op_token(char *input)
@@ -101,7 +102,7 @@ char	*_extract_op_token(char *input)
 	if (op_sz == 2)
 		input++;
 	tkn->str = substr;
-	ft_lstadd_back(&sh->tkn_lst, sh_guard(ft_lstnew(tkn), NULL));
+	ft_lstadd_back(&sh->tknlst, sh_guard(ft_lstnew(tkn), NULL));
 	return(input);
 }
 

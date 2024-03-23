@@ -6,12 +6,13 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:29:40 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/14 11:38:56 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 14:13:10 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
+#include "fm_string.h"
 
 int	__pwd(t_list *args, int fd)
 {
@@ -19,7 +20,7 @@ int	__pwd(t_list *args, int fd)
 
 	(void)args;
 	pwd = get_evar("PWD=");
-	write(fd, pwd, ft_strlen(pwd));
+	write(fd, pwd, fm_strlen(pwd));
 	write(fd, "\n", 1);
 	return(SUCCESS);
 }

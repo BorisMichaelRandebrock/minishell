@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exception.c                                        :+:      :+:    :+:   */
+/*   fm_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/13 11:24:17 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 12:06:23 by fmontser         ###   ########.fr       */
+/*   Created: 2024/03/21 22:14:52 by fmontser          #+#    #+#             */
+/*   Updated: 2024/03/23 12:59:34 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "minishell.h"
+#include "fm_memory.h"
 
-void	sh_perror(void *error_msg)
+//Alloc heap memory, zero init. Nullable exception custom function and arg.
+void	*fm_calloc_(size_t size, t_excpt nble_ex, void *nble_arg)
 {
-	printf("%s\n", (char *)error_msg);
-	sh_freexit(FAILURE);
+	char	*alloc;
+	size_t	i;
+
+	alloc = fm_malloc_(size, nble_ex, nble_arg);
+	if (!alloc)
+		return (NULL);
+	i = 0;
+	while (i < size)
+		alloc[i++] = '\0';
+	return (alloc);
 }

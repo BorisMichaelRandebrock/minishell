@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 17:55:56 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/23 14:07:00 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # define WR			1
 
 # define INIT		-100
-# define MEM_ERROR	-10
-# define NULL_ERROR	-11
+# define MEM_ERROR	"Memory error, exiting..."
+# define NULL_ERROR	"NULL error, exiting..."
 
 # define SUCCESS	0
 # define FAILURE	1
@@ -49,6 +49,7 @@
 # include <signal.h>
 # include <stdbool.h>
 # include "libft.h"
+# include "fm_lists.h"
 
 # include <stdio.h> //TODO para pruebas retirar
 
@@ -92,8 +93,11 @@ typedef struct s_shell
 {
 	char	*input;
 	char	**env;
-	t_list	*tkn_lst;
-	t_list	*ppln;
+
+	t_fmlst	*exitlst;
+	t_fmlst	*loclst;
+	t_list	*tknlst;	//TODO cambiar tipos
+	t_list	*pplnlst;
 }	t_shell;
 
 t_shell		*new_shell(char **sys_env);
@@ -123,6 +127,6 @@ void		sh_free_iter(void);
 void		sh_free_env(void);
 void		sh_free_shell(void);
 void		*sh_guard(void *alloc, void *nullable_old);
-void		sh_perror(int error_code);
+void		sh_perror(void *error_code);
 
 #endif

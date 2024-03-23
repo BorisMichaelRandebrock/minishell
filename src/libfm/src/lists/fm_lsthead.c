@@ -1,16 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fm_lib.h                                           :+:      :+:    :+:   */
+/*   fm_lsthead.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/22 10:27:22 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/22 12:39:58 by fmontser         ###   ########.fr       */
+/*   Created: 2024/03/23 13:02:49 by fmontser          #+#    #+#             */
+/*   Updated: 2024/03/23 13:04:45 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FM_LIB_H
-# define FM_LIB_H
+#include "fm_lists.h"
 
-#endif
+//Returns pointer to head node of a list given any node of it.
+t_fmlst	*fm_lsthead(t_fmlst *node)
+{
+	t_fmlst	*head;
+
+	head = node;
+	while (head->prev)
+		head = head->prev;
+	return (head);
+}
