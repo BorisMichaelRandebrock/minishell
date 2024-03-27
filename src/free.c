@@ -6,12 +6,21 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 22:16:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 18:06:21 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/27 21:16:41 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
+
+/* static void	_shldfree(void *content)
+{
+	if (content)
+	{
+		free(content);
+		content = NULL;	//TODO um...
+	}
+} */
 
 
 void	sh_free_shell(void)
@@ -39,58 +48,122 @@ void	sh_free_env(void)
 	free(sh->env);
 }
 
-//TODO estructurar...
-void sh_free_iter(void)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//TODO ESTRUCTURAR!!!! ############
+
+static void _freerdr(t_rdr *rdr);
+static void _freecmd(t_cmd *cmd);
+
+
+static void _lfreeargs(t_list *args)
 {
-	t_shell *sh;
-	t_token *tkn;
-	t_cmd	*cmd;
-	t_list	*node;
-	t_list	*subnode;
-	t_list	*prev_node;
+	t_list	*prev;
 
-	sh = get_shell();
-
-	// free tokens
-	node = sh->tkn_lst;
-	while(node)
+	while (args)
 	{
-		tkn = node->content;
-		free(tkn->str);
-		free(tkn);
-		prev_node = node;
-		node = node->next;
-		free(prev_node);
+		prev = args;
+		args = args->next;
+		free(prev);
 	}
-	sh->tkn_lst = NULL;
-
-	//free commands
-	node = sh->ppln;
-	while(node)
-	{
-		cmd = node->content;
-		//free arglist
-		subnode = cmd->args;
-		while (subnode)
-		{
-			prev_node = subnode;
-			subnode = subnode->next;
-			free(prev_node);
-		}
-		subnode = cmd->rdrs;
-		while (subnode)
-		{
-			prev_node = subnode;
-			subnode = subnode->next;
-			free(prev_node);
-		}
-		free(cmd);
-		prev_node = node;
-		node = node->next;
-		free(prev_node);
-	}
-	sh->ppln = NULL;
 }
+static void _lfreerdrs(t_list *rdrs)
+{
+	t_list	*prev;
+	t_rdr	*rdr;
+
+	while (rdrs)
+	{
+		rdr = rdrs->content;
+		_freerdr(rdr);
+		prev = rdrs;
+		rdrs = rdrs->next;
+		free(prev);
+	}
+}
+
+static void _freerdr(t_rdr *rdr)
+{
+	_lfreeargs(rdr->args);
+	free(rdr);
+}
+
+static void _freecmd(t_cmd *cmd)
+{
+	_lfreeargs(cmd->args);
+	_lfreerdrs(cmd->rdrs);
+	free(cmd);
+}
+
+void sh_lfreeppln(t_list *ppln)
+{
+	t_list	*prev;
+	t_cmd	*cmd;
+
+	while (ppln)
+	{
+		cmd = ppln->content;
+		_freecmd(cmd);
+		prev = ppln;
+		ppln = ppln->next;
+		free(prev);
+	}
+	//TODO abstraer
+}
+
+
+
+
+
+
+
+
+
+
+
+static void _freetkn(t_token *tkn)
+{
+	free(tkn->str);
+	free(tkn);
+}
+
+void sh_lfreetkns(t_list *tkn_lst)
+{
+	t_list	*prev;
+	t_token	*tkn;
+
+	while (tkn_lst)
+	{
+		tkn = tkn_lst->content;
+		_freetkn(tkn);
+		prev = tkn_lst;
+		tkn_lst = tkn_lst->next;
+		free(prev);
+	}
+}
+
+
+
+
+
+
+
+
+
 
 //Clean exit from shell
 void	sh_freexit(int exit_code)
@@ -100,7 +173,6 @@ void	sh_freexit(int exit_code)
 
 	i = 0;
 	sh = get_shell();
-	sh_free_iter();
 	sh_free_env();
 	sh_free_shell();
 	exit(exit_code);

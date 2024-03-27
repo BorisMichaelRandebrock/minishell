@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 17:52:12 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/27 21:23:30 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ static void	_exec_pipeline(t_list	*ppln)
 			i++;
 		}
 		if (_cmd->rdrs)
-			process_redirs(_cmd, shell_buffer);
+		{
+			process_redirs(_cmd->rdrs, shell_buffer);
+		}
 		i = 0;
 		_ppln = _ppln->next;
 	}

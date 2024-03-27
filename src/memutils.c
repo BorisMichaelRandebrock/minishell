@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 22:28:19 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/27 21:05:02 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	*sh_calloc(size_t num, size_t size)
 		sh_perror(MEM_ERROR);
 	return (alloc);
 }
+
+//TODO sh_ralloc no esta protegido!!!
 //Protected reallocation with calloc
 void	*sh_ralloc(void *old, size_t new_size)
 {

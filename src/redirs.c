@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:45:27 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 18:44:28 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/27 21:52:45 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,60 +15,66 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-
-void	process_redirs(t_cmd *cmd, char *shell_buffer)
+static void	_rdout(t_list *rdrs, char *shell_buffer)
 {
-	t_rdr	*rdr;
-	t_token	*arg;
-	t_list	*args_list;
+	t_rdr	*_rdr;
+	t_list	*_args;
+	t_token	*_tkn;
+	int	fd;
+	int	i;
+
+	i = 0;
+	_rdr = rdrs->content;
+	_args = _rdr->args;
+	_tkn = _args->content;
+	fd = open(_tkn->str, O_WRONLY | O_CREAT | O_TRUNC, 0777); //TODO gestionar errores open??
+	if (!rdrs->next)
+	{
+		while(shell_buffer[i])
+			write(fd, &shell_buffer[i++], 1);
+		_args = _args->next;
+		while (_args)
+		{
+			write(fd, " ", 1);
+			_tkn = _args->content;
+			write(fd, _tkn->str, ft_strlen(_tkn->str));
+			_args = _args->next;
+		}
+	}
+	close(fd);
+}
+
+
+void	process_redirs(t_list *rdrs, char *shell_buffer)
+{
+	t_rdr	*_rdr;
+	t_token	*_arg;
 	int		fd;
 	int		i;
-	void	*free_prev;
 
-	while (cmd->rdrs)
+	while (rdrs)
 	{
-		rdr = cmd->rdrs->content;
-		args_list = rdr->args;
+		_rdr = rdrs->content;
 		i = 0;
-		if (rdr->op->type == RDOUT)
+		if (_rdr->op->type == RDOUT)
+			_rdout(rdrs, shell_buffer);
+		else if (_rdr->op->type == RDAPP)
 		{
-			arg = rdr->args->content;
-			fd = open(arg->str, O_WRONLY | O_CREAT | O_TRUNC, 0777); //TODO gestionar errores open??
-			if (!cmd->rdrs->next)
-				while(shell_buffer[i])
-					write(fd, &shell_buffer[i++], 1);
-				i = 0;
-				rdr->args = rdr->args->next;
-				while (rdr->args)	//TODO //BUG //FIXME cantidade de LEAKS en los argumentos
-				{
-					write(fd, " ", 1);
-					arg = rdr->args->content;
-					write(fd, arg->str, ft_strlen(arg->str));
-					rdr->args = rdr->args->next;
-				}
-			close(fd);
-		}
-		else if (rdr->op->type == RDAPP)
-		{
-			arg = rdr->args->content;
-			fd = open(arg->str, O_WRONLY | O_CREAT | O_APPEND, 0777); //TODO gestionar errores open??
+			_arg = _rdr->args->content;
+			fd = open(_arg->str, O_WRONLY | O_CREAT | O_APPEND, 0777); //TODO gestionar errores open??
 			while(shell_buffer[i])
 				write(fd, &shell_buffer[i++], 1);
 			close(fd);
 		}
-		else if (rdr->op->type == RDIN)
+		else if (_rdr->op->type == RDIN)
 		{
 			//TODO cuando hagamos los procesos externoss
 		}
-		else if (rdr->op->type == RDHDOC)
+		else if (_rdr->op->type == RDHDOC)
 		{
 			//TODO cuando hagamos los procesos externos
 		}
-		free(args_list);
-		free(rdr);
-		free_prev = cmd->rdrs;
-		cmd->rdrs = cmd->rdrs->next;
-		free(free_prev);
+		rdrs = rdrs->next;
 	}
 	ft_memset(shell_buffer, '\0', BUF_1MB);
 }

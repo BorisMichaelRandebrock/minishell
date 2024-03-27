@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 17:55:56 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/27 21:11:26 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_shell		*get_shell();
 void		token_expansion(t_token *tkn);
 void		run_pipeline(t_list *tkn_lst);
 void		exec_pipeline(t_list *ppln);
-void		process_redirs(t_cmd *cmd, char *buffer);
+void		process_redirs(t_list *rdrs, char *shell_buffer);
 int			__echo(t_list *args, int fd);
 int			__cd(t_list *args, int fd);
 int			__pwd(t_list *args, int fd);
@@ -122,6 +122,8 @@ void		sh_freexit(int exit_code);
 void		sh_free_iter(void);
 void		sh_free_env(void);
 void		sh_free_shell(void);
+void		sh_lfreeppln(t_list *ppln);
+void		sh_lfreetkns(t_list *tkn_lst);
 void		*sh_guard(void *alloc, void *nullable_old);
 void		sh_perror(int error_code);
 
