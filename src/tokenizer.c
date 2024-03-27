@@ -6,13 +6,14 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/23 14:09:03 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/27 11:50:43 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
-#include "fm_string.h"
+#include "libfm.h"
+#include "libft.h"
 
 #define WHSPC_CHRS " \t\n\r\f\v"
 #define NQUOTES 2
@@ -20,8 +21,8 @@
 //TODO es posible  mejorar la integracion de este
 static void	_typify(void)
 {
-	t_list	*_prev;
-	t_list	*_lst;
+	t_fmlst	*_prev;
+	t_fmlst	*_lst;
 	t_token	*_tkn;
 	t_token	*_prev_tkn;
 
@@ -29,9 +30,9 @@ static void	_typify(void)
 	_lst = get_shell()->tknlst;
 	while (_lst)
 	{
-		_tkn = (t_token *)_lst->content;
+		_tkn = (t_token *)_lst->item;
 		if (_prev)
-			_prev_tkn = (t_token *)_prev->content;
+			_prev_tkn = (t_token *)_prev->item;
 		if (*_tkn->str == '<' || *_tkn->str == '>' || *_tkn->str == '|')
 		{
 			if (*(_tkn->str + 1) == *_tkn->str)
@@ -60,11 +61,11 @@ static void	_dequote_token(t_token *tkn)
 	_str = tkn->str;
 	if (tkn->type == ARG || tkn->type == CMD)
 	{
-		if ((_str[0] == DQU_CH && _str[fm_strlen(_str) - 1] == DQU_CH)
-			|| (_str[0] == SQU_CH && _str[fm_strlen(_str) - 1] == SQU_CH))
+		if ((_str[0] == DQU_CH && _str[ft_strlen(_str) - 1] == DQU_CH)
+			|| (_str[0] == SQU_CH && _str[ft_strlen(_str) - 1] == SQU_CH))
 		{
-			ft_memmove(_str, &_str[1], fm_strlen(_str) - NQUOTES);
-			_str[fm_strlen(_str) - NQUOTES] = NUL_CH;
+			ft_memmove(_str, &_str[1], ft_strlen(_str) - NQUOTES);
+			_str[ft_strlen(_str) - NQUOTES] = NUL_CH;
 		}
 	}
 }
@@ -79,18 +80,17 @@ static void	_extract_token(char *start, char *end)
 	sh = get_shell();
 	length = (end+1) - start;
 	tkn = sh_calloc(1, sizeof(t_token));
-	substr = sh_guard(ft_substr(start, 0, length), NULL);
-	tkn->str = sh_guard(ft_strtrim(substr, WHSPC_CHRS), substr);
+	substr = fm_mshld_(ft_substr(start, 0, length), ex_mem);
+	tkn->str = fm_mshldrw_(ft_strtrim(substr, WHSPC_CHRS), substr, ex_mem);
 	token_expansion(tkn);
 	_dequote_token(tkn);
-	ft_lstadd_back(&sh->tknlst, sh_guard(ft_lstnew(tkn), NULL));
+	fm_lstapp(&sh->tknlst, tkn, ex_mem);
 }
 
 char	*_extract_op_token(char *input)
 {
 	t_shell	*sh;
 	t_token	*tkn;
-	char	*substr;
 	int		op_sz;
 
 	sh = get_shell();
@@ -98,11 +98,10 @@ char	*_extract_op_token(char *input)
 	if ((*input == '<' || *input == '>') && *input == *(input + 1))
 		op_sz = 2;
 	tkn = sh_calloc(1, sizeof(t_token));
-	substr = sh_guard(ft_substr(input, 0, op_sz), NULL);
+	tkn->str = fm_mshld_(ft_substr(input, 0, op_sz), ex_mem);
+	fm_lstapp(&sh->tknlst, tkn, ex_mem);
 	if (op_sz == 2)
 		input++;
-	tkn->str = substr;
-	ft_lstadd_back(&sh->tknlst, sh_guard(ft_lstnew(tkn), NULL));
 	return(input);
 }
 

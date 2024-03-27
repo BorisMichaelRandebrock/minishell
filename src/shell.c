@@ -6,17 +6,15 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 20:06:13 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/26 14:33:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
 #include "minishell.h"
-#include "fm_memory.h"
-#include "fm_lists.h"
-#include "fm_string.h"
 #include "libft.h"
+#include "libfm.h"
 
 #define DFLT_ENV_SZ 5
 
@@ -29,7 +27,7 @@ void	set_prompt(void)
 	t_token	tkn;
 
 	getcwd(buffer, BUF_1KB);
-	i = fm_strlen(buffer);
+	i = ft_strlen(buffer);
 	while(i >= 0)
 	{
 		if (buffer[i] == '/')
@@ -39,8 +37,8 @@ void	set_prompt(void)
 		}
 		i--;
 	}
-	prompt = fm_strjoin_("PROMPT=", &buffer[i]);
-	prompt = sh_guard(fm_strjoin_(prompt, " 🐌> "), prompt);
+	prompt = fm_mshld_(ft_strjoin("PROMPT=", &buffer[i]), ex_mem);
+	prompt = fm_mshldrw_(ft_strjoin(prompt, " 🐌> "), prompt, ex_mem);
 	tkn.str = prompt;
 	tkn.type = ARG;
 	arg.content = &tkn;
@@ -55,8 +53,8 @@ t_shell	*get_shell(void)
 
 	if (!shell)
 	{
-		shell = fm_calloc_(sizeof(t_shell),sh_perror, MEM_ERROR);
-		fm_lstnew_(shell, shell->exitlst, O_CREATE);
+		shell = fm_calloc_(sizeof(t_shell),ex_mem);
+		fm_lstapp(&shell->exitlst, shell, ex_mem);
 	}
 	return (shell);
 }
@@ -64,7 +62,7 @@ t_shell	*get_shell(void)
 t_shell	*new_shell(char **sys_env)
 {
 	t_shell	*sh;
-
+	(void)sys_env;
 	sh = get_shell();
 	new_env(sh, sys_env);
 	return (sh);

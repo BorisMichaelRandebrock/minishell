@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 14:35:42 by fmontser          #+#    #+#              #
-#    Updated: 2024/03/23 15:01:43 by fmontser         ###   ########.fr        #
+#    Updated: 2024/03/26 14:18:01 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,6 @@ MAKEFILE		:= Makefile
 ROOT_DIR		:= $(CURDIR)/
 INC_DIR			:= include/
 SRC_DIR			:= src/
-STR_DIR			:= src/string
 MEM_DIR			:= src/memory
 LST_DIR			:= src/lists
 OBJ_DIR			:= obj/
@@ -24,11 +23,12 @@ LIB_DIR			:= lib/
 BIN_DIR			:= bin/
 BIN_NAME		:= program
 NAME			:= libfm.a
-HDRS 			:= fm_string.h fm_memory.h fm_lists.h
+HDRS 			:= libfm.h
 SRCS 			:= \
-	fm_malloc.c fm_calloc.c fm_realloc.c\
-	fm_lstnew.c fm_lstfree.c fm_lstwipe.c fm_lstlast.c fm_lsthead.c\
-	fm_strlen.c fm_strjoin.c\
+	fm_calloc.c fm_malloc.c fm_mshld.c fm_mshldrw.c fm_realloc.c\
+	fm_lstapp.c fm_lstfind.c fm_lstfree.c fm_lsthead.c fm_lstiter.c fm_lsttail.c\
+	fm_lstnest.c fm_lstprep.c fm_lstriter.c fm_lstwipe.c fm_lstxtrc.c\
+	fm_lstdelnd.c\
 	#main.c
 
 OBJS 			:= $(SRCS:%.c=%.o)
@@ -47,7 +47,7 @@ COLOR_BLUE	:=\033[0;34m
 COLOR_END	:=\033[0m
 
 vpath %.h $(INC_DIR)
-vpath %.c $(SRC_DIR) $(ROOT_DIR) $(STR_DIR) $(MEM_DIR) $(LST_DIR)
+vpath %.c $(SRC_DIR) $(ROOT_DIR) $(MEM_DIR) $(LST_DIR)
 vpath %.o $(OBJ_DIR)
 vpath %.a $(LIB_DIR)
 

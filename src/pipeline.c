@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 14:09:40 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/27 11:51:07 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include <unistd.h>
  #include <sys/wait.h>
 #include "minishell.h"
-#include "fm_string.h"
-
+#include "libfm.h"
+#include "libft.h"
+/*
 void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 {
 	char	*exit_code;
@@ -24,7 +25,7 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 	t_token	_tkn;
 
 	_tkn.str = shell_buffer;
-	shell_buffer[fm_strlen(shell_buffer)] = '\0';
+	shell_buffer[ft_strlen(shell_buffer)] = '\0';
 	pipe(pipefd);
 	fd = STDOUT_FILENO;
 	if (cmd->is_piped || cmd->rdrs)
@@ -35,7 +36,7 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 	if (cmd->is_piped || cmd->rdrs)
 	{
 		read(pipefd[RD], shell_buffer, BUF_1MB);
-		shell_buffer[fm_strlen(shell_buffer)] = '\0';
+		shell_buffer[ft_strlen(shell_buffer)] = '\0';
 		close(pipefd[RD]);
 	}
 	set_evar("?=", sh_guard(exit_code, NULL));
@@ -70,7 +71,7 @@ static void	_exec_pipeline(t_list	*ppln)
 			_cmd->is_piped = true;
 		while (bltn_id[i])
 		{
-			if (!ft_strncmp(_cmd->tkn->str, bltn_id[i], fm_strlen(bltn_id[i]) + NUL_SZ))
+			if (!ft_strncmp(_cmd->tkn->str, bltn_id[i], ft_strlen(bltn_id[i]) + NUL_SZ))
 				_exec_builtin(bltn_ptr[i], _cmd, shell_buffer);
 			i++;
 		}
@@ -111,7 +112,7 @@ static t_list *_add_redirection(t_list *tkn_lst, t_cmd *cmd)
 
 
 // echo hola > file  sfsdf| echo
-void	run_pipeline(t_list *tkn_lst)
+ void	run_pipeline(t_list *tkn_lst)
 {
 	t_shell	*sh;
 	t_token	*_tkn;
@@ -152,4 +153,4 @@ void	run_pipeline(t_list *tkn_lst)
 		_lst = _lst->next;
 	}
 	_exec_pipeline(sh->pplnlst);
-}
+} */

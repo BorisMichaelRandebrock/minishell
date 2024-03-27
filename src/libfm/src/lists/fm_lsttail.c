@@ -1,40 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   __env.c                                            :+:      :+:    :+:   */
+/*   fm_lsttail.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 19:20:14 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/26 13:39:49 by fmontser         ###   ########.fr       */
+/*   Created: 2024/03/23 13:03:18 by fmontser          #+#    #+#             */
+/*   Updated: 2024/03/26 13:20:11 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "minishell.h"
 #include "libfm.h"
-#include "libft.h"
 
-int	__env(t_list *args, int fd)
+//Returns tail node of a fmlst given any node of it [1/1]
+t_fmlst	*fm_lsttail(t_fmlst *fmlst)
 {
-	t_shell	*sh;
-	size_t	i;
-
-	(void)args;
-	sh = get_shell();
-	i = 0;
-	while (sh->env[i])
-	{
-		write(fd, sh->env[i], ft_strlen(sh->env[i]));
-		if (sh->env[++i])
-			write(fd, "\n", 1);
-	}
-	if (fd == STDOUT_FILENO)
-		write(fd, "\n", 1);
-	if (fd > SYS_FDS)
-	{
-		write(fd, "\0", 1);
-		close(fd);
-	}
-	return (SUCCESS);
+	while (fmlst && fmlst->next)
+		fmlst = fmlst->next;
+	return (fmlst);
 }

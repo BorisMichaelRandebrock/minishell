@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fm_mshld.c                                         :+:      :+:    :+:   */
+/*   fm_mshldrw.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,64 +13,74 @@
 #include <stdlib.h>
 #include "libfm.h"
 
-//Shield allocation with exception handler [1/5]
-void	*fm_mshld_(void *alloc, t_fmexcpt ex)
+//Shield allocation and free old, exception handler [1/5]
+void	*fm_mshldrw_(void *new, void* old, t_fmexcpt ex)
 {
-	if (!alloc)
+	if (!new)
 	{
 		if (!ex)
 			return (NULL);
 		(ex)(NULL);
 	}
-	return (alloc);
+	if (old)
+		free(old);
+	return (new);
 }
 
-//Shield allocation with exception handler and exception arg [2/5]
-void	*fm_mshld2_(void *alloc, t_fmexcpt ex, void *ex_arg)
+//Shield allocation and free old, exception handler and exception arg [2/5]
+void	*fm_mshldrw2_(void *new, void* old, t_fmexcpt ex, void *ex_arg)
 {
-	if (!alloc)
+	if (!new)
 	{
 		if (!ex)
 			return (NULL);
 		(ex)(ex_arg);
 	}
-	return (alloc);
+	if (old)
+		free(old);
+	return (new);
 }
 
-//Shield allocation with exception handler, fmlst append [3/5]
-void	*fm_mshld3_(void *alloc, t_fmexcpt ex, t_fmlst **applst)
+//Shield allocation and free old, exception handler, fmlst append [3/5]
+void	*fm_mshldrw3_(void *new, void* old, t_fmexcpt ex, t_fmlst **applst)
 {
-	if (!alloc)
+	if (!new)
 	{
 		if (!ex)
 			return (NULL);
 		(ex)(NULL);
 	}
-	fm_lstapp(applst, alloc, ex);
-	return (alloc);
+	if (old)
+		free(old);
+	fm_lstapp(applst, new, ex);
+	return (new);
 }
 
-//Shield allocation with exception handler, fmlst prepend [4/5]
-void	*fm_mshld4_(void *alloc, t_fmexcpt ex, t_fmlst **preplst)
+//Shield allocation and free old, exception handler, fmlst prepend [4/5]
+void	*fm_mshldrw4_(void *new, void* old, t_fmexcpt ex, t_fmlst **preplst)
 {
-	if (!alloc)
+	if (!new)
 	{
 		if (!ex)
 			return (NULL);
 		(ex)(NULL);
 	}
-	fm_lstprep(preplst, alloc, ex);
-	return (alloc);
+	if (old)
+		free(old);
+	fm_lstprep(preplst, new, ex);
+	return (new);
 }
-//Shield allocation with exception handler, fmlst prepend [5/5]
-void	*fm_mshld5_(void *alloc, t_fmexcpt ex, t_fmlst **nestlst)
+//Shield allocation and free old, exception handler, fmlst prepend [5/5]
+void	*fm_mshldrw5_(void *new, void* old, t_fmexcpt ex, t_fmlst **nestlst)
 {
-	if (!alloc)
+	if (!new)
 	{
 		if (!ex)
 			return (NULL);
 		(ex)(NULL);
 	}
-	fm_lstnest(nestlst, alloc, ex);
-	return (alloc);
+	if (old)
+		free(old);
+	fm_lstnest(nestlst, new, ex);
+	return (new);
 }

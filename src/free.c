@@ -6,14 +6,14 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 22:16:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 12:10:43 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/27 11:51:55 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include <stdlib.h>
-
-
+#include "minishell.h"
+#include "libfm.h"
+/*
 void	sh_free_shell(void)
 {
 	t_shell	*sh;
@@ -91,7 +91,7 @@ void sh_free_iter(void)
 	}
 	sh->pplnlst = NULL;
 }
-
+*/
 //Clean exit from shell
 void	sh_freexit(int exit_code)
 {
@@ -100,8 +100,6 @@ void	sh_freexit(int exit_code)
 
 	i = 0;
 	sh = get_shell();
-	sh_free_iter();
-	sh_free_env();
-	sh_free_shell();
+	fm_lstwipe(sh->exitlst);
 	exit(exit_code);
 }

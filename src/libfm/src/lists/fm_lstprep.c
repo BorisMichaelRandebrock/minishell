@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fm_lstapp.c                                        :+:      :+:    :+:   */
+/*   fm_lstprep.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,14 +12,14 @@
 
 #include "libfm.h"
 
-/* Create/Append new fmlst node with item and expection handler [1/2]
+/* Create/Prepend new fmlst node with item and expection handler [1/2]
 Returns new node */
-t_fmlst	*fm_lstapp(t_fmlst **fmlst, void *item, t_fmexcpt ex)
+t_fmlst	*fm_lstprep(t_fmlst **fmlst, void *item, t_fmexcpt ex)
 {
 	t_fmlst	*_node;
-	t_fmlst	*_last;
+	t_fmlst	*_head;
 
-	_last = fm_lsttail(*fmlst);
+	_head = fm_lsthead(*fmlst);
 	_node = fm_calloc_(sizeof(t_fmlst), ex);
 	if (!_node)
 	{
@@ -33,20 +33,21 @@ t_fmlst	*fm_lstapp(t_fmlst **fmlst, void *item, t_fmexcpt ex)
 		*fmlst = _node;
 	else
 	{
-		_node->prev = _last;
-		_last->next = _node;
+		_node->next = _head;
+		_head->prev = _node;
+		*fmlst = _node;
 	}
 	return (_node);
 }
 
-/* Create/Append new fmlst node with item and expection handler and arg [2/2]
+/* Create/Prepend new fmlst node with item and expection handler and arg [2/2]
 Returns new node */
-t_fmlst	*fm_lstapp2(t_fmlst **fmlst, void *item, t_fmexcpt ex, void *ex_arg)
+t_fmlst	*fm_lstprep2(t_fmlst **fmlst, void *item, t_fmexcpt ex, void *ex_arg)
 {
 	t_fmlst	*_node;
-	t_fmlst	*_last;
+	t_fmlst	*_head;
 
-	_last = fm_lsttail(*fmlst);
+	_head = fm_lsthead(*fmlst);
 	_node = fm_calloc_(sizeof(t_fmlst), ex);
 	if (!_node)
 	{
@@ -56,12 +57,13 @@ t_fmlst	*fm_lstapp2(t_fmlst **fmlst, void *item, t_fmexcpt ex, void *ex_arg)
 	}
 	_node->item = item;
 	_node->has_nest = false;
-	if (!*fmlst)
+	if (*fmlst)
 		*fmlst = _node;
 	else
 	{
-		_node->prev = _last;
-		_last->next = _node;
+		_node->next = _head;
+		_head->prev = _node;
+		*fmlst = _node;
 	}
 	return (_node);
 }

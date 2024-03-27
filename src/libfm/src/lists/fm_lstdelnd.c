@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fm_lstlast.c                                       :+:      :+:    :+:   */
+/*   fm_lstdelnd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/23 13:03:18 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 13:04:33 by fmontser         ###   ########.fr       */
+/*   Created: 2024/03/26 13:15:13 by fmontser          #+#    #+#             */
+/*   Updated: 2024/03/26 14:19:53 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fm_lists.h"
+#include "libfm.h"
 
-//Returns pointer to last node of a list given any node of it.
-t_fmlst	*fm_lstlast(t_fmlst *node)
+//Extract and delete a node and its item [1/2]
+void	fm_lstdelnd(t_fmlst **node)
 {
-	t_fmlst	*last;
+	fm_lstwipe(fm_lstxtrc(node));
+}
 
-	last = node;
-	while (last->next)
-		last = last->next;
-	return (last);
+//Extract and delete a node and its item, given an item and its list [2/2]
+void	fm_lstdelnd2(t_fmlst **fmlst, void *item)
+{
+	t_fmlst	*node;
+
+	node = fm_lstfind2(*fmlst, item);
+	fm_lstwipe(fm_lstxtrc(&node));
 }

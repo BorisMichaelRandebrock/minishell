@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 14:07:00 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/27 11:50:19 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 # include <signal.h>
 # include <stdbool.h>
 # include "libft.h"
-# include "fm_lists.h"
+# include "libfm.h"
 
 # include <stdio.h> //TODO para pruebas retirar
 
@@ -96,8 +96,8 @@ typedef struct s_shell
 
 	t_fmlst	*exitlst;
 	t_fmlst	*loclst;
-	t_list	*tknlst;	//TODO cambiar tipos
-	t_list	*pplnlst;
+	t_fmlst	*tknlst;	//TODO cambiar tipos
+	t_fmlst	*pplnlst;
 }	t_shell;
 
 t_shell		*new_shell(char **sys_env);
@@ -127,6 +127,7 @@ void		sh_free_iter(void);
 void		sh_free_env(void);
 void		sh_free_shell(void);
 void		*sh_guard(void *alloc, void *nullable_old);
-void		sh_perror(void *error_code);
+void		ex_perror(void *error_code);
+void		ex_mem(void* ex_arg);
 
 #endif

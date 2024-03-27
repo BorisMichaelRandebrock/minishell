@@ -1,31 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fm_lstfree.c                                       :+:      :+:    :+:   */
+/*   fm_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/22 14:07:50 by fmontser          #+#    #+#             */
+/*   Created: 2024/03/24 10:28:14 by fmontser          #+#    #+#             */
 /*   Updated: 2024/03/26 13:20:11 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include <stddef.h>
 #include "libfm.h"
 
-/* Recursively free list structure. Items remain allocated [1/1]
-(Use this if items are shared between lists) */
-void	fm_lstfree(t_fmlst *fmlst)
+//Iterate a fmlist and apply argless function to node [1/2]
+void	fm_lstiter(t_fmlst **fmlst, t_fmiter fn)
 {
 	t_fmlst	*_node;
 
-	_node = fmlst;
+	if (!fmlst || !fn)
+		return ;
+	_node = *fmlst;
 	while (_node)
 	{
-		fmlst = _node;
-		if (_node->has_nest)
-			fm_lstfree(_node->item);
+		(fn)(_node, NULL);
 		_node = _node->next;
-		free(fmlst);
+	}
+}
+
+//Iterate a fmlist and apply function with arg to node [2/2]
+void	fm_lstiter2(t_fmlst **fmlst, t_fmiter fn, void *fn_arg)
+{
+	t_fmlst	*_node;
+
+	if (!fmlst || !fn)
+		return ;
+	_node = *fmlst;
+	while (_node)
+	{
+		(fn)(_node, fn_arg);
+		_node = _node->next;
 	}
 }

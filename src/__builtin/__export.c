@@ -6,13 +6,14 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 14:58:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/26 13:33:46 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
-#include "fm_string.h"
+#include "libfm.h"
+#include "libft.h"
 
 #define NAME	0
 #define VALUE	1
@@ -30,7 +31,7 @@ static void	_free(char	**evar)
 static bool	_print_error(char *evar)
 {
 	write(STDERR_FILENO, "export: not valid in this context: ", 36);
-	write(STDERR_FILENO, evar, fm_strlen(evar));
+	write(STDERR_FILENO, evar, ft_strlen(evar));
 	write(STDERR_FILENO, "\n", 1);
 	return (true);
 }
@@ -65,8 +66,8 @@ int	__export(t_list *args, int fd)
 			tkn = _args->content;
 			if (_check_evar(&eflag, tkn->str, &_args))
 				continue ;
-			evar = ft_split(tkn->str, '=');
-			evar[NAME] = sh_guard(fm_strjoin_(evar[NAME], "="), evar[NAME]);
+			evar = fm_mshld_(ft_split(tkn->str, '='), ex_mem);
+			evar[NAME] = fm_mshldrw_(ft_strjoin(evar[NAME], "="), evar[NAME], ex_mem);
 			set_evar(evar[NAME], evar[VALUE]);
 			_args = _args->next;
 			_free(evar);

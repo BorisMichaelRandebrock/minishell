@@ -6,12 +6,13 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/23 14:09:24 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/26 13:39:49 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "fm_string.h"
+#include "libfm.h"
+#include "libft.h"
 
 #define START	0
 #define END		1
@@ -59,7 +60,7 @@ void	_expand_var(t_token *tkn)
 			value = get_evar(name);
 			while(value && *value)
 				_str[j++] = *(value++);
-			i += fm_strlen(name);
+			i += ft_strlen(name);
 			free(name);
 		}
 		if (tkn->str[i] != '$')
@@ -73,7 +74,7 @@ void	token_expansion(t_token *tkn)
 	size_t	size;
 
 	i = 0;
-	size = fm_strlen(tkn->str);
+	size = ft_strlen(tkn->str);
 	if (tkn->str[i] == SQU_CH && tkn->str[size - IDX_OFFST] == SQU_CH)
 		return ;
 	_expand_var(tkn);

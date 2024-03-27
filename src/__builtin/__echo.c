@@ -6,13 +6,14 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/23 14:11:27 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/26 13:39:49 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
-#include "fm_string.h"
+#include "libfm.h"
+#include "libft.h"
 
 #define N_OPT "-n"
 //TODO return errors?
@@ -37,7 +38,7 @@ int	__echo(t_list *args, int fd)
 	while (_args)
 	{
 		tkn = _args->content;
-		write(fd, tkn->str, fm_strlen(tkn->str));
+		write(fd, tkn->str, ft_strlen(tkn->str));
 		if (_args->next && *((t_token *)_args->next->content)->str )
 			write(fd, " ", 1);
 		_args = _args->next;
