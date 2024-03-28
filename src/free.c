@@ -6,22 +6,12 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 22:16:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/27 21:16:41 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/28 09:32:06 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
-
-/* static void	_shldfree(void *content)
-{
-	if (content)
-	{
-		free(content);
-		content = NULL;	//TODO um...
-	}
-} */
-
 
 void	sh_free_shell(void)
 {
@@ -30,7 +20,7 @@ void	sh_free_shell(void)
 	sh = get_shell();
 
 	//TODO free el resto de cosas...
-	free(sh);
+	sh_gfree((void **)&sh);
 }
 
 void	sh_free_env(void)
@@ -42,10 +32,10 @@ void	sh_free_env(void)
 	i = 0;
 	while(sh->env[i])
 	{
-		free(sh->env[i]);
+		sh_gfree((void **)&sh->env[i]);
 		i++;
 	}
-	free(sh->env);
+	sh_gfree((void **)&sh->env);
 }
 
 
@@ -78,7 +68,7 @@ static void _lfreeargs(t_list *args)
 	{
 		prev = args;
 		args = args->next;
-		free(prev);
+		sh_gfree((void **)&prev);
 	}
 }
 static void _lfreerdrs(t_list *rdrs)
@@ -92,21 +82,21 @@ static void _lfreerdrs(t_list *rdrs)
 		_freerdr(rdr);
 		prev = rdrs;
 		rdrs = rdrs->next;
-		free(prev);
+		sh_gfree((void **)&prev);
 	}
 }
 
 static void _freerdr(t_rdr *rdr)
 {
 	_lfreeargs(rdr->args);
-	free(rdr);
+	sh_gfree((void **)&rdr);
 }
 
 static void _freecmd(t_cmd *cmd)
 {
 	_lfreeargs(cmd->args);
 	_lfreerdrs(cmd->rdrs);
-	free(cmd);
+	sh_gfree((void **)&cmd);
 }
 
 void sh_lfreeppln(t_list *ppln)
@@ -120,7 +110,7 @@ void sh_lfreeppln(t_list *ppln)
 		_freecmd(cmd);
 		prev = ppln;
 		ppln = ppln->next;
-		free(prev);
+		sh_gfree((void **)&prev);
 	}
 	//TODO abstraer
 }
@@ -137,8 +127,8 @@ void sh_lfreeppln(t_list *ppln)
 
 static void _freetkn(t_token *tkn)
 {
-	free(tkn->str);
-	free(tkn);
+	sh_gfree((void **)&tkn->str);
+	sh_gfree((void **)&tkn);
 }
 
 void sh_lfreetkns(t_list *tkn_lst)
@@ -152,7 +142,7 @@ void sh_lfreetkns(t_list *tkn_lst)
 		_freetkn(tkn);
 		prev = tkn_lst;
 		tkn_lst = tkn_lst->next;
-		free(prev);
+		sh_gfree((void **)&prev);
 	}
 }
 

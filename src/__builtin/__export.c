@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 23:14:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/28 09:34:53 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static void	_free(char	**evar)
 {
 	if (evar)
 	{
-		free(evar[NAME]);
-		free(evar[VALUE]);
-		free(evar);
+		sh_gfree((void **)&evar[NAME]);
+		sh_gfree((void **)&evar[VALUE]);
+		sh_gfree((void **)&evar);
 	}
 }
 

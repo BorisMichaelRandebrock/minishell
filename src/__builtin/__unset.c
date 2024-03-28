@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/15 12:55:02 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/28 09:32:06 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	__unset(t_list *args, int fd)
 			_var = sh_guard(ft_strjoin(tkn->str, "="), NULL);
 			unset_evar(_var);
 			_args = _args->next;
-			free(_var);
+			sh_gfree((void **)&_var);
 		}
 	}
 	return (SUCCESS);

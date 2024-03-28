@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/21 17:51:42 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/28 09:31:30 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,6 @@ void	tokenizer(char *input)
 		}
 		_input++;
 	}
-	free(input);
+	sh_gfree((void **)&input);
 	_typify();
 }

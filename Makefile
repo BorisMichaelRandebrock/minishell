@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/03/21 11:45:47 by fmontser         ###   ########.fr        #
+#    Updated: 2024/03/28 11:09:35 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,6 +89,7 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
+#TODO las opciones de parametros son tokens especiales p.e. cat -e (-e).
 #TODO probar a pasar argumentos a minishell ej. ls | ./minishell... no debe petar!
 #TODO	set_evar("_=", cmd->tkn->str); para procesos!!!
 #TODO repasar tema del history, es mas complejo...mirar bash manual

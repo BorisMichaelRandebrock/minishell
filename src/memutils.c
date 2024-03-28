@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/27 21:05:02 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/28 09:52:45 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,26 @@ void	*sh_ralloc(void *old, size_t new_size)
 		return (NULL);
 	ft_memcpy(ralloc, old, new_size);
 	if (old)
-		free(old);
+		sh_gfree((void **)&old);
 	return (ralloc);
 }
 //Protect allocations, nullable_old free old
 void	*sh_guard(void *alloc, void *nullable_old)
 {
 	if (nullable_old)
-		free(nullable_old);
+		sh_gfree((void **)&nullable_old);
 	if (!alloc)
 		sh_perror(MEM_ERROR);
 	return (alloc);
 }
 
-
+//Protected free from already freed pointers
+void	sh_gfree(void **content)
+{
+	if (content != NULL || *content != NULL)
+	{
+		free(*content);
+		*content = NULL;
+		content = NULL;
+	}
+}

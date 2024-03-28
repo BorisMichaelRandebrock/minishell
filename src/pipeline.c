@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/27 21:23:30 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/28 11:09:56 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 		close(pipefd[RD]);
 	}
 	set_evar("?=", sh_guard(exit_code, NULL));
-	free(exit_code);
+	sh_gfree((void **)&exit_code);
 }
 
 static char	_to_lower(unsigned int ignore, char c)
@@ -74,9 +74,7 @@ static void	_exec_pipeline(t_list	*ppln)
 			i++;
 		}
 		if (_cmd->rdrs)
-		{
 			process_redirs(_cmd->rdrs, shell_buffer);
-		}
 		i = 0;
 		_ppln = _ppln->next;
 	}
@@ -90,6 +88,7 @@ static t_list *_add_redirection(t_list *tkn_lst, t_cmd *cmd)
 	tkn = tkn_lst->content;
 	rdr = sh_calloc(1, sizeof(t_rdr));
 	rdr->op = tkn;
+	ft_lstadd_back(&cmd->rdrs, sh_guard(ft_lstnew(rdr), NULL));
 	tkn_lst = tkn_lst->next;
 	while(tkn_lst)
 	{
@@ -98,15 +97,13 @@ static t_list *_add_redirection(t_list *tkn_lst, t_cmd *cmd)
 			ft_lstadd_back(&rdr->args, sh_guard(ft_lstnew(tkn), NULL));
 		else if (tkn->type == PIPE)
 			break ;
-		else
+		else if (tkn->type != CMD)
 		{
-			ft_lstadd_back(&cmd->rdrs, sh_guard(ft_lstnew(rdr), NULL));
-			_add_redirection(tkn_lst->next, cmd);
+			tkn_lst = _add_redirection(tkn_lst, cmd);
 			break ;
 		}
 		tkn_lst = tkn_lst->next;
 	}
-	ft_lstadd_back(&cmd->rdrs, sh_guard(ft_lstnew(rdr), NULL));
 	return (tkn_lst);
 }
 
@@ -147,8 +144,8 @@ void	run_pipeline(t_list *tkn_lst)
 				ft_lstadd_back(&sh->ppln, sh_guard(ft_lstnew(cmd), NULL));
 			}
 			rflag = true;
-			_lst = _add_redirection(_lst, cmd);
-			continue ; //TODO recoger el avance, TEMA listas subrogadas
+			_lst = _add_redirection(_lst, cmd); //TODO recoger el avance!
+			continue ;
 		}
 		_lst = _lst->next;
 	}

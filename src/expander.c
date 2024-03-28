@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/19 16:29:51 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/03/28 09:32:08 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	_expand_var(t_token *tkn)
 			while(value && *value)
 				_str[j++] = *(value++);
 			i += ft_strlen(name);
-			free(name);
+			sh_gfree((void **)&name);
 		}
 		if (tkn->str[i] != '$')
 			_str[j++] = tkn->str[i++];
