@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 13:43:01 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 17:40:02 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	unset_evar(char *var_name)
 void	new_env(t_shell *sh, char **sys_env)
 {
 	char	**env;
-	size_t	var_sz;
 	size_t	count;
 	size_t	i;
 	t_list	arg;
@@ -102,16 +101,14 @@ void	new_env(t_shell *sh, char **sys_env)
 	env = sh_calloc(count, sizeof(char *));
 	while (i < count)
 	{
-		var_sz = ft_strlen(sys_env[i]);
-		env[i] = sh_calloc(var_sz + NUL_SZ, sizeof(char));
-		ft_memcpy(env[i], sys_env[i], var_sz + NUL_SZ);
+		env[i] = sh_calloc(ft_strlen(sys_env[i]) + NUL_SZ, sizeof(char));
+		ft_memcpy(env[i], sys_env[i], ft_strlen(sys_env[i]) + NUL_SZ);
 		i++;
 	}
 	env[i] = NULL;
 	sh->env = env;
 	set_prompt();
- 	tkn.str = "?=0";
-	arg.content = &tkn;
-	arg.next = NULL;
-	__export(&arg, STDOUT_FILENO);
+	tkn.str = "?=0";
+	arg = (t_list){&tkn, NULL};
+	__export(&arg, STDIN_FILENO);
 }

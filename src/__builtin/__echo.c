@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/21 13:55:24 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 19:39:01 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "minishell.h"
 
 #define N_OPT "-n"
+
 //TODO return errors?
 static bool	_n_opt_check(t_token *tkn, t_list **_args)
 {
