@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/28 11:09:56 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:28:47 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
  #include <sys/wait.h>
 #include "minishell.h"
 
-void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
+void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shbuff)
 {
 	char	*exit_code;
 	int		pipefd[2];
 	int		fd;
 	t_token	_tkn;
 
-	_tkn.str = shell_buffer;
-	shell_buffer[ft_strlen(shell_buffer)] = '\0';
+	_tkn.str = shbuff;
+	shbuff[ft_strlen(shbuff)] = '\0';
 	pipe(pipefd);
 	fd = STDOUT_FILENO;
 	if (cmd->is_piped || cmd->rdrs)
@@ -33,12 +33,12 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 	exit_code = ft_itoa((bltn)(cmd->args, fd));
 	if (cmd->is_piped || cmd->rdrs)
 	{
-		read(pipefd[RD], shell_buffer, BUF_1MB);
-		shell_buffer[ft_strlen(shell_buffer)] = '\0';
+		read(pipefd[RD], shbuff, BUF_1MB);
+		shbuff[ft_strlen(shbuff)] = '\0';
 		close(pipefd[RD]);
 	}
 	set_evar("?=", sh_guard(exit_code, NULL));
-	sh_gfree((void **)&exit_code);
+	sh_free(&exit_code);
 }
 
 static char	_to_lower(unsigned int ignore, char c)
@@ -53,28 +53,30 @@ static void	_exec_pipeline(t_list	*ppln)
 		__unset, __env, __exit, __history, NULL};
 	static char		*bltn_id[9] = {"echo", "cd", "pwd", "export",
 		"unset", "env", "exit", "history", NULL};
-	char			shell_buffer[BUF_1MB + NUL_SZ];
+	char			shbuff[BUF_1MB + NUL_SZ];
 	t_cmd			*_cmd;
 	int				i;
 	t_list			*_ppln;
 
-	ft_memset(shell_buffer, '\0', BUF_1MB);
+	ft_memset(shbuff, '\0', BUF_1MB);
 	_ppln = ppln;
 	i = 0;
 	while (_ppln)
 	{
 		_cmd = _ppln->content;
-		_cmd->tkn->str = sh_guard(ft_strmapi(_cmd->tkn->str, _to_lower), _cmd->tkn->str);
+		_cmd->tkn->str = sh_guard(ft_strmapi(_cmd->tkn->str, _to_lower),
+			_cmd->tkn->str);
 		if (_ppln->next)
 			_cmd->is_piped = true;
 		while (bltn_id[i])
 		{
-			if (!ft_strncmp(_cmd->tkn->str, bltn_id[i], ft_strlen(bltn_id[i]) + NUL_SZ))
-				_exec_builtin(bltn_ptr[i], _cmd, shell_buffer);
+			if (!ft_strncmp(_cmd->tkn->str, bltn_id[i],
+				ft_strlen(bltn_id[i]) + NUL_SZ))
+				_exec_builtin(bltn_ptr[i], _cmd, shbuff);
 			i++;
 		}
 		if (_cmd->rdrs)
-			process_redirs(_cmd->rdrs, shell_buffer);
+			process_redirs(_cmd->rdrs, shbuff);
 		i = 0;
 		_ppln = _ppln->next;
 	}

@@ -1,42 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   __unset.c                                          :+:      :+:    :+:   */
+/*   freetknlst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 13:03:50 by fmontser         ###   ########.fr       */
+/*   Created: 2024/04/01 13:08:19 by fmontser          #+#    #+#             */
+/*   Updated: 2024/04/01 13:09:13 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include <stdlib.h>
 #include "minishell.h"
-#define VAR_NAME	0
-#define VALUE		1
 
-int	__unset(t_list *args, int fd)
+static void	_freetkn(t_token *tkn)
 {
-	t_list	*_args;
-	t_token	*tkn;
-	char	*_var;
+	sh_free(&tkn->str);
+	sh_free(&tkn);
+}
 
-	_args = args;
-	if (!args)
+void	sh_lfreetkns(t_list *tkn_lst)
+{
+	t_list	*prev;
+	t_token	*tkn;
+
+	while (tkn_lst)
 	{
-		write(fd, "unset: not enough arguments\n", 29);
-		return (FAILURE);
+		tkn = tkn_lst->content;
+		_freetkn(tkn);
+		prev = tkn_lst;
+		tkn_lst = tkn_lst->next;
+		sh_free(&prev);
 	}
-	else
-	{
-		while (_args)
-		{
-			tkn = _args->content;
-			_var = sh_guard(ft_strjoin(tkn->str, "="), NULL);
-			unset_evar(_var);
-			_args = _args->next;
-			sh_free(&_var);
-		}
-	}
-	return (SUCCESS);
 }

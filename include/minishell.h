@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/28 09:36:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:27:28 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,7 @@
 
 # include <stdio.h> //TODO para pruebas retirar
 
-typedef struct s_env t_env;
 typedef int (*t_bltin)(t_list *args, int fd);
-typedef void (*t_cdop)(int fd);
 
 typedef enum e_tkntype
 {
@@ -84,7 +82,6 @@ typedef struct s_cmd
 	t_token	*tkn;
 	t_list	*args;
 	t_list	*rdrs;
-
 	bool	is_piped;
 }	t_cmd;
 
@@ -107,7 +104,7 @@ t_shell		*get_shell();
 void		token_expansion(t_token *tkn);
 void		run_pipeline(t_list *tkn_lst);
 void		exec_pipeline(t_list *ppln);
-void		process_redirs(t_list *rdrs, char *shell_buffer);
+void		process_redirs(t_list *rdrs, char *shbuff);
 int			__echo(t_list *args, int fd);
 int			__cd(t_list *args, int fd);
 int			__pwd(t_list *args, int fd);
@@ -118,11 +115,8 @@ int			__exit(t_list *args, int fd);
 int			__history(t_list *args, int fd);
 void		*sh_calloc(size_t num, size_t size);
 void		*sh_ralloc(void *old, size_t new_sizeof);
-void		sh_gfree(void **content);
+void		sh_free(void *content);
 void		sh_freexit(int exit_code);
-void		sh_free_iter(void);
-void		sh_free_env(void);
-void		sh_free_shell(void);
 void		sh_lfreeppln(t_list *ppln);
 void		sh_lfreetkns(t_list *tkn_lst);
 void		*sh_guard(void *alloc, void *nullable_old);

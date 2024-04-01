@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/28 09:52:45 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:35:43 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	*sh_calloc(size_t num, size_t size)
 	return (alloc);
 }
 
-//TODO sh_ralloc no esta protegido!!!
 //Protected reallocation with calloc
 void	*sh_ralloc(void *old, size_t new_size)
 {
@@ -36,30 +35,28 @@ void	*sh_ralloc(void *old, size_t new_size)
 	if (new_size == 0)
 		return (old);
 	ralloc = sh_calloc(1, new_size);
-	if (!ralloc)
-		return (NULL);
 	ft_memcpy(ralloc, old, new_size);
 	if (old)
-		sh_gfree((void **)&old);
+		sh_free(&old);
 	return (ralloc);
 }
-//Protect allocations, nullable_old free old
-void	*sh_guard(void *alloc, void *nullable_old)
+//Protect 3rd party allocations, optional free old
+void	*sh_guard(void *alloc, void *old)
 {
-	if (nullable_old)
-		sh_gfree((void **)&nullable_old);
+	if (old)
+		sh_free(&old);
 	if (!alloc)
 		sh_perror(MEM_ERROR);
 	return (alloc);
 }
 
-//Protected free from already freed pointers
-void	sh_gfree(void **content)
+//Protected free from already freed pointers, pass REFERENCE to ptr (&ptr)!!
+void	sh_free(void *ptr)
 {
-	if (content != NULL || *content != NULL)
-	{
-		free(*content);
-		*content = NULL;
-		content = NULL;
-	}
+	void **ref;
+
+	ref = ptr;
+	free(*ref);
+	*ref = NULL;
 }
+

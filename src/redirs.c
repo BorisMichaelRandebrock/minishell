@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 11:45:27 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/28 11:21:34 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:26:48 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-static void	_rdout(t_list *rdrs, char *shell_buffer, int option)
+//TODO exception gestionar errores open!!
+static void	_rdout(t_list *rdrs, char *shbuff, int option)
 {
 	t_rdr	*_rdr;
 	t_list	*_args;
@@ -27,24 +28,24 @@ static void	_rdout(t_list *rdrs, char *shell_buffer, int option)
 	_rdr = rdrs->content;
 	_args = _rdr->args;
 	_tkn = _args->content;
-	fd = open(_tkn->str, O_WRONLY | O_CREAT | option, 0777); //TODO gestionar errores open!!
+	fd = open(_tkn->str, O_WRONLY | O_CREAT | option, 0777);
 	if (rdrs->next)
 	{
 		_args = _args->next;
-		i += ft_strlen(shell_buffer);
+		i += ft_strlen(shbuff);
 		while (_args)
 		{
-			shell_buffer[i++] = ' ';
+			shbuff[i++] = ' ';
 			_tkn = _args->content;
-			ft_memcpy(&shell_buffer[i], _tkn->str, ft_strlen(_tkn->str) + NUL_SZ);
+			ft_memcpy(&shbuff[i], _tkn->str, ft_strlen(_tkn->str) + NUL_SZ);
 			i += ft_strlen(_tkn->str);
 			_args = _args->next;
 		}
 	}
 	else
 	{
-		while(shell_buffer[i])
-			write(fd, &shell_buffer[i++], 1);
+		while(shbuff[i])
+			write(fd, &shbuff[i++], 1);
 		_args = _args->next;
 		while (_args)
 		{
@@ -58,7 +59,7 @@ static void	_rdout(t_list *rdrs, char *shell_buffer, int option)
 }
 
 //TODO gestionar errores open??
-void	process_redirs(t_list *rdrs, char *shell_buffer)
+void	process_redirs(t_list *rdrs, char *shbuff)
 {
 	t_rdr	*_rdr;
 
@@ -66,9 +67,9 @@ void	process_redirs(t_list *rdrs, char *shell_buffer)
 	{
 		_rdr = rdrs->content;
 		if (_rdr->op->type == RDOUT)
-			_rdout(rdrs, shell_buffer, O_TRUNC);
+			_rdout(rdrs, shbuff, O_TRUNC);
 		else if (_rdr->op->type == RDAPP)
-			_rdout(rdrs, shell_buffer, O_APPEND);
+			_rdout(rdrs, shbuff, O_APPEND);
 		else if (_rdr->op->type == RDIN)
 		{
 			//TODO cuando hagamos los procesos externoss
@@ -79,5 +80,5 @@ void	process_redirs(t_list *rdrs, char *shell_buffer)
 		}
 		rdrs = rdrs->next;
 	}
-	ft_memset(shell_buffer, '\0', BUF_1MB);
+	ft_memset(shbuff, '\0', BUF_1MB);
 }

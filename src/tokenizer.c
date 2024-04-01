@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/03/28 09:31:30 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:29:08 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ char	*_extract_op_token(char *input)
 	return(input);
 }
 
-
 // Parse a input prompt into a token list
 void	tokenizer(char *input)
 {
@@ -132,6 +131,6 @@ void	tokenizer(char *input)
 		}
 		_input++;
 	}
-	sh_gfree((void **)&input);
+	sh_free(&input);
 	_typify();
 }
