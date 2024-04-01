@@ -6,40 +6,12 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 13:28:47 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 19:47:21 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <unistd.h>
- #include <sys/wait.h>
 #include "minishell.h"
-
-void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shbuff)
-{
-	char	*exit_code;
-	int		pipefd[2];
-	int		fd;
-	t_token	_tkn;
-
-	_tkn.str = shbuff;
-	shbuff[ft_strlen(shbuff)] = '\0';
-	pipe(pipefd);
-	fd = STDOUT_FILENO;
-	if (cmd->is_piped || cmd->rdrs)
-		fd = pipefd[WR];
-	else
-		ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(&_tkn), NULL));
-	exit_code = ft_itoa((bltn)(cmd->args, fd));
-	if (cmd->is_piped || cmd->rdrs)
-	{
-		read(pipefd[RD], shbuff, BUF_1MB);
-		shbuff[ft_strlen(shbuff)] = '\0';
-		close(pipefd[RD]);
-	}
-	set_evar("?=", sh_guard(exit_code, NULL));
-	sh_free(&exit_code);
-}
 
 static char	_to_lower(unsigned int ignore, char c)
 {
@@ -47,109 +19,100 @@ static char	_to_lower(unsigned int ignore, char c)
 	return (ft_tolower(c));
 }
 
-static void	_exec_pipeline(t_list	*ppln)
+static void	_exec_pipeline(void)
 {
-	static t_bltin	bltn_ptr[9] = {__echo, __cd, __pwd, __export,
-		__unset, __env, __exit, __history, NULL};
-	static char		*bltn_id[9] = {"echo", "cd", "pwd", "export",
-		"unset", "env", "exit", "history", NULL};
-	char			shbuff[BUF_1MB + NUL_SZ];
-	t_cmd			*_cmd;
-	int				i;
-	t_list			*_ppln;
+	char	sbuffer[BUF_1MB + NUL_SZ];
+	t_cmd	*_cmd;
+	t_list	*_ppln;
+	int		i;
 
-	ft_memset(shbuff, '\0', BUF_1MB);
-	_ppln = ppln;
+	ft_memset(sbuffer, '\0', BUF_1MB);
+	_ppln = get_shell()->ppln;
 	i = 0;
 	while (_ppln)
 	{
 		_cmd = _ppln->content;
 		_cmd->tkn->str = sh_guard(ft_strmapi(_cmd->tkn->str, _to_lower),
-			_cmd->tkn->str);
+				_cmd->tkn->str);
 		if (_ppln->next)
 			_cmd->is_piped = true;
-		while (bltn_id[i])
-		{
-			if (!ft_strncmp(_cmd->tkn->str, bltn_id[i],
-				ft_strlen(bltn_id[i]) + NUL_SZ))
-				_exec_builtin(bltn_ptr[i], _cmd, shbuff);
-			i++;
-		}
+		if (!try_builtin(_cmd, sbuffer))
+			try_process(_cmd, sbuffer);
 		if (_cmd->rdrs)
-			process_redirs(_cmd->rdrs, shbuff);
+			process_redirs(_cmd->rdrs, sbuffer);
 		i = 0;
 		_ppln = _ppln->next;
 	}
 }
 
-static t_list *_add_redirection(t_list *tkn_lst, t_cmd *cmd)
+static t_cmd	*_add_cmd(t_token *tkn, bool *rdrflag)
+{
+	t_shell	*sh;
+	t_cmd	*cmd;
+
+	if (rdrflag)
+		*rdrflag = false;
+	sh = get_shell();
+	cmd = sh_calloc(1, sizeof(t_cmd));
+	cmd->tkn = tkn;
+	cmd->is_piped = false;
+	ft_lstadd_back(&sh->ppln, sh_guard(ft_lstnew(cmd), NULL));
+	return (cmd);
+}
+
+static t_list	*_add_redirection(t_list *tknlst, t_cmd *cmd)
 {
 	t_rdr	*rdr;
-	t_token *tkn;
+	t_token	*tkn;
 
-	tkn = tkn_lst->content;
+	tkn = tknlst->content;
+	if (!cmd)
+		cmd = _add_cmd(tkn, NULL);
 	rdr = sh_calloc(1, sizeof(t_rdr));
 	rdr->op = tkn;
 	ft_lstadd_back(&cmd->rdrs, sh_guard(ft_lstnew(rdr), NULL));
-	tkn_lst = tkn_lst->next;
-	while(tkn_lst)
+	tknlst = tknlst->next;
+	while (tknlst)
 	{
-		tkn = tkn_lst->content;
+		tkn = tknlst->content;
 		if (tkn->type == ARG)
 			ft_lstadd_back(&rdr->args, sh_guard(ft_lstnew(tkn), NULL));
 		else if (tkn->type == PIPE)
 			break ;
 		else if (tkn->type != CMD)
 		{
-			tkn_lst = _add_redirection(tkn_lst, cmd);
+			tknlst = _add_redirection(tknlst, cmd);
 			break ;
 		}
-		tkn_lst = tkn_lst->next;
+		tknlst = tknlst->next;
 	}
-	return (tkn_lst);
+	return (tknlst);
 }
 
-
-// echo hola > file  sfsdf| echo
-void	run_pipeline(t_list *tkn_lst)
+void	run_pipeline(t_list *tknlst)
 {
-	t_shell	*sh;
 	t_token	*_tkn;
 	t_cmd	*cmd;
 	t_list	*_lst;
-	bool	rflag;
+	bool	rdrflag;
 
-	rflag = false;
-	_lst = tkn_lst;
-	sh = get_shell();
+	rdrflag = false;
+	_lst = tknlst;
 	cmd = NULL;
 	while (_lst)
 	{
 		_tkn = _lst->content;
 		if (_tkn->type == CMD)
-		{
-			rflag = false;
-			cmd = sh_calloc(1, sizeof(t_cmd));
-			cmd->tkn = _tkn;
-			cmd->is_piped = false;
-			ft_lstadd_back(&sh->ppln, sh_guard(ft_lstnew(cmd), NULL));
-		}
-		else if (_tkn->type == ARG && !rflag)
+			cmd = _add_cmd(_tkn, &rdrflag);
+		else if (_tkn->type == ARG && !rdrflag)
 			ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(_tkn), NULL));
 		else if (_tkn->type != PIPE)
 		{
- 			if (!cmd)
-			{
-				cmd = sh_calloc(1, sizeof(t_cmd));
-				cmd->tkn = _tkn;
-				cmd->is_piped = false;
-				ft_lstadd_back(&sh->ppln, sh_guard(ft_lstnew(cmd), NULL));
-			}
-			rflag = true;
-			_lst = _add_redirection(_lst, cmd); //TODO recoger el avance!
+			rdrflag = true;
+			_lst = _add_redirection(_lst, cmd);
 			continue ;
 		}
 		_lst = _lst->next;
 	}
-	_exec_pipeline(sh->ppln);
+	_exec_pipeline();
 }

@@ -43,6 +43,8 @@
 		"tuple": "c",
 		"type_traits": "c",
 		"typeinfo": "c",
-		"complex": "c"
+		"complex": "c",
+		"stdio.h": "c",
+		"ostream": "c"
 	}
 }

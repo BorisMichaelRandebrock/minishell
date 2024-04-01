@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 13:03:50 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 17:21:40 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*_get_var_name(char *str)
 	char	*var_name;
 	size_t	i;
 
-	var_name = sh_guard(ft_strdup(++str), NULL); //TODO si aparece el dollar...
+	var_name = sh_guard(ft_strdup(++str), NULL);
 	i = 0;
 	while (var_name[i] && var_name[i] != SPC_CH && var_name[i] != DQU_CH
 		&& var_name[i] != '$')
@@ -29,6 +29,7 @@ char	*_get_var_name(char *str)
 	var_name[i] = '\0';
 	return (var_name);
 }
+
 int	_get_var_end(char *str)
 {
 	int	i;
@@ -50,13 +51,13 @@ void	_expand_var(t_token *tkn)
 	i = 0;
 	j = 0;
 	ft_memset(_str, '\0', BUF_1KB);
-	while(tkn->str[i])
+	while (tkn->str[i])
 	{
 		if (tkn->str[i] == '$')
 		{
 			name = _get_var_name(&tkn->str[i]);
 			value = get_evar(name);
-			while(value && *value)
+			while (value && *value)
 				_str[j++] = *(value++);
 			i += ft_strlen(name);
 			sh_free(&name);
@@ -66,6 +67,7 @@ void	_expand_var(t_token *tkn)
 	}
 	tkn->str = sh_guard(ft_strdup(_str), tkn->str);
 }
+
 void	token_expansion(t_token *tkn)
 {
 	size_t	i;

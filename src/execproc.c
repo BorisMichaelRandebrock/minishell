@@ -1,35 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   freetknlst.c                                       :+:      :+:    :+:   */
+/*   execproc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/01 13:08:19 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 17:46:29 by fmontser         ###   ########.fr       */
+/*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
+/*   Updated: 2024/04/01 15:30:19 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include <unistd.h>
 #include "minishell.h"
 
-static void	_freetkn(t_token *tkn)
+void	try_process(t_cmd *cmd, char *sbuffer)
 {
-	sh_free(&tkn->str);
-	sh_free(&tkn);
-}
-
-void	sh_lfreetkns(t_list *tknlst)
-{
-	t_list	*prev;
-	t_token	*tkn;
-
-	while (tknlst)
-	{
-		tkn = tknlst->content;
-		_freetkn(tkn);
-		prev = tknlst;
-		tknlst = tknlst->next;
-		sh_free(&prev);
-	}
+	(void)cmd;
+	(void)sbuffer;
+	//TODO @@@@@@ implementar ejecucion de procesos
 }

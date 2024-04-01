@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 13:27:28 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 18:26:01 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef int (*t_bltin)(t_list *args, int fd);
 
 typedef enum e_tkntype
 {
+	NONE,
 	CMD,
 	ARG,
 	RDAPP,
@@ -89,7 +90,7 @@ typedef struct s_shell
 {
 	char	*input;
 	char	**env;
-	t_list	*tkn_lst;
+	t_list	*tknlst;
 	t_list	*ppln;
 }	t_shell;
 
@@ -102,9 +103,11 @@ void		unset_evar(char *var_name);
 void		tokenizer(char *input);
 t_shell		*get_shell();
 void		token_expansion(t_token *tkn);
-void		run_pipeline(t_list *tkn_lst);
+void		run_pipeline(t_list *tknlst);
 void		exec_pipeline(t_list *ppln);
-void		process_redirs(t_list *rdrs, char *shbuff);
+bool		try_builtin(t_cmd *cmd, char *sbuffer);
+void		try_process(t_cmd *cmd, char *sbuffer);
+void		process_redirs(t_list *rdrs, char *sbuffer);
 int			__echo(t_list *args, int fd);
 int			__cd(t_list *args, int fd);
 int			__pwd(t_list *args, int fd);
@@ -118,7 +121,7 @@ void		*sh_ralloc(void *old, size_t new_sizeof);
 void		sh_free(void *content);
 void		sh_freexit(int exit_code);
 void		sh_lfreeppln(t_list *ppln);
-void		sh_lfreetkns(t_list *tkn_lst);
+void		sh_lfreetkns(t_list *tknlst);
 void		*sh_guard(void *alloc, void *nullable_old);
 void		sh_perror(int error_code);
 

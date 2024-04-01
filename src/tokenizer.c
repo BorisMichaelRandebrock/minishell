@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/01 13:29:08 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 19:49:37 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,42 +15,7 @@
 
 #define WHSPC_CHRS " \t\n\r\f\v"
 #define NQUOTES 2
-
-//TODO es posible  mejorar la integracion de este
-static void	_typify(void)
-{
-	t_list	*_prev;
-	t_list	*_lst;
-	t_token	*_tkn;
-	t_token	*_prev_tkn;
-
-	_prev = NULL;
-	_lst = get_shell()->tkn_lst;
-	while (_lst)
-	{
-		_tkn = (t_token *)_lst->content;
-		if (_prev)
-			_prev_tkn = (t_token *)_prev->content;
-		if (*_tkn->str == '<' || *_tkn->str == '>' || *_tkn->str == '|')
-		{
-			if (*(_tkn->str + 1) == *_tkn->str)
-			{
-				if (*_tkn->str == '<')
-					_tkn->type = RDHDOC;
-				else if (*_tkn->str == '>')
-					_tkn->type = RDAPP;
-			}
-			else
-				_tkn->type = *_tkn->str;
-		}
-		else if (_prev == NULL || _prev_tkn->str[0] == '|')
-			_tkn->type = CMD;
-		else
-			_tkn->type = ARG;
-		_prev = _lst;
-		_lst = _lst->next;
-	}
-}
+#define NON_OP_VALUES 2
 
 static void	_dequote_token(t_token *tkn)
 {
@@ -68,6 +33,33 @@ static void	_dequote_token(t_token *tkn)
 	}
 }
 
+static void	_typify_token(void)
+{
+	t_tkntype	prevtype;
+	t_token		*_tkn;
+	t_list		*_lst;
+
+	prevtype = NONE;
+	_lst = get_shell()->tknlst;
+	while (_lst)
+	{
+		_tkn = _lst->content;
+		if (_tkn->type > NON_OP_VALUES)
+		{
+			prevtype = _tkn->type;
+			_lst = _lst->next;
+			continue ;
+		}
+		if (prevtype == NONE || prevtype == PIPE)
+			prevtype = CMD;
+		else
+			prevtype = ARG;
+		_tkn->type = prevtype;
+		_dequote_token(_tkn);
+		_lst = _lst->next;
+	}
+}
+
 static void	_extract_token(char *start, char *end)
 {
 	t_shell	*sh;
@@ -76,13 +68,12 @@ static void	_extract_token(char *start, char *end)
 	char	*substr;
 
 	sh = get_shell();
-	length = (end+1) - start;
+	length = (end + 1) - start;
 	tkn = sh_calloc(1, sizeof(t_token));
 	substr = sh_guard(ft_substr(start, 0, length), NULL);
 	tkn->str = sh_guard(ft_strtrim(substr, WHSPC_CHRS), substr);
 	token_expansion(tkn);
-	_dequote_token(tkn);
-	ft_lstadd_back(&sh->tkn_lst, sh_guard(ft_lstnew(tkn), NULL));
+	ft_lstadd_back(&sh->tknlst, sh_guard(ft_lstnew(tkn), NULL));
 }
 
 char	*_extract_op_token(char *input)
@@ -93,16 +84,24 @@ char	*_extract_op_token(char *input)
 	int		op_sz;
 
 	sh = get_shell();
-	op_sz = 1;
-	if ((*input == '<' || *input == '>') && *input == *(input + 1))
-		op_sz = 2;
 	tkn = sh_calloc(1, sizeof(t_token));
+	op_sz = 1;
+	if (*(input + 1) == *input)
+	{
+		op_sz = 2;
+		if (*input == '<')
+			tkn->type = RDHDOC;
+		else if (*input == '>')
+			tkn->type = RDAPP;
+	}
+	else
+		tkn->type = *input;
 	substr = sh_guard(ft_substr(input, 0, op_sz), NULL);
+	tkn->str = substr;
 	if (op_sz == 2)
 		input++;
-	tkn->str = substr;
-	ft_lstadd_back(&sh->tkn_lst, sh_guard(ft_lstnew(tkn), NULL));
-	return(input);
+	ft_lstadd_back(&sh->tknlst, sh_guard(ft_lstnew(tkn), NULL));
+	return (input);
 }
 
 // Parse a input prompt into a token list
@@ -132,5 +131,5 @@ void	tokenizer(char *input)
 		_input++;
 	}
 	sh_free(&input);
-	_typify();
+	_typify_token();
 }

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 13:35:43 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 17:20:28 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	*sh_ralloc(void *old, size_t new_size)
 		sh_free(&old);
 	return (ralloc);
 }
+
 //Protect 3rd party allocations, optional free old
 void	*sh_guard(void *alloc, void *old)
 {
@@ -53,10 +54,9 @@ void	*sh_guard(void *alloc, void *old)
 //Protected free from already freed pointers, pass REFERENCE to ptr (&ptr)!!
 void	sh_free(void *ptr)
 {
-	void **ref;
+	void	**ref;
 
 	ref = ptr;
 	free(*ref);
 	*ref = NULL;
 }
-

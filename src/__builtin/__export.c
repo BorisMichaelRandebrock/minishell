@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 13:03:50 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 17:03:26 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,34 +25,34 @@ static void	_free(char	**evar)
 	}
 }
 
-static bool	_print_error(char *evar)
+static int	_print_error(char *evar)
 {
 	write(STDERR_FILENO, "export: not valid in this context: ", 36);
 	write(STDERR_FILENO, evar, ft_strlen(evar));
 	write(STDERR_FILENO, "\n", 1);
-	return (true);
+	return (FAILURE);
 }
 
-static bool	_check_evar(bool *eflag, char *evar, t_list **_args)
+static int	_check_evar(int *eflag, char *evar, t_list **_args)
 {
 	if (!ft_strchr(evar, '='))
 	{
 		if (!*eflag)
 			*eflag = _print_error(evar);
 		*_args = (*_args)->next;
-		return (true);
+		return (FAILURE);
 	}
-	return (false);
+	return (SUCCESS);
 }
 
 int	__export(t_list *args, int fd)
 {
 	t_list	*_args;
 	t_token	*tkn;
-	bool	eflag;
+	int		eflag;
 	char	**evar;
 
-	eflag = false;
+	eflag = SUCCESS;
 	_args = args;
 	if (!args)
 		__env(NULL, fd);
@@ -70,7 +70,5 @@ int	__export(t_list *args, int fd)
 			_free(evar);
 		}
 	}
-	if (eflag)
-		return (FAILURE);
-	return (SUCCESS);
+	return (eflag);
 }

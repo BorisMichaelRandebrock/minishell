@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 13:03:50 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 17:17:26 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	set_prompt(void)
 
 	getcwd(buffer, BUF_1KB);
 	i = ft_strlen(buffer);
-	while(i >= 0)
+	while (i >= 0)
 	{
 		if (buffer[i] == '/')
 		{
