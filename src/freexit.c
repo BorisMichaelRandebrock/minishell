@@ -1,42 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   __unset.c                                          :+:      :+:    :+:   */
+/*   freexit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 13:03:50 by fmontser         ###   ########.fr       */
+/*   Created: 2024/03/20 22:16:09 by fmontser          #+#    #+#             */
+/*   Updated: 2024/04/01 13:27:32 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "minishell.h"
-#define VAR_NAME	0
-#define VALUE		1
+#include <stdlib.h>
 
-int	__unset(t_list *args, int fd)
+static void	_freeenv(void)
 {
-	t_list	*_args;
-	t_token	*tkn;
-	char	*_var;
+	t_shell	*sh;
+	size_t	i;
 
-	_args = args;
-	if (!args)
+	sh = get_shell();
+	i = 0;
+	while (sh->env[i])
 	{
-		write(fd, "unset: not enough arguments\n", 29);
-		return (FAILURE);
+		sh_free(&sh->env[i]);
+		i++;
 	}
-	else
-	{
-		while (_args)
-		{
-			tkn = _args->content;
-			_var = sh_guard(ft_strjoin(tkn->str, "="), NULL);
-			unset_evar(_var);
-			_args = _args->next;
-			sh_free(&_var);
-		}
-	}
-	return (SUCCESS);
+	sh_free(&sh->env);
+}
+
+static void	_freeshell(void)
+{
+	t_shell	*sh;
+
+	sh = get_shell();
+	sh_free(&sh);
+}
+
+//Clean exit from shell
+void	sh_freexit(int exit_code)
+{
+	t_shell	*sh;
+	size_t	i;
+
+	i = 0;
+	sh = get_shell();
+	_freeenv();
+	_freeshell();
+	exit(exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 23:14:22 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:03:50 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	set_prompt(void)
 	arg.content = &tkn;
 	arg.next = NULL;
 	__export(&arg, STDOUT_FILENO);
-	free(prompt);
+	sh_free(&prompt);
 }
 
 t_shell	*get_shell(void)

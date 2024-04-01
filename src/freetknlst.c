@@ -1,30 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_realloc.c                                       :+:      :+:    :+:   */
+/*   freetknlst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 23:47:07 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/28 09:26:59 by fmontser         ###   ########.fr       */
+/*   Created: 2024/04/01 13:08:19 by fmontser          #+#    #+#             */
+/*   Updated: 2024/04/01 13:09:13 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
+#include "minishell.h"
 
-void	*ft_realloc(void *old_ptr, size_t new_sizeof)
+static void	_freetkn(t_token *tkn)
 {
-	void	*new_ptr;
+	sh_free(&tkn->str);
+	sh_free(&tkn);
+}
 
-	if (!old_ptr)
-		return (ft_calloc(1, new_sizeof));
-	if (!new_sizeof)
-		return (old_ptr);
-	new_ptr = ft_calloc(1, new_sizeof);
-	if (!new_ptr)
-		return (NULL);
-	ft_memcpy(new_ptr, old_ptr, new_sizeof);
-	if (old_ptr)
-		free(old_ptr);
-	return (new_ptr);
+void	sh_lfreetkns(t_list *tkn_lst)
+{
+	t_list	*prev;
+	t_token	*tkn;
+
+	while (tkn_lst)
+	{
+		tkn = tkn_lst->content;
+		_freetkn(tkn);
+		prev = tkn_lst;
+		tkn_lst = tkn_lst->next;
+		sh_free(&prev);
+	}
 }

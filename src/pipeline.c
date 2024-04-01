@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 17:52:12 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:28:47 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
  #include <sys/wait.h>
 #include "minishell.h"
 
-void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
+void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shbuff)
 {
 	char	*exit_code;
 	int		pipefd[2];
 	int		fd;
 	t_token	_tkn;
 
-	_tkn.str = shell_buffer;
-	shell_buffer[ft_strlen(shell_buffer)] = '\0';
+	_tkn.str = shbuff;
+	shbuff[ft_strlen(shbuff)] = '\0';
 	pipe(pipefd);
 	fd = STDOUT_FILENO;
 	if (cmd->is_piped || cmd->rdrs)
@@ -33,12 +33,12 @@ void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *shell_buffer)
 	exit_code = ft_itoa((bltn)(cmd->args, fd));
 	if (cmd->is_piped || cmd->rdrs)
 	{
-		read(pipefd[RD], shell_buffer, BUF_1MB);
-		shell_buffer[ft_strlen(shell_buffer)] = '\0';
+		read(pipefd[RD], shbuff, BUF_1MB);
+		shbuff[ft_strlen(shbuff)] = '\0';
 		close(pipefd[RD]);
 	}
 	set_evar("?=", sh_guard(exit_code, NULL));
-	free(exit_code);
+	sh_free(&exit_code);
 }
 
 static char	_to_lower(unsigned int ignore, char c)
@@ -53,28 +53,30 @@ static void	_exec_pipeline(t_list	*ppln)
 		__unset, __env, __exit, __history, NULL};
 	static char		*bltn_id[9] = {"echo", "cd", "pwd", "export",
 		"unset", "env", "exit", "history", NULL};
-	char			shell_buffer[BUF_1MB + NUL_SZ];
+	char			shbuff[BUF_1MB + NUL_SZ];
 	t_cmd			*_cmd;
 	int				i;
 	t_list			*_ppln;
 
-	ft_memset(shell_buffer, '\0', BUF_1MB);
+	ft_memset(shbuff, '\0', BUF_1MB);
 	_ppln = ppln;
 	i = 0;
 	while (_ppln)
 	{
 		_cmd = _ppln->content;
-		_cmd->tkn->str = sh_guard(ft_strmapi(_cmd->tkn->str, _to_lower), _cmd->tkn->str);
+		_cmd->tkn->str = sh_guard(ft_strmapi(_cmd->tkn->str, _to_lower),
+			_cmd->tkn->str);
 		if (_ppln->next)
 			_cmd->is_piped = true;
 		while (bltn_id[i])
 		{
-			if (!ft_strncmp(_cmd->tkn->str, bltn_id[i], ft_strlen(bltn_id[i]) + NUL_SZ))
-				_exec_builtin(bltn_ptr[i], _cmd, shell_buffer);
+			if (!ft_strncmp(_cmd->tkn->str, bltn_id[i],
+				ft_strlen(bltn_id[i]) + NUL_SZ))
+				_exec_builtin(bltn_ptr[i], _cmd, shbuff);
 			i++;
 		}
 		if (_cmd->rdrs)
-			process_redirs(_cmd, shell_buffer);
+			process_redirs(_cmd->rdrs, shbuff);
 		i = 0;
 		_ppln = _ppln->next;
 	}
@@ -88,6 +90,7 @@ static t_list *_add_redirection(t_list *tkn_lst, t_cmd *cmd)
 	tkn = tkn_lst->content;
 	rdr = sh_calloc(1, sizeof(t_rdr));
 	rdr->op = tkn;
+	ft_lstadd_back(&cmd->rdrs, sh_guard(ft_lstnew(rdr), NULL));
 	tkn_lst = tkn_lst->next;
 	while(tkn_lst)
 	{
@@ -96,15 +99,13 @@ static t_list *_add_redirection(t_list *tkn_lst, t_cmd *cmd)
 			ft_lstadd_back(&rdr->args, sh_guard(ft_lstnew(tkn), NULL));
 		else if (tkn->type == PIPE)
 			break ;
-		else
+		else if (tkn->type != CMD)
 		{
-			ft_lstadd_back(&cmd->rdrs, sh_guard(ft_lstnew(rdr), NULL));
-			_add_redirection(tkn_lst->next, cmd);
+			tkn_lst = _add_redirection(tkn_lst, cmd);
 			break ;
 		}
 		tkn_lst = tkn_lst->next;
 	}
-	ft_lstadd_back(&cmd->rdrs, sh_guard(ft_lstnew(rdr), NULL));
 	return (tkn_lst);
 }
 
@@ -145,8 +146,8 @@ void	run_pipeline(t_list *tkn_lst)
 				ft_lstadd_back(&sh->ppln, sh_guard(ft_lstnew(cmd), NULL));
 			}
 			rflag = true;
-			_lst = _add_redirection(_lst, cmd);
-			continue ; //TODO recoger el avance, TEMA listas subrogadas
+			_lst = _add_redirection(_lst, cmd); //TODO recoger el avance!
+			continue ;
 		}
 		_lst = _lst->next;
 	}

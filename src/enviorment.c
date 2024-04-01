@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/21 11:21:48 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:43:01 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	unset_evar(char *var_name)
 	{
 		if (ft_strnstr(sh->env[i], var_name, ft_strlen(var_name)))
 		{
-			free(sh->env[i]);
+			sh_free(&sh->env[i]);
 			j = i;
 			while (sh->env[j])
 			{
