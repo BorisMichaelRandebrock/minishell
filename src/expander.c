@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 17:21:40 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:14:37 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	_expand_var(t_token *tkn)
 	ft_memset(_str, '\0', BUF_1KB);
 	while (tkn->str[i])
 	{
-		if (tkn->str[i] == '$')
+		if (tkn->str[i] == '$' && tkn->str[i + 1] != '\0')
 		{
 			name = _get_var_name(&tkn->str[i]);
 			value = get_evar(name);
@@ -62,7 +62,7 @@ void	_expand_var(t_token *tkn)
 			i += ft_strlen(name);
 			sh_free(&name);
 		}
-		if (tkn->str[i] != '$')
+		else if (tkn->str[i] != '$' || tkn->str[i + 1] == '\0')
 			_str[j++] = tkn->str[i++];
 	}
 	tkn->str = sh_guard(ft_strdup(_str), tkn->str);

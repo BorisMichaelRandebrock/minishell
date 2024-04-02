@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:14:26 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 17:07:25 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/02 13:48:45 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ static void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *sbuffer)
 	pipe(pipefd);
 	fd = STDOUT_FILENO;
 	if (cmd->is_piped || cmd->rdrs)
+	{
 		fd = pipefd[WR];
-	else
 		ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(&_tkn), NULL));
+	}
 	exit_code = ft_itoa((bltn)(cmd->args, fd));
 	if (cmd->is_piped || cmd->rdrs)
 	{
