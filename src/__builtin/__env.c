@@ -6,14 +6,13 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:14 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 17:04:35 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:16:16 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
 
-//TODO //BUG imprime un salto de linea al principio! ¿?¿
 int	__env(t_list *args, int fd)
 {
 	t_shell	*sh;

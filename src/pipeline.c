@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 19:47:21 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/02 15:00:36 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	_exec_pipeline(void)
 				_cmd->tkn->str);
 		if (_ppln->next)
 			_cmd->is_piped = true;
-		if (!try_builtin(_cmd, sbuffer))
+		if (try_builtin(_cmd, sbuffer) == FAILURE)
 			try_process(_cmd, sbuffer);
 		if (_cmd->rdrs)
 			process_redirs(_cmd->rdrs, sbuffer);
