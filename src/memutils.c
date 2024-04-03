@@ -6,13 +6,12 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/03 12:16:32 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/03 16:29:50 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "minishell.h"
-
 
 //Protected allocation with calloc
 void	*sh_calloc(size_t num, size_t size)
