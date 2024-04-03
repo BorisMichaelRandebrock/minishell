@@ -6,11 +6,11 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 19:40:13 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 11:43:40 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/03 12:16:32 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+
 #include "minishell.h"
 #include <readline/history.h>
 #include <readline/readline.h>

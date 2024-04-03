@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/02 19:01:25 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/03 12:16:50 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@
 # define HER_STR	"<<"
 # define NL_STR		"\n"
 
-# include <signal.h>
 # include <stdbool.h>
 # include "libft.h"
 

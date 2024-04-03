@@ -6,58 +6,111 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/02 19:04:10 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/03 15:37:07 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <sys/wait.h>
 #include "minishell.h"
+
+#define IDX_OFFST 1
+#define NUL_SZ 1
 #define RD 0
 #define WR 1
+
+// TODO gestionar excepcion
+static char	*_build_path(char *cmd_name)
+{
+	char	**splitted;
+	int		i;
+	char	buffer[BUF_1MB + NUL_SZ];
+
+	splitted = sh_guard(ft_split(get_evar("PATH="), ':'), NULL);
+	i = 0;
+	while (splitted[i] && !ft_fexists(buffer))
+	{
+		ft_memset(buffer, '\0', BUF_1MB + NUL_SZ);
+		ft_strlcat(buffer, splitted[i], BUF_1MB + NUL_SZ);
+		ft_strlcat(buffer, "/", BUF_1MB + NUL_SZ);
+		ft_strlcat(buffer, cmd_name, BUF_1MB + NUL_SZ);
+		i++;
+	}
+	i = 0;
+	while (splitted[i])
+		sh_free(&splitted[i++]);
+	sh_free(&splitted);
+	if (ft_fexists(buffer))
+		return (sh_guard(ft_strdup(buffer), NULL));
+	return (NULL);
+}
+
+static char	**_args_to_array(t_list *argslst)
+{
+	char	**args;
+	t_token	*tkn;
+	size_t	list_sz;
+	size_t	i;
+
+	list_sz = ft_lstsize(argslst);
+	args = sh_calloc(list_sz + NUL_SZ, sizeof(char **));
+	i = 0;
+	while (i < list_sz)
+	{
+		tkn = argslst->content;
+		args[i++] = tkn->str;
+		argslst = argslst->next;
+	}
+	args[i] = NULL;
+	return (args);
+}
+
+static void	_child_procces(int *pipefd, char *execpath, char **execargs)
+{
+	close(pipefd[RD]);
+	dup2(pipefd[WR], STDOUT_FILENO);
+	close(pipefd[WR]);
+	if (execpath)
+		execve(execpath, execargs, get_shell()->env);
+}
+
+static void	_parent_procces(int	*pipefd, char *execpath, char *sbuffer)
+{
+	ssize_t	bytes_read;
+	int		child_status;
+	char	*child_exit_code;
+
+	if (execpath)
+	{
+		wait3(&child_status, 0, NULL);
+		child_exit_code = ft_itoa(WEXITSTATUS(child_status));
+		set_evar("?=", child_exit_code);
+		sh_free(&child_exit_code);
+	}
+	close(pipefd[WR]);
+	bytes_read = read(pipefd[RD], sbuffer, BUF_1MB);
+	close(pipefd[RD]);
+	sbuffer[bytes_read] = '\0';
+}
 
 //TODO read exception handling...
 void	try_process(t_cmd *cmd, char *sbuffer)
 {
-	char	*path;
-	char	**args;
+	char	*execpath;
+	char	**execargs;
 	int		pipefd[2];
 	pid_t	pid;
-	//int		exit_code;
-	ssize_t	bytes_read;
-	t_list	*_args;
-	int		i;
-	int		size;
-
-	size = ft_lstsize(cmd->args)+ 1;
-	args = sh_calloc(size, sizeof(char **));
-	i = 0;
-	_args = cmd->args;
-	while (_args)
-	{
-		args[i] = ((t_token *)_args->content)->str;
-		i++;
-		_args = _args->next;
-	}
-	args[i] = NULL;
 
 	pipe(pipefd);
-	path = cmd->tkn->str;
+	execargs = _args_to_array(cmd->args);
+	execpath = _build_path(cmd->tkn->str);
 	pid = fork();
 	if (pid == 0)
-	{
-		close(pipefd[RD]);
-		dup2(pipefd[WR], STDOUT_FILENO);
-		close(pipefd[WR]);
-		execve(path, args, get_shell()->env); //TODO EXECVE @@@@@@@@@ no encuentra ejecutables en el path
-	}
+		_child_procces(pipefd, execpath, execargs);
 	else
 	{
-		waitpid(pid, NULL, 0);
-		//wait3(NULL, 0, NULL); //TODO quizas es WAIT el que falla???
-		close(pipefd[WR]);
-		bytes_read = read(pipefd[RD], sbuffer, BUF_1MB);
-		sbuffer[bytes_read] = '\0';
-		printf("%s", sbuffer);
-		free(args);
+		_parent_procces(pipefd, execpath, sbuffer);
+		sh_free(&execargs);
+		sh_free(&execpath);
 	}
 }

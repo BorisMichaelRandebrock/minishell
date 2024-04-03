@@ -6,11 +6,11 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/02 13:39:44 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/03 12:16:32 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+
 #include "minishell.h"
 
 #define WHSPC_CHRS " \t\n\r\f\v"

@@ -6,14 +6,14 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/02 19:03:11 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/03 12:16:32 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
 #include "minishell.h"
-#include "libft.h"
+
 
 #define DFLT_ENV_SZ 5
 
