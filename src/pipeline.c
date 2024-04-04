@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/03 17:14:23 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:40:19 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ static void	_exec_pipeline(void)
 		_cmd->tkn->str = sh_guard(ft_strmapi(_cmd->tkn->str, _to_lower),
 				_cmd->tkn->str);
 		if (_ppln->next)
-			_cmd->is_piped = true;
+		{
+			_cmd->to_pipe = true;
+			((t_cmd *)_ppln->next->content)->from_pipe = true;
+		}
 		if (try_builtin(_cmd, sbuffer) == FAILURE)
 			try_process(_cmd, sbuffer);
 		if (_cmd->rdrs)
@@ -55,7 +58,8 @@ static t_cmd	*_add_cmd(t_token *tkn, bool *rdrflag)
 	sh = get_shell();
 	cmd = sh_calloc(1, sizeof(t_cmd));
 	cmd->tkn = tkn;
-	cmd->is_piped = false;
+	cmd->to_pipe = false;
+	cmd->from_pipe = false;
 	ft_lstadd_back(&sh->ppln, sh_guard(ft_lstnew(cmd), NULL));
 	return (cmd);
 }

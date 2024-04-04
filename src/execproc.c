@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/03 17:14:21 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/04 19:04:38 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static void	_child_procces(int *pipefd, char *execpath, char **execargs)
 {
 	close(pipefd[RD]);
 	dup2(pipefd[WR], STDOUT_FILENO);
-	close(pipefd[WR]);
 	if (execpath)
 		execve(execpath, execargs, get_shell()->env);
 }
@@ -102,6 +101,17 @@ static char	**_args_to_array(t_cmd *cmd)
 	return (args);
 }
 
+
+static void	_buffer_to_stdin(char *sbuffer)
+{
+	int	fd[2];
+
+	pipe(fd);
+	write(fd[WR], sbuffer, ft_strlen(sbuffer));
+	close(fd[WR]);
+	dup2(fd[RD], STDIN_FILENO);
+}
+
 //TODO read exception handling...
 void	try_process(t_cmd *cmd, char *sbuffer)
 {
@@ -115,16 +125,20 @@ void	try_process(t_cmd *cmd, char *sbuffer)
 	execpath = _build_path(cmd->tkn->str);
 	pid = fork();
 
-	if (!cmd->is_piped)
-		//TODO @@@@@ comunicacioni entre procesos (no buitin) no funciona!!!!!
-		//write(pipefd[WR], sbuffer, ft_strlen(sbuffer));
-		//ft_memset(sbuffer, '\0', ft_strlen(sbuffer));
+
+	//TODO @@@@@@@@@ de builtin a ext, no se pasan la informacio bien...
+
+
 	if (pid == 0)
+	{
+		if(cmd->from_pipe)
+			_buffer_to_stdin(sbuffer);
 		_child_procces(pipefd, execpath, execargs);
+	}
 	else
 	{
 		_parent_procces(pipefd, execpath, sbuffer);
-		if (!cmd->is_piped && !cmd->rdrs)
+		if (!cmd->to_pipe && !cmd->rdrs)
 			write(STDOUT_FILENO, sbuffer, ft_strlen(sbuffer));
 		sh_free(&execargs);
 		sh_free(&execpath);

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:14:26 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/03 15:47:35 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:36:42 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *sbuffer)
 	sbuffer[ft_strlen(sbuffer)] = '\0';
 	pipe(pipefd);
 	fd = STDOUT_FILENO;
-	if (cmd->is_piped || cmd->rdrs)
+	if (cmd->to_pipe || cmd->rdrs)
 	{
 		fd = pipefd[WR];
 		ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(&_tkn), NULL));
 	}
 	exit_code = ft_itoa((bltn)(cmd->args, fd));
-	if (cmd->is_piped || cmd->rdrs)
+	if (cmd->to_pipe || cmd->rdrs)
 	{
 		read(pipefd[RD], sbuffer, BUF_1MB);
 		sbuffer[ft_strlen(sbuffer)] = '\0';
