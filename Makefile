@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/04/03 16:36:18 by fmontser         ###   ########.fr        #
+#    Updated: 2024/04/05 16:53:58 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,12 +90,9 @@ re: fclean all
 .PHONY: all clean fclean re
 
 #TODO sustituir llamadas a __export por set_evar??
-#TODO las opciones de parametros son tokens especiales p.e. cat -e (-e).
 #TODO probar a pasar argumentos a minishell ej. ls | ./minishell... no debe petar!
-#TODO	set_evar("_=", cmd->tkn->str); para procesos!!!
-#TODO repasar tema del history, es mas complejo...mirar bash manual
-#TODO la gestion de memoria es valida pero no me convence...
-#TODO ft_strjoin, ft_strlen, ft_strnstr, ft_is_whspc update(fran),  ft_rszarray, libft.h, makefile
+#TODO repasar tema del history, no funciona muy bien...
+#TODO (fran) ft_strjoin, ft_strlen, ft_strnstr, ft_is_whspc update,  ft_rszarray, libft.h, makefile
 #TODO limpieza includes
 #TODO retirar .vscode de git
 #TODO retirar las funciones libft no utilizadas

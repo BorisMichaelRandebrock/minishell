@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 13:03:50 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:48:18 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #define VAR_NAME	0
 #define VALUE		1
 
+//TODO //BUG unset no funciona a menos que la EVAR sea la ultima...
 int	__unset(t_list *args, int fd)
 {
 	t_list	*_args;
