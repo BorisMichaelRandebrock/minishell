@@ -45,6 +45,7 @@
 		"typeinfo": "c",
 		"complex": "c",
 		"stdio.h": "c",
-		"ostream": "c"
+		"ostream": "c",
+		"stdbool.h": "c"
 	}
 }

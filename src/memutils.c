@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/03 16:29:50 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/06 21:24:01 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*sh_calloc(size_t num, size_t size)
 
 	alloc = ft_calloc(num, size);
 	if (!alloc)
-		sh_perror(MEM_ERROR);
+		sh_perror(MSH_MERROR);
 	return (alloc);
 }
 
@@ -46,7 +46,7 @@ void	*sh_guard(void *alloc, void *old)
 	if (old)
 		sh_free(&old);
 	if (!alloc)
-		sh_perror(MEM_ERROR);
+		sh_perror(MSH_MERROR);
 	return (alloc);
 }
 

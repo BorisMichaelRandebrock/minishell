@@ -6,45 +6,19 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/05 12:03:32 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/06 21:34:29 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define BUF_1MB	1048576
-# define BUF_1KB	1024
-
-# define SYS_FDS	2
-# define RD			0
-# define WR			1
-
-# define INIT		-100
-# define MEM_ERROR	-10
-# define NULL_ERROR	-11
-
-# define SUCCESS	0
-# define FAILURE	1
-
-# define IDX_OFFST	1
-# define CH_SZ		1
-
-# define DOLL_CH	'$'
-# define NUL_CH		'\0'
-# define SPC_CH		' '
-# define TAB_CH		'\t'
-# define SQU_CH		'\''
-# define NL_CH		'\n'
-# define DQU_CH		'"'
-# define PIP_CH		'|'
-# define OUT_CH		'>'
-# define IN_CH		'<'
-# define EQ_CH		'='
-
-# define APP_STR	">>"
-# define HER_STR	"<<"
-# define NL_STR		"\n"
+# define BUF_1MB		1048576
+# define BUF_1KB		1024
+# define SUCCESS		0
+# define FAILURE		1
+# define MSH_MERROR		-100
+# define MSH_NULLERROR	-101
 
 # include <stdbool.h>
 # include "libft.h"
@@ -55,14 +29,13 @@ typedef int (*t_bltin)(t_list *args, int fd);
 
 typedef enum e_tkntype
 {
-	NONE,
 	CMD,
 	ARG,
 	RDAPP,
 	RDHDOC,
-	RDOUT = 62,
-	RDIN = 60,
-	PIPE = 124
+	RDOUT,
+	RDIN,
+	PIPE
 }	t_tkntype;
 
 typedef struct s_token
@@ -82,6 +55,7 @@ typedef struct s_cmd
 	t_token	*tkn;
 	t_list	*args;
 	t_list	*rdrs;
+	char	*ppbuffer;
 	bool	to_pipe;
 	bool	from_pipe;
 }	t_cmd;

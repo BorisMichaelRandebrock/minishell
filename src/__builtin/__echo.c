@@ -6,14 +6,15 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/05 16:18:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/06 21:22:57 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
 
-#define N_OPT "-n"
+#define N_OPT	"-n"
+#define SYS_FDS	2
 
 //TODO return errors?
 static bool	_n_opt_check(t_token *tkn, t_list **_args)

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/05 17:14:31 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/06 21:22:40 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <sys/wait.h>
 #include "minishell.h"
 
-#define IDX_OFFST	1
 #define NUL_SZ		1
 #define ARG0_SZ		1
 #define TO_PROC		0

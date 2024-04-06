@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/03 12:16:32 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/06 21:07:06 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include <unistd.h>
 #include <string.h>
 
-#define NEW_VAR_SZ		1
+#define NEW_VAR_SZ	1
+#define CH_SZ		1
 
 //var_name format must be 'VAR='
 char	*get_evar(char *var_name)

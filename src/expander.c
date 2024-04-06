@@ -6,23 +6,41 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/02 14:14:37 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/06 22:05:54 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#define START	0
-#define END		1
+#define IDX_OFFST	1
+#define QUOTES_SZ	2
+#define START		0
+#define END			1
 
-char	*_get_var_name(char *str)
+static void	_dequote_token(t_token *tkn)
+{
+	char	*_str;
+
+	_str = tkn->str;
+	if (tkn->type == ARG)
+	{
+		if ((_str[0] == '"' && _str[ft_strlen(_str) - IDX_OFFST] == '"')
+			|| (_str[0] == '\'' && _str[ft_strlen(_str) - IDX_OFFST] == '\''))
+		{
+			ft_memmove(_str, &_str[1], ft_strlen(_str) - QUOTES_SZ);
+			_str[ft_strlen(_str) - QUOTES_SZ] = '\0';
+		}
+	}
+}
+
+static char	*_get_var_name(char *str)
 {
 	char	*var_name;
 	size_t	i;
 
 	var_name = sh_guard(ft_strdup(++str), NULL);
 	i = 0;
-	while (var_name[i] && var_name[i] != SPC_CH && var_name[i] != DQU_CH
+	while (var_name[i] && var_name[i] != ' ' && var_name[i] != '"'
 		&& var_name[i] != '$')
 		i++;
 	var_name[i++] = '=';
@@ -30,17 +48,7 @@ char	*_get_var_name(char *str)
 	return (var_name);
 }
 
-int	_get_var_end(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != SPC_CH && str[i] != DQU_CH)
-		i++;
-	return (i);
-}
-
-void	_expand_var(t_token *tkn)
+static void	_expand_var(t_token *tkn)
 {
 	char	_str[BUF_1KB + NUL_SZ];
 	char	*name;
@@ -75,7 +83,7 @@ void	token_expansion(t_token *tkn)
 
 	i = 0;
 	size = ft_strlen(tkn->str);
-	if (tkn->str[i] == SQU_CH && tkn->str[size - IDX_OFFST] == SQU_CH)
-		return ;
-	_expand_var(tkn);
+	if (tkn->str[i] != '\'' || tkn->str[size - IDX_OFFST] != '\'')
+		_expand_var(tkn);
+	_dequote_token(tkn);
 }

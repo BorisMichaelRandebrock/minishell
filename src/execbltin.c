@@ -6,13 +6,16 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:14:26 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/04 16:36:42 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/06 21:33:11 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
-#define NUL_SZ 1
+
+#define NUL_SZ	1
+#define RD		0
+#define WR		1
 
 static void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *sbuffer)
 {
