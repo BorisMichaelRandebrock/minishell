@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/06 21:22:57 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:54:54 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	__echo(t_list *args, int fd)
 	{
 		tkn = _args->content;
 		write(fd, tkn->str, ft_strlen(tkn->str));
-		if (_args->next && *((t_token *)_args->next->content)->str )
+		if (_args->next && *((t_token *)_args->next->content)->str)
 			write(fd, " ", 1);
 		_args = _args->next;
 	}

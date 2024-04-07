@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 22:49:16 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/05 23:03:00 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:53:36 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
-}t_list;
+}	t_list;
 
 int64_t	ft_atoll(const char *nptr);
 int		ft_isalpha(int c);

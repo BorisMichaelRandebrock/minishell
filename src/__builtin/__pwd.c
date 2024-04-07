@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 16:29:40 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/14 11:38:56 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:51:52 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,5 @@ int	__pwd(t_list *args, int fd)
 	pwd = get_evar("PWD=");
 	write(fd, pwd, ft_strlen(pwd));
 	write(fd, "\n", 1);
-	return(SUCCESS);
+	return (SUCCESS);
 }

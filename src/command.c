@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 19:49:46 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/07 17:41:37 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:46:22 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 //TODO excepcion, si despues de un pipe no hay nada, se pide input...si...
 //TODO excepcion, si un redir no tiene argumento o el argumento no es valido es un error
 //TODO excepcion, n puede haber argumentos antes de un comando, si lo hay (y no son el comando) es un error.
-static t_list	*_add_process(t_cmd *cmd,t_list *tknlst)
+static t_list	*_add_process(t_cmd *cmd, t_list *tknlst)
 {
 	t_token	*_tkn;
 
@@ -31,7 +31,7 @@ static t_list	*_add_process(t_cmd *cmd,t_list *tknlst)
 	_tkn = tknlst->content;
 	while (tknlst && _tkn->type == ARG)
 	{
-		ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(_tkn),NULL));
+		ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(_tkn), NULL));
 		tknlst = tknlst->next;
 		if (tknlst)
 			_tkn = tknlst->content;

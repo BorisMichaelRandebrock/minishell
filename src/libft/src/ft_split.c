@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 22:26:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/03 13:48:37 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:53:14 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,6 @@ char	**ft_split(const char *s, char c)
 		}
 		s++;
 	}
-	//split[j] = NULL; //TODO check
+	split[j] = NULL;
 	return (split);
 }

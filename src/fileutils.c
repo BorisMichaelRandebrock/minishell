@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/07 16:28:05 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:45:34 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #define FILE_NOT_FOUND	-1
 #define FILE_NOT_EXEC	-1
+
+//TODO revisar si aun es necesario alguno
 
 bool	sh_fexists(char *filename)
 {

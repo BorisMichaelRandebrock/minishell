@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/06 21:56:07 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:54:05 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static void	_extract_token(char *start, char *end)
 	token_expansion(tkn);
 	ft_lstadd_back(&sh->tknlst, sh_guard(ft_lstnew(tkn), NULL));
 }
+
 // Parse a input prompt into a token list
 void	tokenizer(char *input)
 {

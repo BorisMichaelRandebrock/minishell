@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:26:03 by fmontser          #+#    #+#             */
-/*   Updated: 2024/03/20 23:14:31 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:54:36 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ static int	_print_error(char *arg)
 	return (FAILURE);
 }
 
-static void _chdir(char *arg)
+static void	_chdir(char *arg)
 {
 	char	buf[BUF_1KB];
 
 	getcwd(buf, BUF_1KB);
 	if (chdir(arg) < 0)
-		 _print_error(arg);
+		_print_error(arg);
 	set_evar("OLDPWD=", buf);
 	set_evar("PWD=", getcwd(buf, BUF_1KB));
 }

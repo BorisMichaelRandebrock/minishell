@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/07 16:28:30 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:48:34 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@
 # include <stdio.h> //TODO para pruebas retirar
 
 //TODO borrar pragma
-#pragma GCC diagnostic ignored "-Wunused-function"
-#pragma GCC diagnostic ignored "-Wunused-parameter"
+# pragma GCC diagnostic ignored "-Wunused-function"
+# pragma GCC diagnostic ignored "-Wunused-parameter"
 
-typedef int (*t_bltin)(t_list *args, int fd);
+typedef int	(*t_bltin)(t_list *args, int fd);
 
 typedef enum e_tkntype
 {
@@ -48,17 +48,19 @@ typedef struct s_token
 	t_tkntype	type;
 }	t_token;
 
-typedef struct s_rdr	//TODO borrar tras refactor pipeline
+//TODO borrar tras refactor pipeline
+typedef struct s_rdr
 {
 	t_token	*op;
 	t_list	*args;
 }	t_rdr;
 
+//TODO rdrs borrar tras refactor pipeline
 typedef struct s_cmd
 {
 	t_token	*tkn;
 	t_list	*args;
-	t_list	*rdrs; //TODO borrar tras refactor pipeline
+	t_list	*rdrs;
 	t_list	*rdrs_in;
 	t_list	*rdrs_out;
 	char	*ppbuffer;
@@ -74,7 +76,7 @@ typedef struct s_shell
 	t_list	*ppln;
 }	t_shell;
 
-t_shell		*get_shell();
+t_shell		*get_shell(void);
 t_shell		*new_shell(char **sys_env);
 void		set_prompt(void);
 void		new_env(t_shell *sh, char **sys_env);
