@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/06 22:09:39 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:43:17 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	main(int argc, char *argv[], char *sys_env[])
 		add_history(sh->input);
 		tokenizer(sh->input);
 		build_commands(sh->tknlst, &sh->ppln);
-		//TODO @@@ continuar refactor comandos...
 
+		//TODO @@@ continuar refactor pipeline
 		//run_pipeline(sh->tknlst);
 		//sh_lfreeppln(sh->ppln);
 		sh_lfreetkns(sh->tknlst);

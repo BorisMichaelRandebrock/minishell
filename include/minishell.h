@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/06 21:34:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/07 16:28:30 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@
 # include "libft.h"
 
 # include <stdio.h> //TODO para pruebas retirar
+
+//TODO borrar pragma
+#pragma GCC diagnostic ignored "-Wunused-function"
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 
 typedef int (*t_bltin)(t_list *args, int fd);
 
@@ -44,7 +48,7 @@ typedef struct s_token
 	t_tkntype	type;
 }	t_token;
 
-typedef struct s_rdr
+typedef struct s_rdr	//TODO borrar tras refactor pipeline
 {
 	t_token	*op;
 	t_list	*args;
@@ -54,7 +58,9 @@ typedef struct s_cmd
 {
 	t_token	*tkn;
 	t_list	*args;
-	t_list	*rdrs;
+	t_list	*rdrs; //TODO borrar tras refactor pipeline
+	t_list	*rdrs_in;
+	t_list	*rdrs_out;
 	char	*ppbuffer;
 	bool	to_pipe;
 	bool	from_pipe;
@@ -68,6 +74,7 @@ typedef struct s_shell
 	t_list	*ppln;
 }	t_shell;
 
+t_shell		*get_shell();
 t_shell		*new_shell(char **sys_env);
 void		set_prompt(void);
 void		new_env(t_shell *sh, char **sys_env);
@@ -75,8 +82,8 @@ char		*get_evar(char *var_name);
 void		set_evar(char *var_name, char *value);
 void		unset_evar(char *var_name);
 void		tokenizer(char *input);
-t_shell		*get_shell();
 void		token_expansion(t_token *tkn);
+void		build_commands(t_list *tknlst, t_list **ppln);
 void		run_pipeline(t_list *tknlst);
 void		exec_pipeline(t_list *ppln);
 bool		try_builtin(t_cmd *cmd, char *sbuffer);
@@ -98,5 +105,8 @@ void		sh_lfreeppln(t_list *ppln);
 void		sh_lfreetkns(t_list *tknlst);
 void		*sh_guard(void *alloc, void *nullable_old);
 void		sh_perror(int error_code);
+bool		sh_finpath(char *filename);
+bool		sh_fexists(char *filename);
+bool		sh_fisexec(char *filename);
 
 #endif

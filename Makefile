@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/04/06 20:08:20 by fmontser         ###   ########.fr        #
+#    Updated: 2024/04/07 16:08:56 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ NAME			:= minishell
 HDRS 			:= minishell.h
 SRCS 			:=	main.c shell.c enviorment.c memutils.c token.c expander.c \
 					pipeline.c execbltin.c execproc.c redirs.c exception.c \
-					command.c freexit.c freeppln.c freetknlst.c\
+					command.c freexit.c freeppln.c freetknlst.c fileutils.c\
 					__echo.c __env.c __export.c __unset.c __pwd.c __exit.c __cd.c \
 					__history.c
 
@@ -90,6 +90,7 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
+#TODO remplazar ft_fexists con el propoio de sh_
 #TODO sustituir llamadas a __export por set_evar??
 #TODO probar a pasar argumentos a minishell ej. ls | ./minishell... no debe petar!
 #TODO repasar tema del history, no funciona muy bien...
