@@ -6,10 +6,9 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 19:40:13 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/05 16:52:44 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:52:42 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 #include <readline/history.h>
@@ -45,5 +44,3 @@ int	__history(t_list *args, int fd)
 	}
 	return (SUCCESS);
 }
-
-

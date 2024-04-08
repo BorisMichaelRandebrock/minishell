@@ -6,13 +6,16 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:14 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/05 16:20:00 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:28:24 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
 
+#define SYS_FDS	2
+
+//TODO //BUG env | cat -e, segfault!
 //TODO //BUG el la ultima entrada impresa no tiene salto de linea!
 int	__env(t_list *args, int fd)
 {

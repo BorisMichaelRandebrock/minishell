@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/05 17:14:31 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:45:55 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <sys/wait.h>
 #include "minishell.h"
 
-#define IDX_OFFST	1
 #define NUL_SZ		1
 #define ARG0_SZ		1
 #define TO_PROC		0
@@ -28,7 +27,13 @@ static void	_child_procces(int pipes[2][2], char *exec_path, char **exec_args)
 	if (!exec_path)
 		exit(FAILURE);
 	dup2(pipes[TO_PROC][RD], STDIN_FILENO);
+	close(pipes[TO_PROC][RD]);
 	dup2(pipes[TO_SHELL][WR], STDOUT_FILENO);
+
+	//TODO borrar test
+/* 	printf("- %s\n", exec_args[0]);
+	printf("- %s\n", exec_args[1]); */
+
 	execve(exec_path, exec_args, get_shell()->env);
 }
 
@@ -55,16 +60,16 @@ static char	*_build_path(char *cmd_name)
 {
 	char	**splitted;
 	int		i;
-	char	buffer[BUF_1MB + NUL_SZ];
+	char	buffer[BUF_1KB + NUL_SZ];
 
 	splitted = sh_guard(ft_split(get_evar("PATH="), ':'), NULL);
 	i = 0;
 	while (splitted[i] && !ft_fexists(buffer))
 	{
-		ft_memset(buffer, '\0', BUF_1MB + NUL_SZ);
-		ft_strlcat(buffer, splitted[i], BUF_1MB + NUL_SZ);
-		ft_strlcat(buffer, "/", BUF_1MB + NUL_SZ);
-		ft_strlcat(buffer, cmd_name, BUF_1MB + NUL_SZ);
+		ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
+		ft_strlcat(buffer, splitted[i], BUF_1KB + NUL_SZ);
+		ft_strlcat(buffer, "/", BUF_1KB + NUL_SZ);
+		ft_strlcat(buffer, cmd_name, BUF_1KB + NUL_SZ);
 		i++;
 	}
 	i = 0;
@@ -85,10 +90,10 @@ static char	**_args_to_array(t_cmd *cmd)
 
 	argslst = cmd->args;
 	list_sz = ft_lstsize(argslst) + ARG0_SZ;
-	if (list_sz < 2)
+	if (list_sz == 1)
 	{
 		args = sh_calloc(1 + NUL_SZ, sizeof(char **));
-		args[0] = "";
+		args[0] = cmd->tkn->str;
 		args[1] = NULL;
 		return (args);
 	}

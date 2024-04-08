@@ -6,13 +6,16 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:14:26 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/04 16:36:42 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/08 14:44:01 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
-#define NUL_SZ 1
+
+#define NUL_SZ	1
+#define RD		0
+#define WR		1
 
 static void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *sbuffer)
 {
@@ -25,13 +28,12 @@ static void	_exec_builtin(t_bltin bltn, t_cmd *cmd, char *sbuffer)
 	sbuffer[ft_strlen(sbuffer)] = '\0';
 	pipe(pipefd);
 	fd = STDOUT_FILENO;
-	if (cmd->to_pipe || cmd->rdrs)
-	{
+	if (cmd->to_pipe)
 		fd = pipefd[WR];
+	else
 		ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(&_tkn), NULL));
-	}
 	exit_code = ft_itoa((bltn)(cmd->args, fd));
-	if (cmd->to_pipe || cmd->rdrs)
+	if (cmd->to_pipe)
 	{
 		read(pipefd[RD], sbuffer, BUF_1MB);
 		sbuffer[ft_strlen(sbuffer)] = '\0';

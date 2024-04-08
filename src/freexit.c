@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 22:16:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 13:27:32 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/08 14:21:24 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	sh_freexit(int exit_code)
 
 	i = 0;
 	sh = get_shell();
+	sh_lfreeppln(sh->ppln);
+	sh_lfreetkns(sh->tknlst);
 	_freeenv();
 	_freeshell();
 	exit(exit_code);

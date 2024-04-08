@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:41:32 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/01 13:07:24 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/08 13:25:44 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,23 @@ static void	_lfreeargs(t_list *args)
 	}
 }
 
-static void	_lfreerdrs(t_list *rdrs)
-{
-	t_list	*prev;
-	t_rdr	*rdr;
-
-	while (rdrs)
-	{
-		rdr = rdrs->content;
-		_freerdr(rdr);
-		prev = rdrs;
-		rdrs = rdrs->next;
-		sh_free(&prev);
-	}
-}
-
-static void	_freerdr(t_rdr *rdr)
-{
-	_lfreeargs(rdr->args);
-	sh_free(&rdr);
-}
-
 static void	_freecmd(t_cmd *cmd)
 {
+	t_list	*prev;
+
 	_lfreeargs(cmd->args);
-	_lfreerdrs(cmd->rdrs);
+	while (cmd->rdrs_in)
+	{
+		prev = cmd->rdrs_in;
+		cmd->rdrs_in = cmd->rdrs_in->next;
+		sh_free(&prev);
+	}
+	while (cmd->rdrs_out)
+	{
+		prev = cmd->rdrs_out;
+		cmd->rdrs_out = cmd->rdrs_out->next;
+		sh_free(&prev);
+	}
 	sh_free(&cmd);
 }
 

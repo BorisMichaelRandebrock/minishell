@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/03 16:29:20 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/08 15:53:05 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ int	main(int argc, char *argv[], char *sys_env[])
 		sh->input = readline(get_evar("PROMPT="));
 		add_history(sh->input);
 		tokenizer(sh->input);
-		run_pipeline(sh->tknlst);
+		build_commands(sh->tknlst, &sh->ppln);
+		if (!sh_cmd_validation(sh->ppln, sh->tknlst))
+			continue ;
+		exec_pipeline(sh->ppln);
 		sh_lfreeppln(sh->ppln);
 		sh_lfreetkns(sh->tknlst);
 	}

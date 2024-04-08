@@ -6,63 +6,40 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/05 12:03:32 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:57:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define BUF_1MB	1048576
-# define BUF_1KB	1024
-
-# define SYS_FDS	2
-# define RD			0
-# define WR			1
-
-# define INIT		-100
-# define MEM_ERROR	-10
-# define NULL_ERROR	-11
-
-# define SUCCESS	0
-# define FAILURE	1
-
-# define IDX_OFFST	1
-# define CH_SZ		1
-
-# define DOLL_CH	'$'
-# define NUL_CH		'\0'
-# define SPC_CH		' '
-# define TAB_CH		'\t'
-# define SQU_CH		'\''
-# define NL_CH		'\n'
-# define DQU_CH		'"'
-# define PIP_CH		'|'
-# define OUT_CH		'>'
-# define IN_CH		'<'
-# define EQ_CH		'='
-
-# define APP_STR	">>"
-# define HER_STR	"<<"
-# define NL_STR		"\n"
+# define BUF_1MB		1048576
+# define BUF_1KB		1024
+# define SUCCESS		0
+# define FAILURE		1
+# define MSH_MERROR		-100
+# define MSH_NULLERROR	-101
 
 # include <stdbool.h>
 # include "libft.h"
 
 # include <stdio.h> //TODO para pruebas retirar
 
-typedef int (*t_bltin)(t_list *args, int fd);
+//TODO borrar pragma
+# pragma GCC diagnostic ignored "-Wunused-function"
+# pragma GCC diagnostic ignored "-Wunused-parameter"
+
+typedef int	(*t_bltin)(t_list *args, int fd);
 
 typedef enum e_tkntype
 {
-	NONE,
 	CMD,
 	ARG,
 	RDAPP,
 	RDHDOC,
-	RDOUT = 62,
-	RDIN = 60,
-	PIPE = 124
+	RDOUT,
+	RDIN,
+	PIPE
 }	t_tkntype;
 
 typedef struct s_token
@@ -71,19 +48,21 @@ typedef struct s_token
 	t_tkntype	type;
 }	t_token;
 
+//TODO borrar tras refactor pipeline
 typedef struct s_rdr
 {
 	t_token	*op;
 	t_list	*args;
 }	t_rdr;
 
+//TODO rdrs borrar tras refactor pipeline
 typedef struct s_cmd
 {
 	t_token	*tkn;
 	t_list	*args;
-	t_list	*rdrs;
+	t_list	*rdrs_in;
+	t_list	*rdrs_out;
 	bool	to_pipe;
-	bool	from_pipe;
 }	t_cmd;
 
 typedef struct s_shell
@@ -94,6 +73,7 @@ typedef struct s_shell
 	t_list	*ppln;
 }	t_shell;
 
+t_shell		*get_shell(void);
 t_shell		*new_shell(char **sys_env);
 void		set_prompt(void);
 void		new_env(t_shell *sh, char **sys_env);
@@ -101,9 +81,9 @@ char		*get_evar(char *var_name);
 void		set_evar(char *var_name, char *value);
 void		unset_evar(char *var_name);
 void		tokenizer(char *input);
-t_shell		*get_shell();
 void		token_expansion(t_token *tkn);
-void		run_pipeline(t_list *tknlst);
+void		build_commands(t_list *tknlst, t_list **ppln);
+bool		sh_cmd_validation(t_list *ppln, t_list *tknlst);
 void		exec_pipeline(t_list *ppln);
 bool		try_builtin(t_cmd *cmd, char *sbuffer);
 void		try_process(t_cmd *cmd, char *sbuffer);
@@ -124,5 +104,8 @@ void		sh_lfreeppln(t_list *ppln);
 void		sh_lfreetkns(t_list *tknlst);
 void		*sh_guard(void *alloc, void *nullable_old);
 void		sh_perror(int error_code);
+bool		sh_finpath(char *filename);
+bool		sh_fexists(char *filename);
+bool		sh_fisexec(char *filename);
 
 #endif
