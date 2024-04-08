@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 19:49:46 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/07 17:46:22 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:30:55 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static t_list	*_add_process(t_cmd *cmd, t_list *tknlst)
 		cmd->tkn->type = CMD;
 		tknlst = tknlst->next;
 	}
-	_tkn = tknlst->content;
+	if (tknlst)
+		_tkn = tknlst->content;
 	while (tknlst && _tkn->type == ARG)
 	{
 		ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(_tkn), NULL));
@@ -61,7 +62,9 @@ static t_list	*_add_cmd(t_list *tknlst, t_list **ppln, t_cmd **cmd)
 {
 	*cmd = sh_calloc(1, sizeof(t_cmd));
 	ft_lstadd_back(ppln, sh_guard(ft_lstnew(*cmd), NULL));
-	return (tknlst->next);
+	if (tknlst)
+		return (tknlst->next);
+	return (NULL);
 }
 
 void	build_commands(t_list *tknlst, t_list **ppln)

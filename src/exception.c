@@ -6,12 +6,26 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:24:17 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/06 21:34:18 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/08 15:54:28 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "minishell.h"
+
+bool	sh_cmd_validation(t_list *ppln, t_list *tknlst)
+{
+	t_cmd *cmd;
+
+	cmd = ppln->content;
+	if (!cmd->tkn)
+	{
+		sh_lfreeppln(ppln);
+		sh_lfreetkns(tknlst);
+		return (false);
+	}
+	return (true);
+}
 
 void	sh_perror(int error_code)
 {

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/07 17:48:34 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:57:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,9 @@ typedef struct s_cmd
 {
 	t_token	*tkn;
 	t_list	*args;
-	t_list	*rdrs;
 	t_list	*rdrs_in;
 	t_list	*rdrs_out;
-	char	*ppbuffer;
 	bool	to_pipe;
-	bool	from_pipe;
 }	t_cmd;
 
 typedef struct s_shell
@@ -86,7 +83,7 @@ void		unset_evar(char *var_name);
 void		tokenizer(char *input);
 void		token_expansion(t_token *tkn);
 void		build_commands(t_list *tknlst, t_list **ppln);
-void		run_pipeline(t_list *tknlst);
+bool		sh_cmd_validation(t_list *ppln, t_list *tknlst);
 void		exec_pipeline(t_list *ppln);
 bool		try_builtin(t_cmd *cmd, char *sbuffer);
 void		try_process(t_cmd *cmd, char *sbuffer);
