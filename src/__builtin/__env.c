@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:14 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/08 16:28:24 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:49:32 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 //TODO //BUG env | cat -e, segfault!
 //TODO //BUG el la ultima entrada impresa no tiene salto de linea!
-int	__env(t_list *args, int fd)
+int	__env(t_list *args)
 {
 	t_shell	*sh;
 	size_t	i;
@@ -27,15 +27,10 @@ int	__env(t_list *args, int fd)
 	i = 0;
 	while (sh->env[i])
 	{
-		write(fd, sh->env[i], ft_strlen(sh->env[i]));
+		write(STDOUT_FILENO, sh->env[i], ft_strlen(sh->env[i]));
 		if (sh->env[++i])
-			write(fd, "\n", 1);
+			write(STDOUT_FILENO, "\n", 1);
 	}
-	write(fd, "\n", 1);
-	if (fd > SYS_FDS)
-	{
-		write(fd, "\0", 1);
-		close(fd);
-	}
+	write(STDOUT_FILENO, "\n", 1);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:26:03 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/07 17:54:36 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:52:16 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,11 @@ static void	_chdir(char *arg)
 	set_evar("OLDPWD=", buf);
 	set_evar("PWD=", getcwd(buf, BUF_1KB));
 }
-
-int	__cd(t_list *args, int fd)
+//TODO check cd a secas, tras refactor pipeline
+int	__cd(t_list *args)
 {
 	t_token	*tkn;
 
-	(void)fd;
 	if (!args)
 		_chdir(get_evar("HOME="));
 	else
@@ -47,7 +46,10 @@ int	__cd(t_list *args, int fd)
 			if (!get_evar("OLDPWD="))
 				_chdir(get_evar("HOME="));
 			else
+			{
+				printf("%s\n", get_evar("OLDPWD="));
 				_chdir(get_evar("OLDPWD="));
+			}
 		}
 		else if (!ft_strncmp(tkn->str, "~", 2))
 			_chdir(get_evar("HOME="));

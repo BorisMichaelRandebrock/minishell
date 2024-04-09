@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 19:40:13 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/07 17:52:42 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:53:02 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static bool	_c_opt_check(t_token *tkn, t_list **_args)
 }
 
 //TODO return errors?
-int	__history(t_list *args, int fd)
+int	__history(t_list *args)
 {
 	t_list	*_args;
 	bool	cflag;
@@ -39,7 +39,7 @@ int	__history(t_list *args, int fd)
 	if (cflag)
 	{
 		clear_history();
-		write(fd, "History file deleted.\n", 23);
+		write(STDOUT_FILENO, "History file deleted.\n", 23);
 		return (SUCCESS);
 	}
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/05 16:48:18 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:53:48 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #define VALUE		1
 
 //TODO //BUG unset no funciona a menos que la EVAR sea la ultima...
-int	__unset(t_list *args, int fd)
+int	__unset(t_list *args)
 {
 	t_list	*_args;
 	t_token	*tkn;
@@ -25,7 +25,7 @@ int	__unset(t_list *args, int fd)
 	_args = args;
 	if (!args)
 	{
-		write(fd, "unset: not enough arguments\n", 29);
+		write(STDOUT_FILENO, "unset: not enough arguments\n", 29);
 		return (FAILURE);
 	}
 	else
