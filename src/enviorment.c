@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/06 21:07:06 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/09 13:48:26 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,5 @@ void	new_env(t_shell *sh, char **sys_env)
 	set_prompt();
 	tkn.str = "?=0";
 	arg = (t_list){&tkn, NULL};
-	__export(&arg, STDIN_FILENO);
+	__export(&arg);
 }

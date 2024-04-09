@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/07 17:48:41 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/09 13:48:18 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	set_prompt(void)
 	tkn.type = ARG;
 	arg.content = &tkn;
 	arg.next = NULL;
-	__export(&arg, STDOUT_FILENO);
+	__export(&arg);
 	sh_free(&prompt);
 }
 

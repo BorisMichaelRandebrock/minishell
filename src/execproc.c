@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/08 16:45:55 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/09 15:05:41 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ static void	_child_procces(int pipes[2][2], char *exec_path, char **exec_args)
 	dup2(pipes[TO_PROC][RD], STDIN_FILENO);
 	close(pipes[TO_PROC][RD]);
 	dup2(pipes[TO_SHELL][WR], STDOUT_FILENO);
-
-	//TODO borrar test
-/* 	printf("- %s\n", exec_args[0]);
-	printf("- %s\n", exec_args[1]); */
-
 	execve(exec_path, exec_args, get_shell()->env);
 }
 

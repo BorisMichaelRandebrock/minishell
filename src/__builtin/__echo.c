@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/08 14:43:48 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/09 17:20:15 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,28 @@ static bool	_n_opt_check(t_token *tkn, t_list **_args)
 	return (false);
 }
 
-int	__echo(t_list *args, int fd)
+int	__echo(t_list *args)
 {
 	t_list	*_args;
 	t_token	*tkn;
 	bool	nflag;
 
+	if (!args)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		return (SUCCESS);
+	}
 	_args = args;
-	nflag = _n_opt_check(_args->content, &_args);
+		nflag = _n_opt_check(_args->content, &_args);
 	while (_args)
 	{
 		tkn = _args->content;
-		write(fd, tkn->str, ft_strlen(tkn->str));
+		write(STDOUT_FILENO, tkn->str, ft_strlen(tkn->str));
 		if (_args->next && *((t_token *)_args->next->content)->str)
-			write(fd, " ", 1);
+			write(STDOUT_FILENO, " ", 1);
 		_args = _args->next;
 	}
 	if (!nflag)
-		write(fd, "\n", 1);
-	if (fd > SYS_FDS)
-		close(fd);
+		write(STDOUT_FILENO, "\n", 1);
 	return (SUCCESS);
 }

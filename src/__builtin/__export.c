@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/02 13:32:39 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:54:09 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,12 @@ static int	_check_evar(int *eflag, char *evar, t_list **_args)
 	return (SUCCESS);
 }
 
-int	__export(t_list *args, int fd)
+
+//TODO programar comportamiento base de export.
+//(lista de variables que el propio export ha exportado),
+// se actualiza con unset:
+// declare -x VAR=value
+int	__export(t_list *args)
 {
 	t_list	*_args;
 	t_token	*tkn;
@@ -55,7 +60,7 @@ int	__export(t_list *args, int fd)
 	eflag = SUCCESS;
 	_args = args;
 	if (!args)
-		__env(NULL, fd);
+		__env(NULL);
 	else
 	{
 		while (_args)

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/08 16:57:39 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:51:16 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # pragma GCC diagnostic ignored "-Wunused-function"
 # pragma GCC diagnostic ignored "-Wunused-parameter"
 
-typedef int	(*t_bltin)(t_list *args, int fd);
+typedef int	(*t_bltin)(t_list *args);
 
 typedef enum e_tkntype
 {
@@ -62,7 +62,6 @@ typedef struct s_cmd
 	t_list	*args;
 	t_list	*rdrs_in;
 	t_list	*rdrs_out;
-	bool	to_pipe;
 }	t_cmd;
 
 typedef struct s_shell
@@ -85,17 +84,17 @@ void		token_expansion(t_token *tkn);
 void		build_commands(t_list *tknlst, t_list **ppln);
 bool		sh_cmd_validation(t_list *ppln, t_list *tknlst);
 void		exec_pipeline(t_list *ppln);
-bool		try_builtin(t_cmd *cmd, char *sbuffer);
+bool		try_builtin(t_cmd *cmd);
 void		try_process(t_cmd *cmd, char *sbuffer);
 void		process_redirs(t_list *rdrs, char *sbuffer);
-int			__echo(t_list *args, int fd);
-int			__cd(t_list *args, int fd);
-int			__pwd(t_list *args, int fd);
-int			__export(t_list *args, int fd);
-int			__unset(t_list *args, int fd);
-int			__env(t_list *args, int fd);
-int			__exit(t_list *args, int fd);
-int			__history(t_list *args, int fd);
+int			__echo(t_list *args);
+int			__cd(t_list *args);
+int			__pwd(t_list *args);
+int			__export(t_list *args);
+int			__unset(t_list *args);
+int			__env(t_list *args);
+int			__exit(t_list *args);
+int			__history(t_list *args);
 void		*sh_calloc(size_t num, size_t size);
 void		*sh_ralloc(void *old, size_t new_sizeof);
 void		sh_free(void *content);
