@@ -6,14 +6,13 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/09 23:27:11 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/10 14:24:07 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 #define WHSPC_CHRS	" \t\n\r\f\v"
-#define DLMT_CHRS	"\"\'><|\0"
 
 static void	_pre_typify(t_token *tkn)
 {
@@ -35,36 +34,61 @@ static void	_pre_typify(t_token *tkn)
 		tkn->type = ARG;
 }
 
-static void	_extract_token(char *start, char *end)
+static void	_save_token(char *buffer)
 {
 	t_shell	*sh;
 	t_token	*tkn;
-	size_t	length;
-	char	*substr;
 
 	sh = get_shell();
-	length = (end + 1) - start;
-	if (end == start)
-		length = 1;
 	tkn = sh_calloc(1, sizeof(t_token));
-	substr = sh_guard(ft_substr(start, 0, length), NULL);
-	tkn->str = sh_guard(ft_strtrim(substr, WHSPC_CHRS), substr);
+	tkn->str = sh_guard(ft_strdup(buffer), NULL);
 	_pre_typify(tkn);
 	if (tkn->type == ARG)
 		token_expansion(tkn);
 	ft_lstadd_back(&sh->tknlst, sh_guard(ft_lstnew(tkn), NULL));
 }
 
-static bool	is_operator(char c)
+static int	_extract_op_token(char *start)
 {
-	if (c == '>' || c == '<' || c == '|')
-		return (true);
-	return (false);
+	char	buffer[BUF_1KB];
+
+	ft_memset(buffer, '\0', BUF_1KB);
+	buffer[0] = *start;
+	if (*start == *(start + 1) && *start != '|')
+		buffer[1] = *(start + 1);
+	_save_token(buffer);
+	return (ft_strlen(buffer));
 }
 
-// Parse a input prompt into a token list
+static int	_extract_token(char *start, char dlmt)
+{
+	char	buffer[BUF_1KB];
+	int		i;
 
-//TODO cacafruti total....idea funcion extract con target end!!
+	ft_memset(buffer, '\0', BUF_1KB);
+	i = 0;
+	if (dlmt != ' ')
+	{
+		buffer[i] = start[i];
+		i++;
+	}
+	while ((start[i] != dlmt && start[i] != '\0'))
+	{
+		if ((start[i] == '>' || start[i] == '<' || start[i] == '|')
+			&& (dlmt != '\'' && dlmt != '\"'))
+			break ;
+		buffer[i] = start[i];
+		i++;
+	}
+	if (dlmt != ' ')
+	{
+		buffer[i] = start[i];
+		i++;
+	}
+	_save_token(buffer);
+	return (i);
+}
+
 void	tokenizer(char *input)
 {
 	char	*_input;
@@ -77,25 +101,15 @@ void	tokenizer(char *input)
 		dlmt = ' ';
 		while (ft_strchr(WHSPC_CHRS, *_input))
 			_input++;
+		if (*_input == '>' || *_input == '<' || *_input == '|')
+		{
+			_input += _extract_op_token(_input);
+			continue ;
+		}
 		if (*_input == '"' || *_input == '\'')
 			dlmt = *_input;
 		tkn_start = _input;
-		while ((*(++_input) != dlmt && *_input))
-		{
-			if (is_operator(*_input) && dlmt == ' ')
-				break ;
-		}
-		_extract_token(tkn_start, _input);
+		_input += _extract_token(tkn_start, dlmt);
 	}
 	sh_free(&input);
 }
-
-/*
-if (is_operator(*_input))
-{
-	tkn_start = _input;
-	if (*_input == *(_input + 1) && *_input != '|')
-		_input++;
-	_extract_token(tkn_start, _input);
-}
- */

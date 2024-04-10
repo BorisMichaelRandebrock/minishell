@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/09 14:05:37 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/10 13:17:59 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #define START		0
 #define END			1
 
+//TODO //BUG token compuesto por un solo quote segfault!!
 static void	_dequote_token(t_token *tkn)
 {
 	char	*_str;
