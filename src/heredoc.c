@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 10:50:04 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/11 10:59:09 by brandebr         ###   ########.fr       */
+/*   Updated: 2024/04/11 12:18:05 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,28 @@
 #define green "\033[1;32m"
 #define res "\033[0m"
 
+#define RD 0
+#define WR 1
+
+//TODO integrar + expansion
 static void	_heredoc(char *dlmt)
 {
 	char	*line;
 	int		pipefd[2];
-	int		fd_file;
 
 	pipe(pipefd);
-	fd_file = open("tempfile", O_CREAT | O_RDWR | O_TRUNC, 0777);
-	if (fd_file == -1)
-	{
-		printf(red "Error opening the file: %s\n" res, "tempfile");
-		return ;
-	}
 	while (42)
 	{
-		line = readline(green "here: doc 📜 > " res);
+		line = readline(green "here: doc > " res);
 		if (!line)
-			write(STDOUT_FILENO, "NULL\n", 5);
+
+			write(STDOUT_FILENO, "\n", 1);
 		if (!line || !ft_strncmp(line, dlmt, ft_strlen(dlmt)))
 			break ;
-		//		if (!line || !strcmp(line, dlmt))
-		write(fd_file, line, ft_strlen(line));
-		write(fd_file, "\n", 1);
+		write(pipefd[WR], line, ft_strlen(line));
+		write(pipefd[WR], "\n", 1);
 	}
-	close(fd_file);
-	close(pipefd[1]);
-	dup2(pipefd[0], STDIN_FILENO);
-	close(pipefd[0]);
+	close(pipefd[WR]);
+	//close(pipefd[RD]); //TODO cerrar el extremo de lectura??
+	dup2(pipefd[RD], STDIN_FILENO);
 }

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/09 16:51:16 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/11 15:54:15 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # pragma GCC diagnostic ignored "-Wunused-parameter"
 
 typedef int	(*t_bltin)(t_list *args);
+typedef int	t_pipe[2];
+typedef int	t_xpipe[2][2];
 
 typedef enum e_tkntype
 {
@@ -62,6 +64,7 @@ typedef struct s_cmd
 	t_list	*args;
 	t_list	*rdrs_in;
 	t_list	*rdrs_out;
+	bool	is_piped;
 }	t_cmd;
 
 typedef struct s_shell
@@ -81,12 +84,11 @@ void		set_evar(char *var_name, char *value);
 void		unset_evar(char *var_name);
 void		tokenizer(char *input);
 void		token_expansion(t_token *tkn);
+void		dequote_token(t_token *tkn);
 void		build_commands(t_list *tknlst, t_list **ppln);
 bool		sh_cmd_validation(t_list *ppln, t_list *tknlst);
 void		exec_pipeline(t_list *ppln);
-bool		try_builtin(t_cmd *cmd);
-void		try_process(t_cmd *cmd, char *sbuffer);
-void		process_redirs(t_list *rdrs, char *sbuffer);
+void		try_process(t_cmd *cmd);
 int			__echo(t_list *args);
 int			__cd(t_list *args);
 int			__pwd(t_list *args);

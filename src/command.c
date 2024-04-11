@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 19:49:46 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/08 16:30:55 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/11 12:45:17 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static t_list	*_add_process(t_cmd *cmd, t_list *tknlst)
 	{
 		cmd->tkn = _tkn;
 		cmd->tkn->type = CMD;
+		dequote_token(_tkn);
 		tknlst = tknlst->next;
 	}
 	if (tknlst)
@@ -33,6 +34,7 @@ static t_list	*_add_process(t_cmd *cmd, t_list *tknlst)
 	while (tknlst && _tkn->type == ARG)
 	{
 		ft_lstadd_back(&cmd->args, sh_guard(ft_lstnew(_tkn), NULL));
+		dequote_token(_tkn);
 		tknlst = tknlst->next;
 		if (tknlst)
 			_tkn = tknlst->content;
@@ -54,6 +56,8 @@ static t_list	*_add_rdr(t_list *tknlst, t_list **rdrlst)
 		if (_tkn->type == ARG)
 			_tkn->type = _type;
 	}
+	if (_tkn->type != RDHDOC)
+		dequote_token(_tkn);
 	ft_lstadd_back(rdrlst, sh_guard(ft_lstnew(_tkn), NULL));
 	return (tknlst->next);
 }
@@ -61,6 +65,7 @@ static t_list	*_add_rdr(t_list *tknlst, t_list **rdrlst)
 static t_list	*_add_cmd(t_list *tknlst, t_list **ppln, t_cmd **cmd)
 {
 	*cmd = sh_calloc(1, sizeof(t_cmd));
+	((t_cmd *)*cmd)->is_piped = false;
 	ft_lstadd_back(ppln, sh_guard(ft_lstnew(*cmd), NULL));
 	if (tknlst)
 		return (tknlst->next);

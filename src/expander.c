@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/10 13:17:59 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/11 12:04:50 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 #define END			1
 
 //TODO //BUG token compuesto por un solo quote segfault!!
-static void	_dequote_token(t_token *tkn)
+void	dequote_token(t_token *tkn)
 {
 	char	*_str;
 
 	_str = tkn->str;
-	if (tkn->type == ARG)
+	if (tkn->type == ARG || tkn->type == CMD)
 	{
 		if ((_str[0] == '"' && _str[ft_strlen(_str) - IDX_OFFST] == '"')
 			|| (_str[0] == '\'' && _str[ft_strlen(_str) - IDX_OFFST] == '\''))
@@ -86,5 +86,4 @@ void	token_expansion(t_token *tkn)
 	size = ft_strlen(tkn->str);
 	if (tkn->str[i] != '\'' || tkn->str[size - IDX_OFFST] != '\'')
 		_expand_var(tkn);
-	_dequote_token(tkn);
 }

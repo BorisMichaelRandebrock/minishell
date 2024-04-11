@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+	/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execproc.c                                         :+:      :+:    :+:   */
@@ -20,35 +20,6 @@
 #define TO_SHELL	1
 #define RD			0
 #define WR			1
-
-//TODO gestionar excepcion  msg: "bash: cacafruti: command not found"
-static void	_child_procces(int pipes[2][2], char *exec_path, char **exec_args)
-{
-	if (!exec_path)
-		exit(FAILURE);
-	dup2(pipes[TO_PROC][RD], STDIN_FILENO);
-	close(pipes[TO_PROC][RD]);
-	dup2(pipes[TO_SHELL][WR], STDOUT_FILENO);
-	execve(exec_path, exec_args, get_shell()->env);
-}
-
-static void	_parent_procces(t_cmd *cmd, int pipes[2][2], char *sbuffer)
-{
-	ssize_t	bytes_read;
-	int		child_status;
-	char	*child_exit_code;
-
-	wait3(&child_status, 0, NULL);
-	close(pipes[TO_SHELL][WR]);
-	bytes_read = read(pipes[TO_SHELL][RD], sbuffer, BUF_1MB);
-	close(pipes[TO_SHELL][RD]);
-	sbuffer[bytes_read] = '\0';
-	child_exit_code = ft_itoa(WEXITSTATUS(child_status));
-	set_evar("?=", child_exit_code);
-	sh_free(&child_exit_code);
-	if (!cmd->to_pipe)
-		printf("%s", sbuffer);
-}
 
 // TODO gestionar excepcion
 static char	*_build_path(char *cmd_name)
@@ -104,25 +75,31 @@ static char	**_args_to_array(t_cmd *cmd)
 	return (args);
 }
 
+static void	_parent_procces(t_cmd *cmd)
+{
+	int		child_status;
+	char	*child_exit_code;
+
+	wait3(&child_status, 0, NULL);
+	child_exit_code = ft_itoa(WEXITSTATUS(child_status));
+	set_evar("?=", child_exit_code);
+	sh_free(&child_exit_code);
+}
+
 //TODO excepcion comando no encontrado???  exec_path = null
-void	try_process(t_cmd *cmd, char *sbuffer)
+void	try_process(t_cmd *cmd)
 {
 	char	*exec_path;
 	char	**exec_args;
-	int		pipes[2][2];
 	pid_t	pid;
 
-	pipe(pipes[TO_PROC]);
-	pipe(pipes[TO_SHELL]);
 	exec_args = _args_to_array(cmd);
 	exec_path = _build_path(cmd->tkn->str);
-	write(pipes[TO_PROC][WR], sbuffer, ft_strlen(sbuffer));
-	close(pipes[TO_PROC][WR]);
 	pid = fork();
 	if (pid == 0)
-		_child_procces(pipes, exec_path, exec_args);
+		execve(exec_path, exec_args, get_shell()->env);
 	else if (exec_path)
-		_parent_procces(cmd, pipes, sbuffer);
+		_parent_procces(cmd);
 	sh_free(&exec_args);
 	sh_free(&exec_path);
 }

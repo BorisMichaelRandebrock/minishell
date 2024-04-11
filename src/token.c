@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/10 14:24:07 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/11 17:30:36 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ void	tokenizer(char *input)
 	char	dlmt;
 
 	_input = input;
+	if (!input)
+		return ;
 	while (*_input)
 	{
 		dlmt = ' ';
