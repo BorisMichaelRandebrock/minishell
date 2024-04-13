@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 10:50:04 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/13 15:18:16 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/13 16:11:31 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	invoke_heredoc(char *dlmt, int to_proc_fd)
 	xflag = _has_expansion(dlmt);
 	while (true)
 	{
-		line = readline(HERE_DOC_PROMPT);// TODO line le falta un intro
+		line = readline(HERE_DOC_PROMPT);
 		if (xflag)
 			input_expansion(&line);
 		if (!line)

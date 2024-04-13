@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/13 15:24:05 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/13 16:11:35 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	*_get_var_name(char *str)
 	var_name = sh_guard(ft_strdup(++str), NULL);
 	i = 0;
 	while (var_name[i] && var_name[i] != ' ' && var_name[i] != '"'
-		&& var_name[i] != '$')
+		&& var_name[i] != '\'' && var_name[i] != '$')
 		i++;
 	var_name[i++] = '=';
 	var_name[i] = '\0';
