@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/13 13:14:04 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/14 21:33:31 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static void	_process_rd_out(t_cmd *cmd)
 	}
 } */
 
-//TODO cambiar el buffer a 1MB
 void	_pipe_pass(int to_proc[2], int to_shell[2])
 {
 	char	buffer[BUF_1KB + NUL_SZ];
@@ -97,6 +96,10 @@ static void	_process_rd_in(t_list *rdrs_in, int to_proc_fd)
 	close(input_fd);
 }
 
+
+//TODO @@@@@@@@@ pipes encadenados no funcionan ej.>  echo hola $USER | cat -e | wc -l
+//TODO @@@@@@@ necesario replantear el flujo de datos
+//TODO @@@@@@@ añadir lectura sin limite de buffer para archivos!!!
 void	exec_pipeline(t_list *ppln)
 {
 	int		to_proc[2];
@@ -113,11 +116,11 @@ void	exec_pipeline(t_list *ppln)
 	{
 		cmd = ppln->content;
 		_process_rd_in(cmd->rdrs_in, to_proc[WR]);
-		dup2(to_proc[RD], STDIN_FILENO);//TODO @@@@@@@ Ponerlo aqui funciona pero genera leaks!
+		dup2(to_proc[RD], STDIN_FILENO);
 		if (ppln->next)
 		{
 			cmd->is_piped = true;
-			to_shell[WR] = dup2(to_shell[WR], STDOUT_FILENO); //TODO esto esta bien? nopE!!
+			dup2(to_shell[WR], STDOUT_FILENO);
 			if (_try_builtin(cmd) == FAILURE)
 				try_process(cmd);
 			_pipe_pass(to_proc, to_shell);
