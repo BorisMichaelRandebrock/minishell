@@ -75,23 +75,14 @@ static char	**_args_to_array(t_cmd *cmd)
 	return (args);
 }
 
-static void	_parent_procces(t_cmd *cmd)
-{
-	int		child_status;
-	char	*child_exit_code;
-
-	wait3(&child_status, 0, NULL);
-	child_exit_code = ft_itoa(WEXITSTATUS(child_status));
-	set_evar("?=", child_exit_code);
-	sh_free(&child_exit_code);
-}
-
 //TODO excepcion comando no encontrado???  exec_path = null
 void	try_process(t_cmd *cmd)
 {
 	char	*exec_path;
 	char	**exec_args;
 	pid_t	pid;
+	int		child_status;
+	char	*child_exit_code;
 
 	exec_args = _args_to_array(cmd);
 	exec_path = _build_path(cmd->tkn->str);
@@ -99,7 +90,12 @@ void	try_process(t_cmd *cmd)
 	if (pid == 0)
 		execve(exec_path, exec_args, get_shell()->env);
 	else if (exec_path)
-		_parent_procces(cmd);
+	{
+		wait3(&child_status, 0, NULL);
+		child_exit_code = ft_itoa(WEXITSTATUS(child_status));
+		set_evar("?=", child_exit_code);
+		sh_free(&child_exit_code);
+	}
 	sh_free(&exec_args);
 	sh_free(&exec_path);
 }

@@ -6,42 +6,53 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 10:50:04 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/11 12:18:05 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/13 16:12:31 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include <readline/readline.h>
-#include <string.h>
-#include <sys/fcntl.h>
 #include <unistd.h>
+#include "minishell.h"
 
-#define red "\033[1;31m"
-#define green "\033[1;32m"
-#define res "\033[0m"
+#define HERE_DOC_PROMPT "\033[1;31m> \033[0m"
+#define QUOTES_SZ	2
+#define IDX_OFFSET	1
 
-#define RD 0
-#define WR 1
+static	bool _has_expansion(char *dlmt)
+{
 
-//TODO integrar + expansion
-static void	_heredoc(char *dlmt)
+	if (*dlmt == '\'' || *dlmt == '"')
+	{
+		if (dlmt[ft_strlen(dlmt) - IDX_OFFSET] == *dlmt)
+		{
+			ft_memmove(dlmt, &dlmt[1], ft_strlen(dlmt) - QUOTES_SZ);
+			dlmt[ft_strlen(dlmt) - QUOTES_SZ] = '\0';
+			return (false);
+		}
+	}
+	return (true);
+}
+
+//TODO expansion
+void	invoke_heredoc(char *dlmt, int to_proc_fd)
 {
 	char	*line;
-	int		pipefd[2];
+	bool	xflag;
 
-	pipe(pipefd);
-	while (42)
+	line = NULL;
+	xflag = _has_expansion(dlmt);
+	while (true)
 	{
-		line = readline(green "here: doc > " res);
+		line = readline(HERE_DOC_PROMPT);
+		if (xflag)
+			input_expansion(&line);
 		if (!line)
-
 			write(STDOUT_FILENO, "\n", 1);
 		if (!line || !ft_strncmp(line, dlmt, ft_strlen(dlmt)))
 			break ;
-		write(pipefd[WR], line, ft_strlen(line));
-		write(pipefd[WR], "\n", 1);
+		write(to_proc_fd, line, ft_strlen(line));
+		write(to_proc_fd, "\n", 1);
+		sh_free(&line);
 	}
-	close(pipefd[WR]);
-	//close(pipefd[RD]); //TODO cerrar el extremo de lectura??
-	dup2(pipefd[RD], STDIN_FILENO);
+	sh_free(&line);
 }

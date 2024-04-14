@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/11 15:54:15 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/13 15:18:31 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,12 @@ void		set_evar(char *var_name, char *value);
 void		unset_evar(char *var_name);
 void		tokenizer(char *input);
 void		token_expansion(t_token *tkn);
+void		input_expansion(char **input);
 void		dequote_token(t_token *tkn);
 void		build_commands(t_list *tknlst, t_list **ppln);
 bool		sh_cmd_validation(t_list *ppln, t_list *tknlst);
 void		exec_pipeline(t_list *ppln);
+void		invoke_heredoc(char *dlmt, int to_proc_fd);
 void		try_process(t_cmd *cmd);
 int			__echo(t_list *args);
 int			__cd(t_list *args);

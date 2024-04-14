@@ -6,11 +6,12 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/11 18:17:41 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/14 21:33:31 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <fcntl.h>
 #include "minishell.h"
 
 #define NUL_SZ	1
@@ -45,14 +46,8 @@ static bool	_try_builtin(t_cmd *cmd)
 	return (FAILURE);
 }
 
-/* static void	_process_rd_in(t_cmd *cmd)
-{
-	while (cmd->rdrs_in)
-	{
-		cmd->rdrs_in->next;
-	}
-}
 
+/*
 static void	_process_rd_out(t_cmd *cmd)
 {
 	while (cmd->rdrs_out)
@@ -61,7 +56,6 @@ static void	_process_rd_out(t_cmd *cmd)
 	}
 } */
 
-//TODO cambiar el buffer a 1MB
 void	_pipe_pass(int to_proc[2], int to_shell[2])
 {
 	char	buffer[BUF_1KB + NUL_SZ];
@@ -74,7 +68,38 @@ void	_pipe_pass(int to_proc[2], int to_shell[2])
 	close(to_proc[WR]);
 }
 
+//TODO hacer lecturas de FD ciclicas!
+static void	_process_rd_in(t_list *rdrs_in, int to_proc_fd)
+{
+	int		input_fd;
+	char	buffer[BUF_1KB + NUL_SZ];
+	ssize_t	consumed;
+	t_token	*_rdr;
 
+	if (!rdrs_in)
+		return ;
+	input_fd = 0;
+	ft_memset(buffer, '\0',BUF_1KB + NUL_SZ);
+	_rdr = rdrs_in->content;
+	if (_rdr->type == RDIN)
+	{
+		while (rdrs_in->next)
+			rdrs_in = rdrs_in->next;
+		_rdr = rdrs_in->content;
+		input_fd = open(_rdr->str, O_RDONLY, 0777);
+		consumed = read(input_fd, buffer, BUF_1KB);
+		write(to_proc_fd, buffer, consumed);
+	}
+	else if (_rdr->type == RDHDOC)
+		invoke_heredoc(_rdr->str, to_proc_fd);
+	close(to_proc_fd);
+	close(input_fd);
+}
+
+
+//TODO @@@@@@@@@ pipes encadenados no funcionan ej.>  echo hola $USER | cat -e | wc -l
+//TODO @@@@@@@ necesario replantear el flujo de datos
+//TODO @@@@@@@ añadir lectura sin limite de buffer para archivos!!!
 void	exec_pipeline(t_list *ppln)
 {
 	int		to_proc[2];
@@ -87,14 +112,15 @@ void	exec_pipeline(t_list *ppln)
 	pipe(to_shell);
 	_stdout = dup(STDOUT_FILENO);
 	_stdin = dup(STDIN_FILENO);
-	dup2(to_proc[RD], STDIN_FILENO);
 	while (ppln)
 	{
 		cmd = ppln->content;
+		_process_rd_in(cmd->rdrs_in, to_proc[WR]);
+		dup2(to_proc[RD], STDIN_FILENO);
 		if (ppln->next)
 		{
 			cmd->is_piped = true;
-			to_shell[WR] = dup2(to_shell[WR], STDOUT_FILENO);
+			dup2(to_shell[WR], STDOUT_FILENO);
 			if (_try_builtin(cmd) == FAILURE)
 				try_process(cmd);
 			_pipe_pass(to_proc, to_shell);

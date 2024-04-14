@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/11 12:04:50 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/13 16:12:52 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	*_get_var_name(char *str)
 	var_name = sh_guard(ft_strdup(++str), NULL);
 	i = 0;
 	while (var_name[i] && var_name[i] != ' ' && var_name[i] != '"'
-		&& var_name[i] != '$')
+		&& var_name[i] != '\'' && var_name[i] != '$')
 		i++;
 	var_name[i++] = '=';
 	var_name[i] = '\0';
@@ -79,11 +79,21 @@ static void	_expand_var(t_token *tkn)
 
 void	token_expansion(t_token *tkn)
 {
-	size_t	i;
 	size_t	size;
 
-	i = 0;
 	size = ft_strlen(tkn->str);
-	if (tkn->str[i] != '\'' || tkn->str[size - IDX_OFFST] != '\'')
+	if (tkn->str[0] != '\'' || tkn->str[size - IDX_OFFST] != '\'')
 		_expand_var(tkn);
+}
+
+void	input_expansion(char **input)
+{
+	size_t	size;
+	t_token	tkn;
+
+	tkn.str = *input;
+	tkn.type = ARG;
+	size = ft_strlen(tkn.str);
+	_expand_var(&tkn);
+	*input = tkn.str;
 }
