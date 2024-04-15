@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/13 15:18:31 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/15 17:08:06 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ typedef struct s_cmd
 	t_list	*args;
 	t_list	*rdrs_in;
 	t_list	*rdrs_out;
-	bool	is_piped;
 }	t_cmd;
 
 typedef struct s_shell
@@ -110,5 +109,7 @@ void		sh_perror(int error_code);
 bool		sh_finpath(char *filename);
 bool		sh_fexists(char *filename);
 bool		sh_fisexec(char *filename);
+void		sh_fpstream(char *filename, int pipe_wr);
+void		sh_ppstream(int pipe_rd, int pipe_wr);
 
 #endif

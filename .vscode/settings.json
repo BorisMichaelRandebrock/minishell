@@ -46,6 +46,10 @@
 		"complex": "c",
 		"stdio.h": "c",
 		"ostream": "c",
-		"stdbool.h": "c"
+		"stdbool.h": "c",
+		"__functional_03": "c",
+		"__mutex_base": "c",
+		"istream": "c",
+		"streambuf": "c"
 	}
 }

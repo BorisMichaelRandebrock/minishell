@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/14 21:33:31 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/15 18:56:51 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,57 +56,75 @@ static void	_process_rd_out(t_cmd *cmd)
 	}
 } */
 
-void	_pipe_pass(int to_proc[2], int to_shell[2])
-{
-	char	buffer[BUF_1KB + NUL_SZ];
-	ssize_t	consumed;
-
-	ft_memset(buffer, '\0',BUF_1KB + NUL_SZ);
-	consumed = read(to_shell[RD], buffer, BUF_1KB);
-	if (consumed > 0)
-		write (to_proc[WR], buffer, consumed);
-	close(to_proc[WR]);
-}
-
 //TODO hacer lecturas de FD ciclicas!
-static void	_process_rd_in(t_list *rdrs_in, int to_proc_fd)
+static void	_process_rd_in(t_list *rdrs_in, int to_proc_wr)
 {
-	int		input_fd;
-	char	buffer[BUF_1KB + NUL_SZ];
-	ssize_t	consumed;
 	t_token	*_rdr;
 
 	if (!rdrs_in)
 		return ;
-	input_fd = 0;
-	ft_memset(buffer, '\0',BUF_1KB + NUL_SZ);
 	_rdr = rdrs_in->content;
 	if (_rdr->type == RDIN)
 	{
 		while (rdrs_in->next)
 			rdrs_in = rdrs_in->next;
 		_rdr = rdrs_in->content;
-		input_fd = open(_rdr->str, O_RDONLY, 0777);
-		consumed = read(input_fd, buffer, BUF_1KB);
-		write(to_proc_fd, buffer, consumed);
+		sh_fpstream(_rdr->str, to_proc_wr);
 	}
 	else if (_rdr->type == RDHDOC)
-		invoke_heredoc(_rdr->str, to_proc_fd);
-	close(to_proc_fd);
-	close(input_fd);
+		invoke_heredoc(_rdr->str, to_proc_wr);
+	close(to_proc_wr);
+}
+
+
+void	exec_pipeline(t_list *ppln)
+{
+	t_cmd	*cmd;
+	int		to_proc[2];
+	int		to_shell[2];
+	int		_stdout;
+	int		_stdin;
+
+
+	pipe(to_proc);
+	pipe(to_shell);
+	_stdout = dup(STDOUT_FILENO);
+	_stdin = dup(STDIN_FILENO);
+
+	while (ppln)
+	{
+		cmd = ppln->content;
+		if (ppln->next)
+		{
+			dup2(to_shell[WR], STDOUT_FILENO);
+			if (_try_builtin(cmd) == FAILURE)
+				try_process(cmd);
+			close(to_shell[WR]);
+			dup2(_stdout, STDOUT_FILENO);
+			sh_ppstream(to_shell[RD], to_proc[WR]);
+			//TODO @@@@@@@ continuar mplementado pipeline!
+		}
+		else
+		{
+
+		}
+		ppln = ppln->next;
+	}
 }
 
 
 //TODO @@@@@@@@@ pipes encadenados no funcionan ej.>  echo hola $USER | cat -e | wc -l
 //TODO @@@@@@@ necesario replantear el flujo de datos
 //TODO @@@@@@@ añadir lectura sin limite de buffer para archivos!!!
-void	exec_pipeline(t_list *ppln)
+/* void	exec_pipeline(t_list *ppln)
 {
+	t_cmd	*cmd;
 	int		to_proc[2];
 	int		to_shell[2];
-	t_cmd	*cmd;
 	int		_stdout;
 	int		_stdin;
+	int		swap_sh;
+	int		swap_pc;
 
 	pipe(to_proc);
 	pipe(to_shell);
@@ -115,23 +133,30 @@ void	exec_pipeline(t_list *ppln)
 	while (ppln)
 	{
 		cmd = ppln->content;
-		_process_rd_in(cmd->rdrs_in, to_proc[WR]);
-		dup2(to_proc[RD], STDIN_FILENO);
+		//_process_rd_in(cmd->rdrs_in, to_proc[WR]);
+
+		swap_pc = dup(to_proc[WR]); // dup amarillo
+		close(to_proc[WR]);
+		dup2(to_proc[RD], STDIN_FILENO); // protege STD_IN
 		if (ppln->next)
 		{
-			cmd->is_piped = true;
 			dup2(to_shell[WR], STDOUT_FILENO);
 			if (_try_builtin(cmd) == FAILURE)
 				try_process(cmd);
-			_pipe_pass(to_proc, to_shell);
+			swap_sh = dup(to_shell[WR]); // dup azul
+			close(to_shell[WR]);
+			to_proc[WR] = swap_pc; // swap amarillo
+			to_shell[WR] = swap_sh; // swap azul
+			sh_ppstream(to_shell[RD], to_proc[WR]);
+
 		}
 		else
 		{
-			dup2(_stdout, STDOUT_FILENO);
+			dup2(_stdout, STDOUT_FILENO); // protege STD_OUT
 			if (_try_builtin(cmd) == FAILURE)
 				try_process(cmd);
 			dup2(_stdin, STDIN_FILENO);
 		}
 		ppln = ppln->next;
 	}
-}
+} */

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 19:49:46 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/11 12:45:17 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/15 17:12:33 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static t_list	*_add_rdr(t_list *tknlst, t_list **rdrlst)
 static t_list	*_add_cmd(t_list *tknlst, t_list **ppln, t_cmd **cmd)
 {
 	*cmd = sh_calloc(1, sizeof(t_cmd));
-	((t_cmd *)*cmd)->is_piped = false;
 	ft_lstadd_back(ppln, sh_guard(ft_lstnew(*cmd), NULL));
 	if (tknlst)
 		return (tknlst->next);
