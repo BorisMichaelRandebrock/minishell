@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/09 13:48:18 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/17 15:37:51 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	set_prompt(void)
 		i--;
 	}
 	prompt = sh_guard(ft_strjoin("PROMPT=", &buffer[i]), NULL);
-	prompt = sh_guard(ft_strjoin(prompt, "/\033[31m::>\033[0m "), prompt);
+	prompt = sh_guard(ft_strjoin(prompt, "/::> "), prompt);
 	tkn.str = prompt;
 	tkn.type = ARG;
 	arg.content = &tkn;

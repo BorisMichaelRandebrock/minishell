@@ -28,6 +28,7 @@ static char	*_build_path(char *cmd_name)
 	int		i;
 	char	buffer[BUF_1KB + NUL_SZ];
 
+	ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
 	splitted = sh_guard(ft_split(get_evar("PATH="), ':'), NULL);
 	i = 0;
 	while (splitted[i] && !ft_fexists(buffer))

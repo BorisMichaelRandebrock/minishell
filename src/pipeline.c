@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/15 18:56:51 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/17 18:11:56 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,87 +76,49 @@ static void	_process_rd_in(t_list *rdrs_in, int to_proc_wr)
 	close(to_proc_wr);
 }
 
-
-void	exec_pipeline(t_list *ppln)
+static int	_exec_cmd(t_cmd *cmd, int Bx_rd)
 {
+	int	Tx[2];
+	int	Rx[2];
+	int _out;
+	int _in;
+
+	_out = dup(STDOUT_FILENO);
+	_in = dup(STDIN_FILENO);
+	pipe(Tx);
+	pipe(Rx);
+	dup2(Tx[RD], STDIN_FILENO);
+	dup2(Rx[WR], STDOUT_FILENO);
+	sh_pprelay(Bx_rd, Tx[WR]);
+	close(Tx[WR]);
+	if (_try_builtin(cmd) == FAILURE)
+		try_process(cmd);
+	dup2(_in, STDIN_FILENO);
+	dup2(_out, STDOUT_FILENO);
+	close(Tx[RD]);
+	close(Rx[WR]);
+	return (Rx[RD]);
+}
+
+void		exec_pipeline(t_list *ppln)
+{
+	int		Bx[2];
+	int		Rx_rd;
 	t_cmd	*cmd;
-	int		to_proc[2];
-	int		to_shell[2];
-	int		_stdout;
-	int		_stdin;
 
-
-	pipe(to_proc);
-	pipe(to_shell);
-	_stdout = dup(STDOUT_FILENO);
-	_stdin = dup(STDIN_FILENO);
-
-	while (ppln)
+	pipe(Bx);
+	while(ppln)
 	{
 		cmd = ppln->content;
+		close(Bx[WR]);
+		Rx_rd = _exec_cmd(cmd, Bx[RD]);
+		close(Bx[RD]);
+		pipe(Bx);
 		if (ppln->next)
-		{
-			dup2(to_shell[WR], STDOUT_FILENO);
-			if (_try_builtin(cmd) == FAILURE)
-				try_process(cmd);
-			close(to_shell[WR]);
-			dup2(_stdout, STDOUT_FILENO);
-			sh_ppstream(to_shell[RD], to_proc[WR]);
-			//TODO @@@@@@@ continuar mplementado pipeline!
-		}
+			sh_pprelay(Rx_rd, Bx[WR]);
 		else
-		{
-
-		}
+			sh_pprelay(Rx_rd, 1); //TODO @@@@@@@@@@@ continuar implementando entradas y salidas
+		close(Rx_rd);
 		ppln = ppln->next;
 	}
 }
-
-
-//TODO @@@@@@@@@ pipes encadenados no funcionan ej.>  echo hola $USER | cat -e | wc -l
-//TODO @@@@@@@ necesario replantear el flujo de datos
-//TODO @@@@@@@ añadir lectura sin limite de buffer para archivos!!!
-/* void	exec_pipeline(t_list *ppln)
-{
-	t_cmd	*cmd;
-	int		to_proc[2];
-	int		to_shell[2];
-	int		_stdout;
-	int		_stdin;
-	int		swap_sh;
-	int		swap_pc;
-
-	pipe(to_proc);
-	pipe(to_shell);
-	_stdout = dup(STDOUT_FILENO);
-	_stdin = dup(STDIN_FILENO);
-	while (ppln)
-	{
-		cmd = ppln->content;
-		//_process_rd_in(cmd->rdrs_in, to_proc[WR]);
-
-		swap_pc = dup(to_proc[WR]); // dup amarillo
-		close(to_proc[WR]);
-		dup2(to_proc[RD], STDIN_FILENO); // protege STD_IN
-		if (ppln->next)
-		{
-			dup2(to_shell[WR], STDOUT_FILENO);
-			if (_try_builtin(cmd) == FAILURE)
-				try_process(cmd);
-			swap_sh = dup(to_shell[WR]); // dup azul
-			close(to_shell[WR]);
-			to_proc[WR] = swap_pc; // swap amarillo
-			to_shell[WR] = swap_sh; // swap azul
-			sh_ppstream(to_shell[RD], to_proc[WR]);
-
-		}
-		else
-		{
-			dup2(_stdout, STDOUT_FILENO); // protege STD_OUT
-			if (_try_builtin(cmd) == FAILURE)
-				try_process(cmd);
-			dup2(_stdin, STDIN_FILENO);
-		}
-		ppln = ppln->next;
-	}
-} */

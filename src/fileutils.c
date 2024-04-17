@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/15 18:12:24 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/17 17:59:55 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	sh_fpstream(char *filename, int pipe_wr)
 	close(fd);
 }
 
-void	sh_ppstream(int pipe_rd, int pipe_wr)
+void	sh_pprelay(int pipe_rd, int pipe_wr)
 {
 	ssize_t	consumed;
 	char	buffer[BUF_1KB + NUL_SZ];
@@ -83,6 +83,7 @@ void	sh_ppstream(int pipe_rd, int pipe_wr)
 	while (consumed > 0)
 	{
 		consumed = read(pipe_rd, buffer, BUF_1KB);
-		write(pipe_wr, buffer, consumed);
+		if (consumed > 0)
+			write(pipe_wr, buffer, consumed);
 	}
 }
