@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/17 15:55:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:53:19 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	tokenizer(char *input)
 	while (*_input)
 	{
 		dlmt = ' ';
-		while (ft_strchr(WHSPC_CHRS, *_input))
+		while (ft_strchr(WHSPC_CHRS, *_input) && !ft_strchr("\0", *_input))
 			_input++;
 		if (*_input == '>' || *_input == '<' || *_input == '|')
 		{
@@ -111,7 +111,8 @@ void	tokenizer(char *input)
 		if (*_input == '"' || *_input == '\'')
 			dlmt = *_input;
 		tkn_start = _input;
-		_input += _extract_token(tkn_start, dlmt);
+		if (*_input)
+			_input += _extract_token(tkn_start, dlmt);
 	}
 	ft_memset(input, '\0', ft_strlen(input));
 	sh_free(&input);

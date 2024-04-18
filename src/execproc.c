@@ -1,4 +1,4 @@
-	/* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execproc.c                                         :+:      :+:    :+:   */
@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/09 15:05:41 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:14:19 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static char	*_build_path(char *cmd_name)
 	int		i;
 	char	buffer[BUF_1KB + NUL_SZ];
 
+	if (sh_fexists(cmd_name))
+		return (sh_guard(ft_strdup(cmd_name), NULL));
 	ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
 	splitted = sh_guard(ft_split(get_evar("PATH="), ':'), NULL);
 	i = 0;

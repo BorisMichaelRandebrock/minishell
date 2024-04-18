@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/13 11:24:17 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/08 15:54:28 by fmontser         ###   ########.fr       */
+/*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
+/*   Updated: 2024/04/18 14:12:14 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 bool	sh_cmd_validation(t_list *ppln, t_list *tknlst)
 {
-	t_cmd *cmd;
+	t_cmd	*cmd;
 
 	cmd = ppln->content;
 	if (!cmd->tkn)

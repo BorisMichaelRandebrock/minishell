@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/09 16:54:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:09:12 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static int	_print_error(char *evar)
 	return (FAILURE);
 }
 
+//TODO proteccion contra env var invalidas solo acpecta alphanumericos y _,
+//		 El primero  no puede ser nuemro.
 static int	_check_evar(int *eflag, char *evar, t_list **_args)
 {
 	if (!ft_strchr(evar, '='))
@@ -44,7 +46,6 @@ static int	_check_evar(int *eflag, char *evar, t_list **_args)
 	}
 	return (SUCCESS);
 }
-
 
 //TODO programar comportamiento base de export.
 //(lista de variables que el propio export ha exportado),

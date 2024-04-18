@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/17 18:11:56 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:07:08 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,19 @@
 #include "minishell.h"
 
 #define NUL_SZ	1
-#define TO_PROC		0
-#define TO_SHELL	1
+#define NUL_FD	-1
 #define RD		0
 #define WR		1
 
 static bool	_try_builtin(t_cmd *cmd)
 {
-	static t_bltin	bltn_ptr[9] = {__echo, __export , __cd, __pwd,
+	static t_bltin	bltn_ptr[9] = {__echo, __export, __cd, __pwd,
 		__unset, __env, __exit, __history, NULL};
-	static char		*bltn_id[9] = {"echo","export", "cd", "pwd",
+	static char		*bltn_id[9] = {"echo", "export", "cd", "pwd",
 		"unset", "env", "exit", "history", NULL};
 	int				i;
 	size_t			cmp_sz;
-	char	*exit_code;
+	char			*exit_code;
 
 	i = 0;
 	while (bltn_id[i])
@@ -46,79 +45,96 @@ static bool	_try_builtin(t_cmd *cmd)
 	return (FAILURE);
 }
 
-
-/*
-static void	_process_rd_out(t_cmd *cmd)
+//TODO gestionar excepcion files
+static void	_process_rd_out(t_list *rdrs_out, int rx_rd)
 {
-	while (cmd->rdrs_out)
-	{
-		cmd->rdrs_out->next;
-	}
-} */
+	t_token	*_rdr;
+	int		fd;
 
-//TODO hacer lecturas de FD ciclicas!
-static void	_process_rd_in(t_list *rdrs_in, int to_proc_wr)
+	if (!rdrs_out)
+		return ;
+	while (rdrs_out)
+	{
+		_rdr = rdrs_out->content;
+		if (_rdr->type == RDOUT)
+			fd = open(_rdr->str, O_TRUNC | O_CREAT | O_RDWR, 0777);
+		else if (_rdr->type == RDAPP)
+			fd = open(_rdr->str, O_APPEND | O_CREAT | O_RDWR, 0777);
+		rdrs_out = rdrs_out->next;
+	}
+	sh_pprelay(rx_rd, fd);
+}
+
+static void	_process_rd_in(t_list *rdrs_in, int tx_wr)
 {
 	t_token	*_rdr;
 
 	if (!rdrs_in)
 		return ;
-	_rdr = rdrs_in->content;
-	if (_rdr->type == RDIN)
+	while (rdrs_in)
 	{
-		while (rdrs_in->next)
-			rdrs_in = rdrs_in->next;
 		_rdr = rdrs_in->content;
-		sh_fpstream(_rdr->str, to_proc_wr);
+		if (_rdr->type == RDIN && !rdrs_in->next)
+			sh_fprelay(_rdr->str, tx_wr);
+		else if (_rdr->type == RDHDOC)
+		{
+			if (!rdrs_in->next)
+				invoke_heredoc(_rdr->str, tx_wr);
+			else
+				invoke_heredoc(_rdr->str, NUL_FD);
+		}
+		rdrs_in = rdrs_in->next;
 	}
-	else if (_rdr->type == RDHDOC)
-		invoke_heredoc(_rdr->str, to_proc_wr);
-	close(to_proc_wr);
 }
 
-static int	_exec_cmd(t_cmd *cmd, int Bx_rd)
+static int	_exec_cmd(t_cmd *cmd, int bx_rd)
 {
-	int	Tx[2];
-	int	Rx[2];
-	int _out;
-	int _in;
+	int	txp[2];
+	int	rxp[2];
+	int	_stdout;
+	int	_stdin;
 
-	_out = dup(STDOUT_FILENO);
-	_in = dup(STDIN_FILENO);
-	pipe(Tx);
-	pipe(Rx);
-	dup2(Tx[RD], STDIN_FILENO);
-	dup2(Rx[WR], STDOUT_FILENO);
-	sh_pprelay(Bx_rd, Tx[WR]);
-	close(Tx[WR]);
+	_stdout = dup(STDOUT_FILENO);
+	_stdin = dup(STDIN_FILENO);
+	pipe(txp);
+	pipe(rxp);
+	if (cmd->rdrs_in)
+		_process_rd_in(cmd->rdrs_in, txp[WR]);
+	else
+		sh_pprelay(bx_rd, txp[WR]);
+	close(txp[WR]);
+	dup2(rxp[WR], STDOUT_FILENO);
+	dup2(txp[RD], STDIN_FILENO);
 	if (_try_builtin(cmd) == FAILURE)
 		try_process(cmd);
-	dup2(_in, STDIN_FILENO);
-	dup2(_out, STDOUT_FILENO);
-	close(Tx[RD]);
-	close(Rx[WR]);
-	return (Rx[RD]);
+	dup2(_stdin, STDIN_FILENO);
+	dup2(_stdout, STDOUT_FILENO);
+	close(txp[RD]);
+	close(rxp[WR]);
+	return (rxp[RD]);
 }
 
-void		exec_pipeline(t_list *ppln)
+void	exec_pipeline(t_list *ppln)
 {
-	int		Bx[2];
-	int		Rx_rd;
+	int		bxp[2];
+	int		rx_rd;
 	t_cmd	*cmd;
 
-	pipe(Bx);
-	while(ppln)
+	pipe(bxp);
+	while (ppln)
 	{
 		cmd = ppln->content;
-		close(Bx[WR]);
-		Rx_rd = _exec_cmd(cmd, Bx[RD]);
-		close(Bx[RD]);
-		pipe(Bx);
+		close(bxp[WR]);
+		rx_rd = _exec_cmd(cmd, bxp[RD]);
+		close(bxp[RD]);
+		pipe(bxp);
 		if (ppln->next)
-			sh_pprelay(Rx_rd, Bx[WR]);
+			sh_pprelay(rx_rd, bxp[WR]);
+		else if (cmd->rdrs_out)
+			_process_rd_out(cmd->rdrs_out, rx_rd);
 		else
-			sh_pprelay(Rx_rd, 1); //TODO @@@@@@@@@@@ continuar implementando entradas y salidas
-		close(Rx_rd);
+			sh_pprelay(rx_rd, STDOUT_FILENO);
+		close(rx_rd);
 		ppln = ppln->next;
 	}
 }

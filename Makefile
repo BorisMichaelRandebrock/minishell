@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/04/15 14:16:09 by fmontser         ###   ########.fr        #
+#    Updated: 2024/04/18 12:23:33 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,6 +89,7 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
 
 #TODO remplazar ft_fexists con el propoio de sh_
 #TODO sustituir llamadas a __export por set_evar??

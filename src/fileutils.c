@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/17 17:59:55 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/18 11:47:00 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ bool	sh_finpath(char *filename)
 }
 
 //TODO excepcion file
-void	sh_fpstream(char *filename, int pipe_wr)
+void	sh_fprelay(char *filename, int pipe_wr)
 {
 	int		fd;
 	ssize_t	consumed;
@@ -68,9 +68,9 @@ void	sh_fpstream(char *filename, int pipe_wr)
 	while (consumed > 0)
 	{
 		consumed = read(fd, buffer, BUF_1KB);
-		write(pipe_wr, buffer, consumed);
+		if (consumed > 0)
+			write(pipe_wr, buffer, consumed);
 	}
-	close(fd);
 }
 
 void	sh_pprelay(int pipe_rd, int pipe_wr)

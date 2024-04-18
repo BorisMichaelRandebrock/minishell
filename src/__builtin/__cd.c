@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:26:03 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/09 16:52:16 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:08:22 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	_chdir(char *arg)
 	set_evar("OLDPWD=", buf);
 	set_evar("PWD=", getcwd(buf, BUF_1KB));
 }
+
 //TODO check cd a secas, tras refactor pipeline
 int	__cd(t_list *args)
 {

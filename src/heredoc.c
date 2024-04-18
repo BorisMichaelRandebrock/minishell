@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 10:50:04 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/13 16:12:31 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:13:52 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 #include <unistd.h>
 #include "minishell.h"
 
-#define HERE_DOC_PROMPT "\033[1;31m> \033[0m"
 #define QUOTES_SZ	2
 #define IDX_OFFSET	1
 
-static	bool _has_expansion(char *dlmt)
+static	bool	_has_expansion(char *dlmt)
 {
-
 	if (*dlmt == '\'' || *dlmt == '"')
 	{
 		if (dlmt[ft_strlen(dlmt) - IDX_OFFSET] == *dlmt)
@@ -34,7 +32,7 @@ static	bool _has_expansion(char *dlmt)
 }
 
 //TODO expansion
-void	invoke_heredoc(char *dlmt, int to_proc_fd)
+void	invoke_heredoc(char *dlmt, int tx_wr)
 {
 	char	*line;
 	bool	xflag;
@@ -43,15 +41,15 @@ void	invoke_heredoc(char *dlmt, int to_proc_fd)
 	xflag = _has_expansion(dlmt);
 	while (true)
 	{
-		line = readline(HERE_DOC_PROMPT);
+		line = readline("> ");
 		if (xflag)
 			input_expansion(&line);
 		if (!line)
 			write(STDOUT_FILENO, "\n", 1);
 		if (!line || !ft_strncmp(line, dlmt, ft_strlen(dlmt)))
 			break ;
-		write(to_proc_fd, line, ft_strlen(line));
-		write(to_proc_fd, "\n", 1);
+		write(tx_wr, line, ft_strlen(line));
+		write(tx_wr, "\n", 1);
 		sh_free(&line);
 	}
 	sh_free(&line);

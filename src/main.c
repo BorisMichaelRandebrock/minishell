@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/17 15:53:33 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:14:12 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	main(int argc, char *argv[], char *sys_env[])
 	{
 		sh->tknlst = NULL;
 		sh->ppln = NULL;
-
 		sh->input = readline(get_evar("PROMPT="));
 		add_history(sh->input);
 		tokenizer(sh->input);

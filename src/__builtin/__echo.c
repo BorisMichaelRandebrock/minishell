@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/09 17:20:15 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:08:36 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	__echo(t_list *args)
 		return (SUCCESS);
 	}
 	_args = args;
-		nflag = _n_opt_check(_args->content, &_args);
+	nflag = _n_opt_check(_args->content, &_args);
 	while (_args)
 	{
 		tkn = _args->content;
