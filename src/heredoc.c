@@ -6,12 +6,13 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 10:50:04 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/18 14:13:52 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:54:04 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <readline/readline.h>
 #include <unistd.h>
+#include <stdio.h>
+#include "readline.h"
 #include "minishell.h"
 
 #define QUOTES_SZ	2

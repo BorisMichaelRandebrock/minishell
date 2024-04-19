@@ -6,13 +6,14 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 14:07:13 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/19 16:27:24 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:55:26 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdio.h>
 #include <signal.h>
-#include <readline/history.h>
+#include "history.h"
 #include "minishell.h"
 
 #define	ANSI_DEL_SCHAR "\033[D\033[P\033[D\033[P"
@@ -22,7 +23,7 @@ static void	_sh_ctrlc_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		fflush(0);
+
 	}
 }
 
