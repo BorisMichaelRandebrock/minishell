@@ -6,14 +6,13 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:41:32 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/08 13:25:44 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/19 12:15:17 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "minishell.h"
 
-static void	_freerdr(t_rdr *rdr);
 static void	_freecmd(t_cmd *cmd);
 
 static void	_lfreeargs(t_list *args)
@@ -32,6 +31,8 @@ static void	_freecmd(t_cmd *cmd)
 {
 	t_list	*prev;
 
+	if (!cmd)
+		return ;
 	_lfreeargs(cmd->args);
 	while (cmd->rdrs_in)
 	{

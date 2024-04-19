@@ -6,10 +6,11 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/18 12:53:19 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:12:10 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "minishell.h"
 
 #define WHSPC_CHRS	" \t\n\r\f\v"
@@ -97,7 +98,7 @@ void	tokenizer(char *input)
 
 	_input = input;
 	if (!input)
-		return ;
+		sh_ctrld_handler();
 	while (*_input)
 	{
 		dlmt = ' ';

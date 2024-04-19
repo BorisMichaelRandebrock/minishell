@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/18 11:24:13 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:21:57 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define MSH_NULLERROR	-101
 
 # include <stdbool.h>
+# include <termios.h>
 # include "libft.h"
 
 # include <stdio.h> //TODO para pruebas retirar
@@ -30,8 +31,7 @@
 # pragma GCC diagnostic ignored "-Wunused-parameter"
 
 typedef int	(*t_bltin)(t_list *args);
-typedef int	t_pipe[2];
-typedef int	t_xpipe[2][2];
+typedef	struct termios t_trmcfg;
 
 typedef enum e_tkntype
 {
@@ -50,14 +50,6 @@ typedef struct s_token
 	t_tkntype	type;
 }	t_token;
 
-//TODO borrar tras refactor pipeline
-typedef struct s_rdr
-{
-	t_token	*op;
-	t_list	*args;
-}	t_rdr;
-
-//TODO rdrs borrar tras refactor pipeline
 typedef struct s_cmd
 {
 	t_token	*tkn;
@@ -68,10 +60,12 @@ typedef struct s_cmd
 
 typedef struct s_shell
 {
-	char	*input;
-	char	**env;
-	t_list	*tknlst;
-	t_list	*ppln;
+	char		*input;
+	char		**env;
+	t_trmcfg	trmcfg;
+	t_trmcfg	trmcfgbackup;
+	t_list		*tknlst;
+	t_list		*ppln;
 }	t_shell;
 
 t_shell		*get_shell(void);
@@ -111,5 +105,7 @@ bool		sh_fexists(char *filename);
 bool		sh_fisexec(char *filename);
 void		sh_fprelay(char *filename, int pipe_wr);
 void		sh_pprelay(int pipe_rd, int pipe_wr);
+void		sh_ctrld_handler(void);
+void		sh_init_handlers(void);
 
 #endif
