@@ -6,14 +6,15 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 19:40:13 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/09 16:53:02 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/20 23:50:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include <stdio.h>
 #include "minishell.h"
 #include <readline/history.h>
 #include <readline/readline.h>
-#include <unistd.h>
 
 #define C_OPT "-c"
 

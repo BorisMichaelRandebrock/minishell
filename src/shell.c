@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/19 16:16:46 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/21 00:11:41 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,11 @@ t_shell	*new_shell(char **sys_env)
 	t_shell	*sh;
 
 	sh = get_shell();
-
 	sh_init_handlers();
-
- 	tcgetattr(STDIN_FILENO, &sh->trmcfgbackup);
+	tcgetattr(STDIN_FILENO, &sh->trmcfgbackup);
 	tcgetattr(STDIN_FILENO, &sh->trmcfg);
-	sh->trmcfg.c_lflag |= ~ECHOCTL;
+	sh->trmcfg.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &sh->trmcfg);
-
 	new_env(sh, sys_env);
 	return (sh);
 }

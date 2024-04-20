@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/18 14:07:08 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/21 00:45:40 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ static int	_exec_cmd(t_cmd *cmd, int bx_rd)
 	dup2(txp[RD], STDIN_FILENO);
 	if (_try_builtin(cmd) == FAILURE)
 		try_process(cmd);
+
 	dup2(_stdin, STDIN_FILENO);
 	dup2(_stdout, STDOUT_FILENO);
 	close(txp[RD]);

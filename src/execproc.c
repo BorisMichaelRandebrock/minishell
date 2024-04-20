@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/18 14:14:19 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/21 00:47:50 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*_build_path(char *cmd_name)
 	sh_free(&splitted);
 	if (ft_fexists(buffer) && *buffer)
 		return (sh_guard(ft_strdup(buffer), NULL));
-	return (NULL);
+	return (sh_guard(ft_strdup(""), NULL));
 }
 
 static char	**_args_to_array(t_cmd *cmd)
@@ -90,9 +90,9 @@ void	try_process(t_cmd *cmd)
 	exec_args = _args_to_array(cmd);
 	exec_path = _build_path(cmd->tkn->str);
 	pid = fork();
-	if (pid == 0)
-		execve(exec_path, exec_args, get_shell()->env);
-	else if (exec_path)
+	if (pid == 0)	//TODO @@@@ excepcion no encontrado, hay que liberar el child y cerrar los pipes (child), usar tleaks! se queda pillado!
+		exec_path, exec_args, get_shell()->env;
+	else
 	{
 		wait3(&child_status, 0, NULL);
 		child_exit_code = ft_itoa(WEXITSTATUS(child_status));
