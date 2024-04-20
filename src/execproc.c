@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/21 00:47:50 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/21 00:58:04 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ static char	**_args_to_array(t_cmd *cmd)
 	args[i] = NULL;
 	return (args);
 }
-
+//TODO @@@@ excepcion no encontrado, hay que liberar el child y
+// cerrar los pipes (child), usar tleaks! se queda pillado!
 //TODO excepcion comando no encontrado???  exec_path = null
 void	try_process(t_cmd *cmd)
 {
@@ -90,7 +91,7 @@ void	try_process(t_cmd *cmd)
 	exec_args = _args_to_array(cmd);
 	exec_path = _build_path(cmd->tkn->str);
 	pid = fork();
-	if (pid == 0)	//TODO @@@@ excepcion no encontrado, hay que liberar el child y cerrar los pipes (child), usar tleaks! se queda pillado!
+	if (pid == 0)
 		exec_path, exec_args, get_shell()->env;
 	else
 	{
