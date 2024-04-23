@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execproc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/21 00:58:04 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/23 17:06:36 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	try_process(t_cmd *cmd)
 	exec_path = _build_path(cmd->tkn->str);
 	pid = fork();
 	if (pid == 0)
-		exec_path, exec_args, get_shell()->env;
+		execve(exec_path, exec_args, get_shell()->env);
 	else
 	{
 		wait3(&child_status, 0, NULL);

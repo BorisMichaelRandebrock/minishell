@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+         #
+#    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/04/21 00:11:12 by fmontser         ###   ########.fr        #
+#    Updated: 2024/04/23 17:51:47 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,11 +50,11 @@ vpath %.c $(SRC_DIR)
 vpath %.o $(OBJ_DIR)
 vpath % $(BIN_DIR)
 
-all: $(NAME) $(LIBFT) $(RLLIB)
+all: $(NAME) $(LIBFT)
 
-$(NAME): $(OBJS) $(LIBFT) $(RLLIB)
+$(NAME): $(OBJS) $(LIBFT)
 	@mkdir -p $(BIN_DIR)
-	@$(CC) $(DEFS) $(addprefix $(OBJ_DIR),$(OBJS)) $(LIBFT) -o $(BIN_DIR)$(NAME) $(STD_LIBS)
+	@$(CC)$(addprefix $(OBJ_DIR),$(OBJS)) $(LIBFT) -o $(BIN_DIR)$(NAME) -L/Users/fmontser/lib $(STD_LIBS)
 	@echo "$(COLOR_GREEN)write file: $(BIN_DIR)$@ $(COLOR_END)"
 
 %.o : %.c $(HDRS) $(MAKEFILE)

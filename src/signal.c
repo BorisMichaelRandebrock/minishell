@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 14:07:13 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/21 00:05:42 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/23 17:53:19 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include "minishell.h"
-
-/* #define	ANSI_DEL_SCHAR "\033[D\033[P\033[D\033[P"
-		write(1, ANSI_DEL_SCHAR, 13); */
 
 static void	_sh_ctrlc_handler(int signal)
 {
