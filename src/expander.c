@@ -3,21 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/13 16:12:52 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/24 18:29:13 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 #define IDX_OFFST	1
 #define QUOTES_SZ	2
 #define START		0
 #define END			1
 
-//TODO //BUG token compuesto por un solo quote segfault!!
 void	dequote_token(t_token *tkn)
 {
 	char	*_str;
@@ -25,6 +23,8 @@ void	dequote_token(t_token *tkn)
 	_str = tkn->str;
 	if (tkn->type == ARG || tkn->type == CMD)
 	{
+		if (ft_strlen(_str) < 2)
+			return ;
 		if ((_str[0] == '"' && _str[ft_strlen(_str) - IDX_OFFST] == '"')
 			|| (_str[0] == '\'' && _str[ft_strlen(_str) - IDX_OFFST] == '\''))
 		{

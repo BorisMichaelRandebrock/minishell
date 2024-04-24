@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   __unset.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/09 16:53:48 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/24 17:30:46 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #define VAR_NAME	0
 #define VALUE		1
 
-//TODO //BUG unset no funciona a menos que la EVAR sea la ultima...
 int	__unset(t_list *args)
 {
 	t_list	*_args;

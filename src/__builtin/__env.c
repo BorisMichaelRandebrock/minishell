@@ -3,20 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   __env.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:14 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/09 16:49:32 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/24 17:21:11 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
 
-#define SYS_FDS	2
-
-//TODO //BUG env | cat -e, segfault!
-//TODO //BUG el la ultima entrada impresa no tiene salto de linea!
 int	__env(t_list *args)
 {
 	t_shell	*sh;

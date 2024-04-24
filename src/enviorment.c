@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enviorment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/09 13:48:26 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/24 17:29:29 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <string.h>
 
+#define	IDX_OFFSET	1
 #define NEW_VAR_SZ	1
 #define CH_SZ		1
 
@@ -59,12 +60,11 @@ void	set_evar(char *var_name, char *value)
 	sh->env[i] = NULL;
 }
 
-//var_name format must be 'VAR='
 void	unset_evar(char *var_name)
 {
 	t_shell	*sh;
-	size_t	i;
-	size_t	j;
+	void	*target;
+	int		i;
 
 	sh = get_shell();
 	i = 0;
@@ -72,15 +72,15 @@ void	unset_evar(char *var_name)
 	{
 		if (ft_strnstr(sh->env[i], var_name, ft_strlen(var_name)))
 		{
-			sh_free(&sh->env[i]);
-			j = i;
-			while (sh->env[j])
+			target = sh->env[i];
+			while (sh->env[i])
 			{
-				sh->env[j] = sh->env[j + 1];
-				j++;
+				sh->env[i] = sh->env[i + 1];
+				i++;
 			}
-			sh->env = sh_ralloc(sh->env, (j - NEW_VAR_SZ) * sizeof(char *));
-			sh->env[j] = NULL;
+			sh->env[i] = NULL;
+			sh->env = sh_ralloc(sh->env, ((i + IDX_OFFSET)  * sizeof(char *)));
+			sh_free(&target);
 			return ;
 		}
 		i++;

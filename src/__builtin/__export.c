@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   __export.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/18 14:09:12 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/24 14:27:11 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static int	_check_evar(int *eflag, char *evar, t_list **_args)
 	}
 	return (SUCCESS);
 }
-
+//TODO retokenizacion para casos de comillas o espacios...
+// export HOLA="algo $USER algo mas"
 //TODO programar comportamiento base de export.
 //(lista de variables que el propio export ha exportado),
 // se actualiza con unset:

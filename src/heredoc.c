@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 10:50:04 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/24 12:25:09 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/24 14:34:18 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static	bool	_has_expansion(char *dlmt)
 	return (true);
 }
 
-//TODO expansion
 void	invoke_heredoc(char *dlmt, int tx_wr)
 {
 	char	*line;

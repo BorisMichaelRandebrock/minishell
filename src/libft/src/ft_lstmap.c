@@ -1,16 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 19:43:36 by fmontser          #+#    #+#             */
-/*   Updated: 2023/07/18 17:41:05 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/24 14:34:35 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// TODO arreglar no compila en molinette
 
 #include "libft.h"
 
