@@ -6,14 +6,14 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 14:07:13 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/23 17:53:19 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/24 12:24:10 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <signal.h>
 #include <stdio.h>
-#include <readline/readline.h>
+#include "readline/readline.h"
 #include "minishell.h"
 
 static void	_sh_ctrlc_handler(int signal)

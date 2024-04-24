@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/04/23 18:27:13 by fmontser         ###   ########.fr        #
+#    Updated: 2024/04/24 14:07:43 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,13 +27,17 @@ SRCS 			:=	main.c shell.c enviorment.c memutils.c token.c expander.c \
 
 OBJS			:= $(SRCS:.c=.o)
 
-LIBFT_DIR		:= src/libft/
+LIBFT_DIR		:= src/libft
 LIBFT_INC		:= src/libft/include
 LIBFT			:= src/libft/lib/libft.a
 
+LIBRL_DIR		:= src/readline
+LIBRL_INC		:= src/readline/include/readline
+LIBRL			:= src/readline/lib
+
 CC				:= gcc
 PERF_FLAGS		:= #-O3
-CC_FLAGS		:= -Wall -Werror -Wextra -g -c $(PERF_FLAGS)
+CC_FLAGS		:= -Wall -Werror -Wextra -g -c $(PERF_FLAGS) -D READLINE_LIBRARY=READLINE_LIBRARY
 STD_LIBS		:= -lreadline
 TEST_LEAKS		:= leaks -atExit --
 
@@ -50,20 +54,27 @@ vpath %.c $(SRC_DIR)
 vpath %.o $(OBJ_DIR)
 vpath % $(BIN_DIR)
 
-all: $(NAME) $(LIBFT)
+all: $(NAME) $(LIBFT) $(LIBRL)
 
-$(NAME): $(OBJS) $(LIBFT)
+$(NAME): $(OBJS) $(LIBFT) $(LIBRL)
 	@mkdir -p $(BIN_DIR)
-	@$(CC)$(addprefix $(OBJ_DIR),$(OBJS)) $(LIBFT) -o $(BIN_DIR)$(NAME) $(STD_LIBS)
+	@$(CC) $(addprefix $(OBJ_DIR),$(OBJS)) $(LIBFT) -o $(BIN_DIR)$(NAME) $(STD_LIBS) -L$(LIBRL)
 	@echo "$(COLOR_GREEN)write file: $(BIN_DIR)$@ $(COLOR_END)"
 
 %.o : %.c $(HDRS) $(MAKEFILE)
 	@mkdir -p $(OBJ_DIR)
-	@$(CC) -I $(INC_DIR) -I $(LIBFT_INC) $(CC_FLAGS) $< -o $(OBJ_DIR)$@
+	@$(CC) -I $(INC_DIR) -I $(LIBFT_INC) -I $(LIBRL_INC) $(CC_FLAGS) $< -o $(OBJ_DIR)$@
 	@echo "$(COLOR_GREEN)write file: $(OBJ_DIR)$@ $(COLOR_END)"
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
+
+$(LIBRL):
+	@make -C $(LIBRL_DIR)
+	@make install -C $(LIBRL_DIR)
+
+configure:
+	cd $(CURDIR)/$(LIBRL_DIR) && ./configure --prefix=$(CURDIR)/$(LIBRL_DIR) --with-curses
 
 test: all
 	@./$(BIN_DIR)$(NAME) $(TEST_ARGS)
@@ -74,10 +85,12 @@ tleaks: all
 clean:
 	@$(foreach item,$(CLEAN_TARGETS),echo "$(COLOR_RED)delete file: $(item)$(COLOR_END)"; rm $(item);)
 	@make clean -C $(LIBFT_DIR)
+	@make clean -C $(LIBRL_DIR)
 
 fclean: clean
 	@$(foreach item,$(FCLEAN_TARGETS),echo "$(COLOR_RED)delete file: $(item)$(COLOR_END)"; rm $(item);)
 	@make fclean -C $(LIBFT_DIR)
+	@make clean -C $(LIBRL_DIR)
 
 re: fclean all
 
