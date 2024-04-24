@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   __history.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 19:40:13 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/20 23:50:39 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/24 12:25:24 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdio.h>
 #include "minishell.h"
-#include <readline/history.h>
-#include <readline/readline.h>
+#include "readline/history.h"
+#include "readline/readline.h"
 
 #define C_OPT "-c"
 
