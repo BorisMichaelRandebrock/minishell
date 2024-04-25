@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/25 19:51:24 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:09:12 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	set_prompt(void)
 	char	buffer[BUF_1KB];
 	char	*prompt;
 	int		i;
-	t_list	arg;
-	t_token	tkn;
 
 	getcwd(buffer, BUF_1KB);
 	i = ft_strlen(buffer);
@@ -35,13 +33,8 @@ void	set_prompt(void)
 		}
 		i--;
 	}
-	prompt = sh_guard(ft_strjoin("PROMPT=", &buffer[i]), NULL);
-	prompt = sh_guard(ft_strjoin(prompt, "/::> "), prompt);
-	tkn.str = prompt;
-	tkn.type = ARG;
-	arg.content = &tkn;
-	arg.next = NULL;
-	__export(&arg);
+	prompt = sh_guard(ft_strjoin(&buffer[i], "/::> "), NULL);
+	set_evar("PROMPT=", prompt);
 	sh_free(&prompt);
 }
 

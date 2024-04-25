@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:26:03 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/24 14:33:41 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:07:52 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	_chdir(char *arg)
 	set_evar("OLDPWD=", buf);
 	set_evar("PWD=", getcwd(buf, BUF_1KB));
 }
-
+//TODO //BUG "cd -" no funciona ¿¿?¿?¿¿?
 int	__cd(t_list *args)
 {
 	t_token	*tkn;

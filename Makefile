@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/04/25 20:50:22 by fmontser         ###   ########.fr        #
+#    Updated: 2024/04/25 21:12:46 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ CC_FLAGS		:= -Wall -Werror -Wextra -g -c $(PERF_FLAGS) -D READLINE_LIBRARY=READL
 STD_LIBS		:= -lreadline
 TEST_LEAKS		:= leaks -atExit --
 
-CLEAN_TARGETS	=	$(wildcard $(addprefix $(OBJ_DIR), $(OBJS)))
+CLEAN_TARGETS	= $(wildcard $(addprefix $(OBJ_DIR), $(OBJS)))
 FCLEAN_TARGETS	= $(wildcard $(addprefix $(BIN_DIR), $(NAME)))
 
 COLOR_GREEN		:=\033[0;32m
@@ -74,7 +74,7 @@ $(LIBRL):
 	@make install -C $(LIBRL_DIR)
 
 configure:
-	cd $(CURDIR)/$(LIBRL_DIR) && ./configure --prefix=$(CURDIR)/$(LIBRL_DIR) --with-curses
+	@cd $(CURDIR)/$(LIBRL_DIR) && ./configure --prefix=$(CURDIR)/$(LIBRL_DIR) --with-curses
 
 test: all
 	@./$(BIN_DIR)$(NAME) $(TEST_ARGS)
@@ -96,10 +96,7 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-#TODO remplazar ft_fexists con el propoio de sh_
-#TODO sustituir llamadas a __export por set_evar??
 #TODO repasar tema del history, no funciona muy bien...
 #TODO limpieza includes
 #TODO retirar .vscode de git
 #TODO retirar las funciones libft no utilizadas
-#TODO resolver que pasa cuando no se recompilan slos cambios de una libreria o make anidado

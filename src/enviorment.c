@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/24 17:29:29 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:55:23 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,6 @@ void	new_env(t_shell *sh, char **sys_env)
 	char	**env;
 	size_t	count;
 	size_t	i;
-	t_list	arg;
-	t_token	tkn;
 
 	count = 0;
 	i = 0;
@@ -109,7 +107,5 @@ void	new_env(t_shell *sh, char **sys_env)
 	env[i] = NULL;
 	sh->env = env;
 	set_prompt();
-	tkn.str = "?=0";
-	arg = (t_list){&tkn, NULL};
-	__export(&arg);
+	set_evar("?=","0");
 }
