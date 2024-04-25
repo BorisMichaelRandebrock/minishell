@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/04/24 17:30:54 by fmontser         ###   ########.fr        #
+#    Updated: 2024/04/25 20:50:22 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,7 +98,6 @@ re: fclean all
 
 #TODO remplazar ft_fexists con el propoio de sh_
 #TODO sustituir llamadas a __export por set_evar??
-#TODO probar a pasar argumentos a minishell ej. ls | ./minishell... no debe petar!
 #TODO repasar tema del history, no funciona muy bien...
 #TODO limpieza includes
 #TODO retirar .vscode de git

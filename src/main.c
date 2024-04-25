@@ -6,37 +6,34 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/24 19:17:33 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:48:25 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdio.h>
+
+#include <fcntl.h>
 #include "readline/history.h"
 #include "readline/readline.h"
 #include "minishell.h"
 
-//TODO @@@@@@ continuar aqui, mutear
-static void _fd_arg_guard(void)
+static void _handle_args(int argc, char *argv[])
 {
- 	char buffer[1024];
-	int _stdin = dup(STDIN_FILENO);
-	
-	ft_memset(buffer, '\0', 1024);
-	close(STDIN_FILENO);
-	while (read(0, buffer, 1024) > 0)
-		ft_memset(buffer, '\0', 1024);
-	dup2(_stdin, 0);
-	rl_replace_line("", 0);
+	int		tty_fd;
+
+	(void)argc;
+	(void)argv;
+	tty_fd = open("/dev/tty", O_RDONLY);
+	dup2(tty_fd, STDIN_FILENO);
+	close(tty_fd);
 }
 
 int	main(int argc, char *argv[], char *sys_env[])
 {
 	t_shell	*sh;
 
-	(void)argc;
-	(void)argv;
-	_fd_arg_guard();
+	_handle_args(argc, argv);
 	sh = new_shell(sys_env);
 	while (1)
 	{
