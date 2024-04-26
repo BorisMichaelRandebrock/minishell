@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fileutils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/18 11:47:00 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/26 14:22:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,14 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#define NUL_SZ 1
-#define FILE_NOT_FOUND	-1
-#define FILE_NOT_EXEC	-1
-
-//TODO revisar si aun es necesario alguno
+#define NUL_SZ 		1
+#define FILE_FOUND	0
 
 bool	sh_fexists(char *filename)
 {
-	if (access(filename, F_OK) == FILE_NOT_FOUND)
+	if (access(filename, F_OK) != FILE_FOUND)
 		return (false);
 	return (true);
-}
-
-bool	sh_fisexec(char *filename)
-{
-	if (access(filename, X_OK) == FILE_NOT_EXEC)
-		return (false);
-	return (true);
-}
-
-bool	sh_finpath(char *filename)
-{
-	char	**splitted;
-	int		i;
-	char	buffer[BUF_1KB + NUL_SZ];
-
-	splitted = sh_guard(ft_split(get_evar("PATH="), ':'), NULL);
-	i = 0;
-	while (splitted[i])
-	{
-		ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
-		ft_strlcat(buffer, splitted[i], BUF_1KB + NUL_SZ);
-		ft_strlcat(buffer, "/", BUF_1KB + NUL_SZ);
-		ft_strlcat(buffer, filename, BUF_1KB + NUL_SZ);
-		if (access(buffer, F_OK) != FILE_NOT_FOUND)
-			return (true);
-		i++;
-	}
-	return (false);
 }
 
 //TODO excepcion file
@@ -72,7 +41,7 @@ void	sh_fprelay(char *filename, int pipe_wr)
 			write(pipe_wr, buffer, consumed);
 	}
 }
-
+//TODO excepcion read
 void	sh_pprelay(int pipe_rd, int pipe_wr)
 {
 	ssize_t	consumed;

@@ -6,13 +6,12 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/25 21:07:36 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:05:11 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdio.h>
-
 #include <fcntl.h>
 #include "readline/history.h"
 #include "readline/readline.h"
@@ -51,6 +50,6 @@ int	main(int argc, char *argv[], char *sys_env[])
 		sh_lfreeppln(sh->ppln);
 		sh_lfreetkns(sh->tknlst);
 	}
-	sh_freexit(SUCCESS);
+	sh_free_exit(SUCCESS);
 	return (SUCCESS);
 }

@@ -3,16 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   exception.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/18 14:12:14 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:31:19 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <errno.h>
+#include <string.h>
+#include <unistd.h>
+#include "readline/readline.h"
 #include "minishell.h"
 
+//TODO excepcion pipe en primer lugar!
+//TODO excepcion, si despues de un pipe no hay nada, se pide input...si...
+//TODO excepcion, si un redir no tiene argumento o
+// 		el argumento no es valido es un error
+
+
+//TODO @@@@@@@@@@@@ validar comando y rdin files antes!!!!
 bool	sh_cmd_validation(t_list *ppln, t_list *tknlst)
 {
 	t_cmd	*cmd;
@@ -27,11 +38,9 @@ bool	sh_cmd_validation(t_list *ppln, t_list *tknlst)
 	return (true);
 }
 
-void	sh_perror(int error_code)
+void	sh_perror(char *error_msg, bool exit)
 {
-	if (error_code == MSH_MERROR)
-		printf("Memory error, exiting...");
-	if (error_code == MSH_NULLERROR)
-		printf("NULL error, exiting...");
-	sh_freexit(FAILURE);
+	perror(error_msg);
+	if (exit)
+		sh_free_exit(FAILURE);
 }

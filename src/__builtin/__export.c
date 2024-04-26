@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/24 14:27:11 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/26 12:50:07 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	_print_error(char *evar)
 	return (FAILURE);
 }
 
-//TODO proteccion contra env var invalidas solo acpecta alphanumericos y _,
+//TODO execpcion proteccion contra env var invalidas solo acpecta alphanumericos y _,
 //		 El primero  no puede ser nuemro.
 static int	_check_evar(int *eflag, char *evar, t_list **_args)
 {
