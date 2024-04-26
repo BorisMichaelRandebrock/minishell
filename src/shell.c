@@ -6,15 +6,13 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/25 21:09:12 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:58:41 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
 #include "minishell.h"
-
-#define DFLT_ENV_SZ 5
 
 void	set_prompt(void)
 {

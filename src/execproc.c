@@ -6,11 +6,12 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/25 20:53:15 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:23:48 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <fcntl.h>
 #include <sys/wait.h>
 #include "minishell.h"
 
@@ -77,9 +78,7 @@ static char	**_args_to_array(t_cmd *cmd)
 	args[i] = NULL;
 	return (args);
 }
-//TODO @@@@ excepcion no encontrado, hay que liberar el child y
-// cerrar los pipes (child), usar tleaks! se queda pillado!
-//TODO excepcion comando no encontrado???  exec_path = null
+
 void	try_process(t_cmd *cmd)
 {
 	char	*exec_path;
@@ -90,16 +89,21 @@ void	try_process(t_cmd *cmd)
 
 	exec_args = _args_to_array(cmd);
 	exec_path = _build_path(cmd->tkn->str);
-	pid = fork();
-	if (pid == 0)
-		execve(exec_path, exec_args, get_shell()->env);
-	else
+	if (*exec_path != '\0')
 	{
-		wait3(&child_status, 0, NULL);
-		child_exit_code = ft_itoa(WEXITSTATUS(child_status));
-		set_evar("?=", child_exit_code);
-		sh_free(&child_exit_code);
+		pid = fork();
+		if (pid == 0)
+			execve(exec_path, exec_args, get_shell()->env);
+		else
+		{
+			wait3(&child_status, 0, NULL);
+			child_exit_code = ft_itoa(WEXITSTATUS(child_status));
+			set_evar("?=", child_exit_code);
+			sh_free(&child_exit_code);
+		}
 	}
+	else
+		sh_perror(ERROR_MSG, false);
 	sh_free(&exec_args);
 	sh_free(&exec_path);
 }

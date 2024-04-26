@@ -1,19 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   freeppln.c                                         :+:      :+:    :+:   */
+/*   cleanutils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:41:32 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/19 12:15:17 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/26 13:27:04 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "minishell.h"
-
-static void	_freecmd(t_cmd *cmd);
 
 static void	_lfreeargs(t_list *args)
 {
@@ -60,6 +58,26 @@ void	sh_lfreeppln(t_list *ppln)
 		_freecmd(cmd);
 		prev = ppln;
 		ppln = ppln->next;
+		sh_free(&prev);
+	}
+}
+static void	_freetkn(t_token *tkn)
+{
+	sh_free(&tkn->str);
+	sh_free(&tkn);
+}
+
+void	sh_lfreetkns(t_list *tknlst)
+{
+	t_list	*prev;
+	t_token	*tkn;
+
+	while (tknlst)
+	{
+		tkn = tknlst->content;
+		_freetkn(tkn);
+		prev = tknlst;
+		tknlst = tknlst->next;
 		sh_free(&prev);
 	}
 }

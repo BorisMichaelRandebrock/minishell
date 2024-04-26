@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/19 17:53:21 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:17:47 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,13 @@
 # define BUF_1KB		1024
 # define SUCCESS		0
 # define FAILURE		1
-# define MSH_MERROR		-100
-# define MSH_NULLERROR	-101
+# define ERROR_MSG		"Minishell error"
 
 # include <stdbool.h>
 # include <termios.h>
 # include "libft.h"
 
 # include <stdio.h> //TODO para pruebas retirar
-
-//TODO borrar pragma
-# pragma GCC diagnostic ignored "-Wunused-function"
-# pragma GCC diagnostic ignored "-Wunused-parameter"
 
 typedef int	(*t_bltin)(t_list *args);
 typedef	struct termios t_trmcfg;
@@ -80,7 +75,6 @@ void		token_expansion(t_token *tkn);
 void		input_expansion(char **input);
 void		dequote_token(t_token *tkn);
 void		build_commands(t_list *tknlst, t_list **ppln);
-bool		sh_cmd_validation(t_list *ppln, t_list *tknlst);
 void		exec_pipeline(t_list *ppln);
 void		invoke_heredoc(char *dlmt, int to_proc_fd);
 void		try_process(t_cmd *cmd);
@@ -92,14 +86,16 @@ int			__unset(t_list *args);
 int			__env(t_list *args);
 int			__exit(t_list *args);
 int			__history(t_list *args);
+bool		sh_cmd_validation(t_list *ppln, t_list *tknlst);
 void		*sh_calloc(size_t num, size_t size);
 void		*sh_ralloc(void *old, size_t new_sizeof);
 void		sh_free(void *content);
-void		sh_freexit(int exit_code);
+void		sh_free_exit(int exit_code);
+void		sh_free_reset(void);
 void		sh_lfreeppln(t_list *ppln);
 void		sh_lfreetkns(t_list *tknlst);
 void		*sh_guard(void *alloc, void *nullable_old);
-void		sh_perror(int error_code);
+void		sh_perror(char *error_msg, bool exit);
 bool		sh_finpath(char *filename);
 bool		sh_fexists(char *filename);
 bool		sh_fisexec(char *filename);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   freexit.c                                          :+:      :+:    :+:   */
+/*   cleanutils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 22:16:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/21 00:15:04 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/26 13:41:55 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,22 @@ static void	_freeshell(void)
 	sh_free(&sh);
 }
 
-//Clean exit from shell
-void	sh_freexit(int exit_code)
+void	sh_free_reset(void)
 {
 	t_shell	*sh;
-	size_t	i;
 
-	i = 0;
 	sh = get_shell();
 	sh_lfreeppln(sh->ppln);
 	sh_lfreetkns(sh->tknlst);
+}
+
+//Clean exit from shell
+void	sh_free_exit(int exit_code)
+{
+	t_shell	*sh;
+
+	sh = get_shell();
+	sh_free_reset();
 	_freeenv();
 	_freeshell();
 	tcsetattr(STDIN_FILENO, TCSANOW, &sh->trmcfgbackup);

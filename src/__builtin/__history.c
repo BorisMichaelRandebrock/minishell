@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 19:40:13 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/24 12:25:24 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/26 12:50:33 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 #define C_OPT "-c"
 
-//TODO return errors?
+//TODO excepcion return errors?
 static bool	_c_opt_check(t_token *tkn, t_list **_args)
 {
 	if (!ft_strncmp(tkn->str, C_OPT, 3))
@@ -29,7 +29,7 @@ static bool	_c_opt_check(t_token *tkn, t_list **_args)
 	return (false);
 }
 
-//TODO return errors?
+//TODO excepcion return errors?
 int	__history(t_list *args)
 {
 	t_list	*_args;

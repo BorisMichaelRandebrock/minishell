@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/24 18:15:40 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/26 12:50:43 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #define N_OPT	"-n"
 #define SYS_FDS	2
 
-//TODO return errors?
+//TODO excepcion return errors?
 static bool	_n_opt_check(t_token *tkn, t_list **_args)
 {
 	if (!ft_strncmp(tkn->str, N_OPT, 3))

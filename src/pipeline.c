@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/24 17:49:05 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:30:36 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,10 @@ static int	_exec_cmd(t_cmd *cmd, int bx_rd)
 	dup2(txp[RD], STDIN_FILENO);
 	if (_try_builtin(cmd) == FAILURE)
 		try_process(cmd);
-
-	dup2(_stdin, STDIN_FILENO);
-	dup2(_stdout, STDOUT_FILENO);
 	close(txp[RD]);
 	close(rxp[WR]);
+	dup2(_stdin, STDIN_FILENO);
+	dup2(_stdout, STDOUT_FILENO);	
 	return (rxp[RD]);
 }
 
