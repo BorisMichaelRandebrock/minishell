@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 17:49:52 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 18:06:02 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int	sh_cmd_validation(t_cmd *cmd)
 		}
 		_rdr_in = _rdr_in->next;
 	}
+	
 	// RDOUT
 	_rdr_out = cmd->rdrs_out;
 	while (_rdr_out)

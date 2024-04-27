@@ -58,5 +58,6 @@
 		"cdefs.h": "c",
 		"limits.h": "c",
 		"string.h": "c"
-	}
+	},
+	"todo-tree.tree.showBadges": false
 }

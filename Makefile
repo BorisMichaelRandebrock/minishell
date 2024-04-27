@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/04/27 17:36:57 by fmontser         ###   ########.fr        #
+#    Updated: 2024/04/27 17:59:07 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,7 +96,6 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-#TODO repasar tema del history, no funciona muy bien...
-#TODO limpieza includes
-#TODO retirar .vscode de git
-#TODO retirar las funciones libft no utilizadas
+#TODO CLEAN limpieza includes
+#TODO CLEAN retirar .vscode de git
+#TODO CLEAN retirar las funciones libft no utilizadas

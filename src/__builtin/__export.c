@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/26 12:50:07 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:55:46 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	_print_error(char *evar)
 	return (FAILURE);
 }
 
-//TODO execpcion proteccion contra env var invalidas solo acpecta alphanumericos y _,
+//TODO export execpcion proteccion contra env var invalidas solo acpecta alphanumericos y _,
 //		 El primero  no puede ser nuemro.
 static int	_check_evar(int *eflag, char *evar, t_list **_args)
 {
@@ -46,9 +46,9 @@ static int	_check_evar(int *eflag, char *evar, t_list **_args)
 	}
 	return (SUCCESS);
 }
-//TODO retokenizacion para casos de comillas o espacios...
+//TODO  export retokenizacion para casos de comillas o espacios...
 // export HOLA="algo $USER algo mas"
-//TODO programar comportamiento base de export.
+//TODO export programar comportamiento base.
 //(lista de variables que el propio export ha exportado),
 // se actualiza con unset:
 // declare -x VAR=value

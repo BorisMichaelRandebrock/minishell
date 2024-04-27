@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 14:40:26 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:54:37 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 #define RD			0
 #define WR			1
 
-// TODO gestionar excepcion
 static char	*_build_path(char *cmd_name)
 {
 	char	**splitted;

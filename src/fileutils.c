@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 17:43:57 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:54:17 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ bool	sh_fexists(char *filename)
 	return (true);
 }
 
-//TODO excepcion file
 void	sh_fprelay(char *filename, int pipe_wr)
 {
 	int		fd;
