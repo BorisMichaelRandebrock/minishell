@@ -6,24 +6,39 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 16:08:39 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 16:42:03 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <fcntl.h>
-#include <limits.h>
 #include "minishell.h"
 
 #define NUL_SZ 		1
 #define FILE_FOUND	0
+#define IDX_OFFSET	1
 
-/* char	*sh_get_dir(char *filename)
+char	*sh_get_dir_name(char *filename)
 {
 	size_t	path_size;
-	char	buffer[NAME_MAX];
-	
-} */
+	char	*dir_name;
+	char	*end;
+	int		i;
+
+	i = 0;
+	while (filename[i])
+	{
+		if (filename[i] == '/')
+			end = &filename[i];
+		i++;
+	}
+	path_size = (end - filename) + IDX_OFFSET;
+	if (path_size < 1)
+		path_size = 1;
+	dir_name = sh_calloc(1, (path_size + NUL_SZ) * sizeof(char));
+	ft_strlcpy(dir_name, filename, path_size);
+	return (dir_name);
+}
 
 bool	sh_fexists(char *filename)
 {

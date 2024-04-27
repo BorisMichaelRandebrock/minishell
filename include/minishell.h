@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 15:01:59 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 16:21:12 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,8 @@ void	sh_lfreeppln(t_list *ppln);
 void	sh_lfreetkns(t_list *tknlst);
 void	*sh_guard(void *alloc, void *nullable_old);
 void	sh_perror(char *error_msg, bool exit);
-bool	sh_finpath(char *filename);
+char	*sh_get_dir_name(char *filename);
 bool	sh_fexists(char *filename);
-bool	sh_fisexec(char *filename);
 void	sh_fprelay(char *filename, int pipe_wr);
 void	sh_pprelay(int pipe_rd, int pipe_wr);
 void	sh_ctrld_handler(void);

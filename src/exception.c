@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 16:18:23 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:06:43 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 #define CMD_ERROR_MSG		"Command error"
 #define OPERATORS			2
 
-// Validates syntax
+// Validates syntax, NAME_MAX, Operators
 int	sh_syntax_validation(t_list *tknlst)
 {
 	t_token	*tkn;
@@ -39,7 +39,6 @@ int	sh_syntax_validation(t_list *tknlst)
 			sh_perror(SYNTAX_ERROR_MSG, false);
 			return (FAILURE);
 		}
-
 		if ((!prev && tkn->type == PIPE)
 			|| (!tknlst->next && tkn->type >= OPERATORS)
 			|| (prev && prev->type >= OPERATORS && tkn->type >= OPERATORS))
@@ -83,6 +82,9 @@ static bool	_is_executable(char *cmd_name)
 	return (true);
 }
 
+/* //TODO 42Minishell/::> cat -e src/__builtin/_cd.c
+cat: src/__builtin/_cd.c: No such file or directory */
+
 // Validates commands
 int	sh_cmd_validation(t_cmd *cmd)
 {
@@ -91,6 +93,7 @@ int	sh_cmd_validation(t_cmd *cmd)
 	t_list	*_rdr_out;
 	t_token	*tkn;
 
+	// CMD
 	cmd_name = cmd->tkn->str;
 	if (!is_builtin(cmd_name) && !_is_executable(cmd_name))
 	{
@@ -98,7 +101,7 @@ int	sh_cmd_validation(t_cmd *cmd)
 		return (FAILURE);
 	}
 
-	
+	//RDIN
 	_rdr_in = cmd->rdrs_in;
 	while (_rdr_in)
 	{
@@ -110,12 +113,12 @@ int	sh_cmd_validation(t_cmd *cmd)
 		}
 		_rdr_in = _rdr_in->next;
 	}
-
+	// RDOUT
 	_rdr_out = cmd->rdrs_out;
 	while (_rdr_out)
 	{
 		tkn = _rdr_out->content;
-		if (access(tkn->str, W_OK) != SUCCESS) // TODO Directorio??
+		if (access(sh_get_dir_name(tkn->str), W_OK) != SUCCESS)
 		{
 			sh_perror(FILE_ERROR_MSG, false);
 			return (FAILURE);
