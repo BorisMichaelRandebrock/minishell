@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 14:25:46 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 14:54:03 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 #define SYNTAX_ERROR_MSG	"Operator syntax error"
 #define FILE_ERROR_MSG		"File error"
+#define CMD_ERROR_MSG		"Command error"
 #define OPERATORS			2
 
 // Validates operator syntax
@@ -51,11 +52,47 @@ int	sh_syntax_validation(t_list *tknlst)
 
 // Validates commands and input redirection before execution
 
+
+
+
+
+
+
+// Check if executable exist and has permision
+static int	_check_executable(char *cmd_name)
+{
+	char	**splitted;
+	int		i;
+	char	buffer[BUF_1KB + NUL_SZ];
+
+	if (sh_fexists(cmd_name))
+		return (SUCCESS);
+	ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
+	splitted = sh_guard(ft_split(get_evar("PATH="), ':'), NULL);
+	i = 0;
+	while (splitted[i] && !sh_fexists(buffer))
+	{
+		ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
+		ft_strlcat(buffer, splitted[i], BUF_1KB + NUL_SZ);
+		ft_strlcat(buffer, "/", BUF_1KB + NUL_SZ);
+		ft_strlcat(buffer, cmd_name, BUF_1KB + NUL_SZ);
+		i++;
+	}
+	i = 0;
+	while (splitted[i])
+		sh_free(&splitted[i++]);
+	sh_free(&splitted);
+	if (access(buffer, F_OK | X_OK) != SUCCESS)
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+
 int	sh_cmd_validation(t_cmd *cmd)
 {
-	if (access(cmd->tkn->str, F_OK | X_OK) != SUCCESS)
+	if (_check_executable(cmd->tkn->str) == FAILURE)
 	{
-		sh_perror(FILE_ERROR_MSG, false);
+		sh_perror(CMD_ERROR_MSG, false);
 		return (FAILURE);
 	}
 	return (SUCCESS);
