@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 19:49:46 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/26 15:26:24 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 16:48:04 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	build_commands(t_list *tknlst, t_list **ppln)
 	t_token	*tkn;
 	t_cmd	*cmd;
 
+	if (sh_syntax_validation(tknlst) == FAILURE || !tknlst)
+		return ;
 	_add_cmd(tknlst, ppln, &cmd);
 	while (tknlst)
 	{

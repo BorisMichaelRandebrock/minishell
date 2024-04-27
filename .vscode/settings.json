@@ -52,6 +52,12 @@
 		"istream": "c",
 		"streambuf": "c",
 		"termios.h": "c",
-		"signal.h": "c"
-	}
+		"signal.h": "c",
+		"errno.h": "c",
+		"_errno_t.h": "c",
+		"cdefs.h": "c",
+		"limits.h": "c",
+		"string.h": "c"
+	},
+	"todo-tree.tree.showBadges": false
 }

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/26 15:30:36 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:37:57 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static bool	_try_builtin(t_cmd *cmd)
 	return (FAILURE);
 }
 
-//TODO gestionar excepcion files
 static void	_process_rd_out(t_list *rdrs_out, int rx_rd)
 {
 	t_token	*_rdr;
@@ -124,6 +123,8 @@ void	exec_pipeline(t_list *ppln)
 	while (ppln)
 	{
 		cmd = ppln->content;
+		if (sh_cmd_validation(cmd) == FAILURE)
+			return ;
 		close(bxp[WR]);
 		rx_rd = _exec_cmd(cmd, bxp[RD]);
 		close(bxp[RD]);

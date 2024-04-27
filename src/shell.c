@@ -6,13 +6,31 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/25 21:58:41 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 15:01:42 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
 #include "minishell.h"
+
+bool	is_builtin(char *cmd_name)
+{
+	static char		*bltn_id[9] = {"echo", "export", "cd", "pwd",
+		"unset", "env", "exit", "history", NULL};
+	int				i;
+	size_t			cmp_sz;
+
+	i = 0;
+	while (bltn_id[i])
+	{
+		cmp_sz = ft_strlen(bltn_id[i]) + NUL_SZ;
+		if (!ft_strncmp(cmd_name, bltn_id[i], cmp_sz))
+			return (true);
+		i++;
+	}
+	return (false);
+}
 
 void	set_prompt(void)
 {

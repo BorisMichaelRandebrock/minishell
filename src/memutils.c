@@ -6,12 +6,14 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/26 14:03:37 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 14:23:46 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "minishell.h"
+
+#define MEMORY_ERROR_MSG	"Memory error"
 
 //Protected allocation with calloc
 void	*sh_calloc(size_t num, size_t size)
@@ -20,7 +22,7 @@ void	*sh_calloc(size_t num, size_t size)
 
 	alloc = ft_calloc(num, size);
 	if (!alloc)
-		sh_perror(ERROR_MSG, true);
+		sh_perror(MEMORY_ERROR_MSG, true);
 	return (alloc);
 }
 
@@ -46,7 +48,7 @@ void	*sh_guard(void *alloc, void *old)
 	if (old)
 		sh_free(&old);
 	if (!alloc)
-		sh_perror(ERROR_MSG, true);
+		sh_perror(MEMORY_ERROR_MSG, true);
 	return (alloc);
 }
 
