@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/04/27 16:03:05 by fmontser         ###   ########.fr        #
+#    Updated: 2024/04/27 17:36:57 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,7 +96,6 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-#TODO token max is 255!!! (NAME_MAX) en limits.h
 #TODO repasar tema del history, no funciona muy bien...
 #TODO limpieza includes
 #TODO retirar .vscode de git

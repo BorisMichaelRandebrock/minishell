@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 17:28:45 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:43:57 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,21 @@
 #include <fcntl.h>
 #include "minishell.h"
 
-#define NUL_SZ 		1
-#define FILE_FOUND	0
-#define IDX_OFFSET	1
+#define NUL_SZ 			1
+#define FILE_FOUND		0
+#define IDX_OFFSET		1
+#define	FILE_ERROR		-1
+#define FILE_ERROR_MSG	"File error"
+
+/* int	sh_open(char *filename, int options)
+{
+	int	status;
+
+	status = open(filename, options, 0777);
+	if (status == FILE_ERROR)
+		sh_perror(FILE_ERROR_MSG, false);
+	return (status);
+} */
 
 char	*sh_get_dir_name(char *filename)
 {
@@ -67,7 +79,7 @@ void	sh_fprelay(char *filename, int pipe_wr)
 			write(pipe_wr, buffer, consumed);
 	}
 }
-//TODO excepcion read
+
 void	sh_pprelay(int pipe_rd, int pipe_wr)
 {
 	ssize_t	consumed;

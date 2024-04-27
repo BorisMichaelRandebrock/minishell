@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 15:00:51 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:37:57 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static bool	_try_builtin(t_cmd *cmd)
 	return (FAILURE);
 }
 
-//TODO gestionar excepcion files
 static void	_process_rd_out(t_list *rdrs_out, int rx_rd)
 {
 	t_token	*_rdr;

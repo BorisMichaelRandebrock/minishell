@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 17:33:58 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:49:52 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,6 @@ static bool	_is_executable(char *cmd_name)
 	return (true);
 }
 
-/* //TODO 42Minishell/::> cat -e src/__builtin/_cd.c
-cat: src/__builtin/_cd.c: No such file or directory */
-
 // Validates commands
 int	sh_cmd_validation(t_cmd *cmd)
 {
@@ -120,8 +117,9 @@ int	sh_cmd_validation(t_cmd *cmd)
 	{
 		tkn = _rdr_out->content;
 		dir_name = sh_get_dir_name(tkn->str);
-		if (access(dir_name, W_OK) != SUCCESS 
-			|| access(tkn->str, W_OK) != SUCCESS)
+		if (access(dir_name, W_OK) != SUCCESS
+			|| (access(tkn->str, F_OK) == SUCCESS
+				&& access(tkn->str, W_OK) != SUCCESS))
 		{
 			sh_perror(FILE_ERROR_MSG, false);
 			sh_free(&dir_name);
