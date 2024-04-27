@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 15:06:44 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 15:39:38 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,25 @@ static bool	_is_executable(char *cmd_name)
 int	sh_cmd_validation(t_cmd *cmd)
 {
 	char	*cmd_name;
+	t_list	*_rdr_in;
+	t_token	*tkn;
 
 	cmd_name = cmd->tkn->str;
 	if (!is_builtin(cmd_name) && !_is_executable(cmd_name))
 	{
 		sh_perror(CMD_ERROR_MSG, false);
 		return (FAILURE);
+	}
+	_rdr_in = cmd->rdrs_in;
+	while (_rdr_in)
+	{
+		tkn = _rdr_in->content;
+		if (access(tkn->str,  F_OK | R_OK) != SUCCESS)
+		{
+			sh_perror(FILE_ERROR_MSG, false);
+			return (FAILURE);
+		}
+		_rdr_in = _rdr_in->next;
 	}
 	return (SUCCESS);
 }
