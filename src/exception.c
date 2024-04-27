@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 14:54:03 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 15:06:44 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	sh_syntax_validation(t_list *tknlst)
 
 
 // Check if executable exist and has permision
-static int	_check_executable(char *cmd_name)
+static bool	_is_executable(char *cmd_name)
 {
 	char	**splitted;
 	int		i;
@@ -83,14 +83,17 @@ static int	_check_executable(char *cmd_name)
 		sh_free(&splitted[i++]);
 	sh_free(&splitted);
 	if (access(buffer, F_OK | X_OK) != SUCCESS)
-		return (FAILURE);
-	return (SUCCESS);
+		return (false);
+	return (true);
 }
 
-
+// Validates commands
 int	sh_cmd_validation(t_cmd *cmd)
 {
-	if (_check_executable(cmd->tkn->str) == FAILURE)
+	char	*cmd_name;
+
+	cmd_name = cmd->tkn->str;
+	if (!is_builtin(cmd_name) && !_is_executable(cmd_name))
 	{
 		sh_perror(CMD_ERROR_MSG, false);
 		return (FAILURE);
