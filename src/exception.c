@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 17:06:43 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:33:58 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ cat: src/__builtin/_cd.c: No such file or directory */
 int	sh_cmd_validation(t_cmd *cmd)
 {
 	char	*cmd_name;
+	char	*dir_name;
 	t_list	*_rdr_in;
 	t_list	*_rdr_out;
 	t_token	*tkn;
@@ -118,11 +119,15 @@ int	sh_cmd_validation(t_cmd *cmd)
 	while (_rdr_out)
 	{
 		tkn = _rdr_out->content;
-		if (access(sh_get_dir_name(tkn->str), W_OK) != SUCCESS)
+		dir_name = sh_get_dir_name(tkn->str);
+		if (access(dir_name, W_OK) != SUCCESS 
+			|| access(tkn->str, W_OK) != SUCCESS)
 		{
 			sh_perror(FILE_ERROR_MSG, false);
+			sh_free(&dir_name);
 			return (FAILURE);
 		}
+		sh_free(&dir_name);
 		_rdr_out = _rdr_out->next;
 	}
 	return (SUCCESS);

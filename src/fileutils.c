@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 16:42:03 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:28:45 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*sh_get_dir_name(char *filename)
 	char	*end;
 	int		i;
 
+	end = NULL;
 	i = 0;
 	while (filename[i])
 	{
@@ -32,6 +33,8 @@ char	*sh_get_dir_name(char *filename)
 			end = &filename[i];
 		i++;
 	}
+	if (!end)
+		return (sh_guard(ft_strdup("."), NULL));
 	path_size = (end - filename) + IDX_OFFSET;
 	if (path_size < 1)
 		path_size = 1;
