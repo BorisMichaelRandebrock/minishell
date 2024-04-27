@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 18:06:02 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 20:23:33 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <limits.h>
+#include <sys/syslimits.h>
 #include "readline/readline.h"
 #include "minishell.h"
 
@@ -33,7 +34,7 @@ int	sh_syntax_validation(t_list *tknlst)
 	while (tknlst)
 	{
 		tkn = tknlst->content;
-		if (ft_strlen(tkn->str) > NAME_MAX)
+		if (ft_strlen(tkn->str) > NAME_MAX)	//TODO solo para cuando sean filenames!!
 		{
 			errno = ENAMETOOLONG;
 			sh_perror(SYNTAX_ERROR_MSG, false);
@@ -54,14 +55,14 @@ int	sh_syntax_validation(t_list *tknlst)
 }
 
 // Check if executable exist and has permision
-static bool	_is_executable(char *cmd_name)
+static bool	_can_reach(char *cmd_name)
 {
 	char	**splitted;
 	int		i;
 	char	buffer[BUF_1KB + NUL_SZ];
 
 	if (sh_fexists(cmd_name))
-		return (SUCCESS);
+		return (true);
 	ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
 	splitted = sh_guard(ft_split(get_evar("PATH="), ':'), NULL);
 	i = 0;
@@ -93,7 +94,7 @@ int	sh_cmd_validation(t_cmd *cmd)
 
 	// CMD
 	cmd_name = cmd->tkn->str;
-	if (!is_builtin(cmd_name) && !_is_executable(cmd_name))
+	if (!is_builtin(cmd_name) && !_can_reach(cmd_name))
 	{
 		sh_perror(CMD_ERROR_MSG, false);
 		return (FAILURE);

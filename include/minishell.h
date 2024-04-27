@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 17:59:59 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 20:21:28 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include <stdbool.h>
 # include <termios.h>
 # include "libft.h"
-
-# include <stdio.h> //TODO CLEAN para pruebas retirar
 
 typedef int	(*t_bltin)(t_list *args);
 typedef	struct termios t_trmcfg;

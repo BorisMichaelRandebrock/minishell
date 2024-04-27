@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/04/27 17:59:07 by fmontser         ###   ########.fr        #
+#    Updated: 2024/04/27 19:47:33 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,6 +95,15 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+#TODO invocar a minishell dentro de minishell queda bloqueado...stdin & out no recuperados? esto es grave!!! ttyslots???
+#TODO 	Fran-Mac:42Minishell fmontser$ expr $? + $?
+#		2
+#		Fran-Mac:42Minishell fmontser$ make test
+#		42Minishell/::> expr $? + $?
+#		0
+#		42Minishell/::> 
+
 
 #TODO CLEAN limpieza includes
 #TODO CLEAN retirar .vscode de git
