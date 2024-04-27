@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/26 15:31:19 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 14:25:46 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,52 @@
 #include "readline/readline.h"
 #include "minishell.h"
 
-//TODO excepcion pipe en primer lugar!
-//TODO excepcion, si despues de un pipe no hay nada, se pide input...si...
-//TODO excepcion, si un redir no tiene argumento o
-// 		el argumento no es valido es un error
+#define SYNTAX_ERROR_MSG	"Operator syntax error"
+#define FILE_ERROR_MSG		"File error"
+#define OPERATORS			2
 
-
-//TODO @@@@@@@@@@@@ validar comando y rdin files antes!!!!
-bool	sh_cmd_validation(t_list *ppln, t_list *tknlst)
+// Validates operator syntax
+int	sh_syntax_validation(t_list *tknlst)
 {
-	t_cmd	*cmd;
+	t_token	*tkn;
+	t_token	*prev;
 
-	cmd = ppln->content;
-	if (!cmd->tkn)
+	prev = NULL;
+	while (tknlst)
 	{
-		sh_lfreeppln(ppln);
-		sh_lfreetkns(tknlst);
-		return (false);
+		tkn = tknlst->content;
+		if ((!prev && tkn->type == PIPE)
+			|| (!tknlst->next && tkn->type >= OPERATORS)
+			|| (prev && prev->type >= OPERATORS && tkn->type >= OPERATORS))
+		{
+			errno = EINVAL;
+			sh_perror(SYNTAX_ERROR_MSG, false);
+			return (FAILURE);
+		}
+		prev = tkn;
+		tknlst = tknlst->next;
 	}
-	return (true);
+	return (SUCCESS);
 }
 
+//TODO excepcion, si un redir no tiene argumento o
+// 		el argumento no es valido es un error
+//TODO @@@@@@@@@@@@ validar comando y rdin files antes!!!!
+
+// Validates commands and input redirection before execution
+
+int	sh_cmd_validation(t_cmd *cmd)
+{
+	if (access(cmd->tkn->str, F_OK | X_OK) != SUCCESS)
+	{
+		sh_perror(FILE_ERROR_MSG, false);
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
+
+
+// Prints system errors with optional clean exit
 void	sh_perror(char *error_msg, bool exit)
 {
 	perror(error_msg);

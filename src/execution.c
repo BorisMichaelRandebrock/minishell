@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execproc.c                                         :+:      :+:    :+:   */
+/*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/26 15:23:48 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 14:26:50 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,21 +89,16 @@ void	try_process(t_cmd *cmd)
 
 	exec_args = _args_to_array(cmd);
 	exec_path = _build_path(cmd->tkn->str);
-	if (*exec_path != '\0')
-	{
-		pid = fork();
-		if (pid == 0)
-			execve(exec_path, exec_args, get_shell()->env);
-		else
-		{
-			wait3(&child_status, 0, NULL);
-			child_exit_code = ft_itoa(WEXITSTATUS(child_status));
-			set_evar("?=", child_exit_code);
-			sh_free(&child_exit_code);
-		}
-	}
+	pid = fork();
+	if (pid == 0)
+		execve(exec_path, exec_args, get_shell()->env);
 	else
-		sh_perror(ERROR_MSG, false);
+	{
+		wait3(&child_status, 0, NULL);
+		child_exit_code = ft_itoa(WEXITSTATUS(child_status));
+		set_evar("?=", child_exit_code);
+		sh_free(&child_exit_code);
+	}
 	sh_free(&exec_args);
 	sh_free(&exec_path);
 }
