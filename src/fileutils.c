@@ -6,16 +6,24 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 14:25:06 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/27 16:08:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include <unistd.h>
 #include <fcntl.h>
+#include <limits.h>
+#include "minishell.h"
 
 #define NUL_SZ 		1
 #define FILE_FOUND	0
+
+/* char	*sh_get_dir(char *filename)
+{
+	size_t	path_size;
+	char	buffer[NAME_MAX];
+	
+} */
 
 bool	sh_fexists(char *filename)
 {
