@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 20:23:33 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/29 09:44:07 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,6 @@ int	sh_syntax_validation(t_list *tknlst)
 	while (tknlst)
 	{
 		tkn = tknlst->content;
-		if (ft_strlen(tkn->str) > NAME_MAX)	//TODO solo para cuando sean filenames!!
-		{
-			errno = ENAMETOOLONG;
-			sh_perror(SYNTAX_ERROR_MSG, false);
-			return (FAILURE);
-		}
 		if ((!prev && tkn->type == PIPE)
 			|| (!tknlst->next && tkn->type >= OPERATORS)
 			|| (prev && prev->type >= OPERATORS && tkn->type >= OPERATORS))
@@ -94,6 +88,12 @@ int	sh_cmd_validation(t_cmd *cmd)
 
 	// CMD
 	cmd_name = cmd->tkn->str;
+	if (ft_strlen(cmd_name) > NAME_MAX)
+	{
+		errno = ENAMETOOLONG;
+		sh_perror(SYNTAX_ERROR_MSG, false);
+		return (FAILURE);
+	}
 	if (!is_builtin(cmd_name) && !_can_reach(cmd_name))
 	{
 		sh_perror(CMD_ERROR_MSG, false);
@@ -105,6 +105,12 @@ int	sh_cmd_validation(t_cmd *cmd)
 	while (_rdr_in)
 	{
 		tkn = _rdr_in->content;
+		if (ft_strlen(tkn->str) > NAME_MAX)
+		{
+			errno = ENAMETOOLONG;
+			sh_perror(SYNTAX_ERROR_MSG, false);
+			return (FAILURE);
+		}
 		if (access(tkn->str,  F_OK | R_OK) != SUCCESS)
 		{
 			sh_perror(FILE_ERROR_MSG, false);
@@ -118,6 +124,12 @@ int	sh_cmd_validation(t_cmd *cmd)
 	while (_rdr_out)
 	{
 		tkn = _rdr_out->content;
+		if (ft_strlen(tkn->str) > NAME_MAX)
+		{
+			errno = ENAMETOOLONG;
+			sh_perror(SYNTAX_ERROR_MSG, false);
+			return (FAILURE);
+		}
 		dir_name = sh_get_dir_name(tkn->str);
 		if (access(dir_name, W_OK) != SUCCESS
 			|| (access(tkn->str, F_OK) == SUCCESS
