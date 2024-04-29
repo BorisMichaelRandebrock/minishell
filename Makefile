@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/04/27 20:33:06 by fmontser         ###   ########.fr        #
+#    Updated: 2024/04/29 09:38:31 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ SRCS 			:=	main.c shell.c enviorment.c memutils.c tokenization.c expansion.c\
 					pipeline.c exception.c execution.c heredoc.c signal.c\
 					command.c cleanutils.c cleanutils2.c fileutils.c\
 					__echo.c __export.c __env.c __unset.c __pwd.c __exit.c\
-					__cd.c __history.c
-		
+					__cd.c
+							
 OBJS			:= $(SRCS:.c=.o)
 
 LIBFT_DIR		:= src/libft

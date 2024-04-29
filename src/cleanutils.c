@@ -6,12 +6,14 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 22:16:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/26 13:41:55 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/29 09:38:37 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include "readline/history.h"
 #include "minishell.h"
 
 static void	_freeenv(void)
@@ -56,5 +58,6 @@ void	sh_free_exit(int exit_code)
 	_freeenv();
 	_freeshell();
 	tcsetattr(STDIN_FILENO, TCSANOW, &sh->trmcfgbackup);
+	clear_history();
 	exit(exit_code);
 }

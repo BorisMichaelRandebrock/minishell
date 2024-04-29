@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 17:37:57 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/04/29 09:37:13 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 
 static bool	_try_builtin(t_cmd *cmd)
 {
-	static t_bltin	bltn_ptr[9] = {__echo, __export, __cd, __pwd,
-		__unset, __env, __exit, __history, NULL};
-	static char		*bltn_id[9] = {"echo", "export", "cd", "pwd",
-		"unset", "env", "exit", "history", NULL};
+	static t_bltin	bltn_ptr[8] = {__echo, __export, __cd, __pwd,
+		__unset, __env, __exit, NULL};
+	static char		*bltn_id[8] = {"echo", "export", "cd", "pwd",
+		"unset", "env", "exit", NULL};
 	int				i;
 	size_t			cmp_sz;
 	char			*exit_code;
