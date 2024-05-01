@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:16:31 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/26 13:19:12 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/01 13:12:25 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	__exit(t_list *args)
 {
 	(void)args;
+	
 	sh_free_exit(SUCCESS);
 	return (SUCCESS);
 }
