@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/01 12:57:51 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/01 14:34:10 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static int	_check_evar(int *eflag, char *evar, t_list **_args)
 	return (SUCCESS);
 }
 
-//TODO export HOLA="algo $USER algo mas"
+//TODO export basicamente rescribir de 0, estudiar los problemas primero.
+//TODO export HOLA="algo $USER algo mas" --> echo hola'$ADIOS' -> basicamente las comillas siempre son delimitador, aunque se este esperando un espacio...tokenizer rewrite...
 //TODO export a b c // Sin importar si hay valor o no debe exportar de igual forma.
 int	__export(t_list *args)
 {
