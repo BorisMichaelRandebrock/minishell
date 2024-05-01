@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/05/01 13:13:53 by fmontser         ###   ########.fr        #
+#    Updated: 2024/05/01 16:31:52 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,8 +96,6 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-
-#TODO INCEPTION CRASH!!
 #TODO CLEAN limpieza includes
 #TODO CLEAN retirar .vscode de git
 #TODO CLEAN retirar las funciones libft no utilizadas
