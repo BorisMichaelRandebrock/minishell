@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:20:05 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 19:50:32 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/01 12:40:13 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,8 @@ static int	_check_evar(int *eflag, char *evar, t_list **_args)
 	}
 	return (SUCCESS);
 }
-//TODO  export retokenizacion para casos de comillas o espacios...
-// export HOLA="algo $USER algo mas"
-//TODO export programar comportamiento base. (llama a env con declare -x)
-//(lista de variables que el propio export ha exportado),
-// se actualiza con unset:
-// declare -x VAR=value
+
+//TODO export HOLA="algo $USER algo mas"
 int	__export(t_list *args)
 {
 	t_list	*_args;

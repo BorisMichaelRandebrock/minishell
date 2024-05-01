@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 17:54:37 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/01 12:49:05 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ void	try_process(t_cmd *cmd)
 	int		child_status;
 	char	*child_exit_code;
 
+	if (!cmd->tkn)
+		return ;
 	exec_args = _args_to_array(cmd);
 	exec_path = _build_path(cmd->tkn->str);
 	pid = fork();

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/29 09:44:07 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/01 12:44:42 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,19 +87,22 @@ int	sh_cmd_validation(t_cmd *cmd)
 	t_token	*tkn;
 
 	// CMD
-	cmd_name = cmd->tkn->str;
-	if (ft_strlen(cmd_name) > NAME_MAX)
+	if (cmd->tkn)
 	{
-		errno = ENAMETOOLONG;
-		sh_perror(SYNTAX_ERROR_MSG, false);
-		return (FAILURE);
+		cmd_name = cmd->tkn->str;
+		if (ft_strlen(cmd_name) > NAME_MAX)
+		{
+			errno = ENAMETOOLONG;
+			sh_perror(SYNTAX_ERROR_MSG, false);
+			return (FAILURE);
+		}
+		if (!is_builtin(cmd_name) && !_can_reach(cmd_name))
+		{
+			sh_perror(CMD_ERROR_MSG, false);
+			return (FAILURE);
+		}
 	}
-	if (!is_builtin(cmd_name) && !_can_reach(cmd_name))
-	{
-		sh_perror(CMD_ERROR_MSG, false);
-		return (FAILURE);
-	}
-
+	
 	//RDIN
 	_rdr_in = cmd->rdrs_in;
 	while (_rdr_in)

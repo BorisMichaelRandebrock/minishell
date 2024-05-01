@@ -5,7 +5,7 @@
 			"request": "launch",
 			"name": "CODE LLDB Launch",
 			"program": "${workspaceFolder}/bin/minishell",
-			"args": [],
+			"args": [],	
 			"cwd": "${workspaceFolder}",
 			"preLaunchTask": "make"
 		},

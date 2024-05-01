@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/29 09:37:13 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/01 12:46:23 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static bool	_try_builtin(t_cmd *cmd)
 	char			*exit_code;
 
 	i = 0;
+	if (!cmd->tkn)
+		return (FAILURE);
 	while (bltn_id[i])
 	{
 		cmp_sz = ft_strlen(bltn_id[i]) + NUL_SZ;

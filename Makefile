@@ -96,6 +96,7 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
+
 #TODO invocar a minishell dentro de minishell queda bloqueado...stdin & out no recuperados? esto es grave!!! ttyslots???
 #TODO CLEAN limpieza includes
 #TODO CLEAN retirar .vscode de git
