@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 14:07:13 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 14:29:18 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/01 12:52:24 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	_sh_ctrlc_handler(int signal)
 		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
+		set_evar("?=", "1");
 	}
 }
 
