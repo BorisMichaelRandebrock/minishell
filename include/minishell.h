@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/01 14:35:02 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 11:46:20 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,9 @@ void	sh_fprelay(char *filename, int pipe_wr);
 void	sh_pprelay(int pipe_rd, int pipe_wr);
 void	sh_ctrld_handler(void);
 void	sh_init_handlers(void);
+void	sh_store_stdio(void);
+void	sh_restore_stdio(void);
+void	sh_redirect_stdin(int fd);
+void	sh_redirect_stdout(int fd);
 
 #endif

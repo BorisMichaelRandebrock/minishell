@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/01 16:22:47 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 12:45:44 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,9 @@ void	try_process(t_cmd *cmd)
 	pid = fork();
 	if (pid == 0)
 	{
-		dup2(get_shell()->_stdin, STDIN_FILENO);
-		dup2(get_shell()->_stdout, STDOUT_FILENO);
+		//TODO env | exit
+		//deberia salir el hijo, no el programa,
+		sh_restore_stdio();
 		execve(exec_path, exec_args, get_shell()->env);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/01 14:36:11 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 11:45:41 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,8 @@ static int	_exec_cmd(t_cmd *cmd, int bx_rd)
 {
 	int	txp[2];
 	int	rxp[2];
-	t_shell	*sh;
 
-	sh = get_shell();
-	sh->_stdout = dup(STDOUT_FILENO);
-	sh->_stdin = dup(STDIN_FILENO);
+	sh_store_stdio();
 	pipe(txp);
 	pipe(rxp);
 	if (cmd->rdrs_in)
@@ -104,14 +101,13 @@ static int	_exec_cmd(t_cmd *cmd, int bx_rd)
 	else
 		sh_pprelay(bx_rd, txp[WR]);
 	close(txp[WR]);
-	dup2(rxp[WR], STDOUT_FILENO);
-	dup2(txp[RD], STDIN_FILENO);
+	sh_redirect_stdout(rxp[WR]);
+	sh_redirect_stdin(txp[RD]);
 	if (_try_builtin(cmd) == FAILURE)
 		try_process(cmd);
 	close(txp[RD]);
 	close(rxp[WR]);
-	dup2(sh->_stdin, STDIN_FILENO);
-	dup2(sh->_stdout, STDOUT_FILENO);	
+	sh_restore_stdio();
 	return (rxp[RD]);
 }
 

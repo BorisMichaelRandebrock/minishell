@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   enviorment.c                                       :+:      :+:    :+:   */
+/*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/25 20:55:23 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 11:53:35 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <string.h>
 
-#define	IDX_OFFSET	1
+#define IDX_OFFSET	1
 #define NEW_VAR_SZ	1
 #define CH_SZ		1
 
@@ -79,7 +79,7 @@ void	unset_evar(char *var_name)
 				i++;
 			}
 			sh->env[i] = NULL;
-			sh->env = sh_ralloc(sh->env, ((i + IDX_OFFSET)  * sizeof(char *)));
+			sh->env = sh_ralloc(sh->env, ((i + IDX_OFFSET) * sizeof(char *)));
 			sh_free(&target);
 			return ;
 		}
@@ -107,5 +107,5 @@ void	new_env(t_shell *sh, char **sys_env)
 	env[i] = NULL;
 	sh->env = env;
 	set_prompt();
-	set_evar("?=","0");
+	set_evar("?=", "0");
 }

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/01 12:44:42 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 13:56:42 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "readline/readline.h"
 #include "minishell.h"
 
+#define CMD_NOT_FOUND_ECODE	"127"
 #define SYNTAX_ERROR_MSG	"Syntax error"
 #define FILE_ERROR_MSG		"File error"
 #define CMD_ERROR_MSG		"Command error"
@@ -55,24 +56,28 @@ static bool	_can_reach(char *cmd_name)
 	int		i;
 	char	buffer[BUF_1KB + NUL_SZ];
 
-	if (sh_fexists(cmd_name))
-		return (true);
-	ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
-	splitted = sh_guard(ft_split(get_evar("PATH="), ':'), NULL);
-	i = 0;
-	while (splitted[i] && !sh_fexists(buffer))
+	if (access(cmd_name, F_OK) != SUCCESS)
 	{
 		ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
-		ft_strlcat(buffer, splitted[i], BUF_1KB + NUL_SZ);
-		ft_strlcat(buffer, "/", BUF_1KB + NUL_SZ);
-		ft_strlcat(buffer, cmd_name, BUF_1KB + NUL_SZ);
-		i++;
+		splitted = sh_guard(ft_split(get_evar("PATH="), ':'), NULL);
+		i = 0;
+		while (splitted[i] && !sh_fexists(buffer))
+		{
+			ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
+			ft_strlcat(buffer, splitted[i], BUF_1KB + NUL_SZ);
+			ft_strlcat(buffer, "/", BUF_1KB + NUL_SZ);
+			ft_strlcat(buffer, cmd_name, BUF_1KB + NUL_SZ);
+			i++;
+		}
+		i = 0;
+		while (splitted[i])
+			sh_free(&splitted[i++]);
+		sh_free(&splitted);
+		if (access(buffer, X_OK) != SUCCESS)
+			return (false);
+		return (true);
 	}
-	i = 0;
-	while (splitted[i])
-		sh_free(&splitted[i++]);
-	sh_free(&splitted);
-	if (access(buffer, F_OK | X_OK) != SUCCESS)
+	if (access(cmd_name, X_OK) != SUCCESS)
 		return (false);
 	return (true);
 }
@@ -98,6 +103,7 @@ int	sh_cmd_validation(t_cmd *cmd)
 		}
 		if (!is_builtin(cmd_name) && !_can_reach(cmd_name))
 		{
+			set_evar("?=", CMD_NOT_FOUND_ECODE);
 			sh_perror(CMD_ERROR_MSG, false);
 			return (FAILURE);
 		}

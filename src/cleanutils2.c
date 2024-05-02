@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:41:32 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/26 13:27:04 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 10:40:19 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	sh_lfreeppln(t_list *ppln)
 		sh_free(&prev);
 	}
 }
+
 static void	_freetkn(t_token *tkn)
 {
 	sh_free(&tkn->str);

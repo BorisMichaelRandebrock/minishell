@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:16:31 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/01 16:06:44 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 12:52:47 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ int	__exit(t_list *args)
 	}
 	else if (args)
 		exit_code = ft_atoi(tkn->str);
-	dup2(sh->_stdin, STDIN_FILENO);
-	dup2(sh->_stdout, STDOUT_FILENO);
+	sh_restore_stdio();
 	printf("exit\n");
 	if (exit_code == NON_NUMERIC_ARG_ECODE)
 		printf("minishell: exit: numeric argument required\n");
