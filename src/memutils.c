@@ -6,11 +6,10 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:44:09 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 14:23:46 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:09:29 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "minishell.h"
 
 #define MEMORY_ERROR_MSG	"Memory error"

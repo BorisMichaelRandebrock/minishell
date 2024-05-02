@@ -6,17 +6,13 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:09:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/02 16:28:30 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:07:34 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <errno.h>
-#include <string.h>
-#include <unistd.h>
-#include <limits.h>
 #include <sys/syslimits.h>
-#include "readline/readline.h"
 #include "minishell.h"
 
 #define CMD_NOT_FOUND_ECODE	"127"

@@ -6,11 +6,10 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 19:49:46 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/02 16:28:23 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:05:12 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "minishell.h"
 
 static t_list	*_add_process(t_cmd *cmd, t_list *tknlst)

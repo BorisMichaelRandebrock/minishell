@@ -6,14 +6,11 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 18:54:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/02 11:53:35 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:05:55 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-#include <unistd.h>
-#include <string.h>
 
 #define IDX_OFFSET	1
 #define NEW_VAR_SZ	1

@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/05/02 17:36:45 by fmontser         ###   ########.fr        #
+#    Updated: 2024/05/02 18:11:08 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -97,6 +97,4 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-#TODO CLEAN limpieza includes
 #TODO CLEAN retirar .vscode de git
-#TODO CLEAN retirar las funciones libft no utilizadas

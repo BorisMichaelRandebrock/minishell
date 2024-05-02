@@ -6,11 +6,12 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:29:41 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 14:26:56 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:08:18 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 #define IDX_OFFST	1
 #define QUOTES_SZ	2
 #define START		0

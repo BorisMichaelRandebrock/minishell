@@ -6,11 +6,10 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 11:41:32 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/02 10:40:19 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:04:48 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "minishell.h"
 
 static void	_lfreeargs(t_list *args)
