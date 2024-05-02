@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/02 11:46:20 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 17:06:36 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ int		__unset(t_list *args);
 int		__env(t_list *args);
 int		__exit(t_list *args);
 int		__history(t_list *args);
-int		sh_syntax_validation(t_list *tknlst);
+int		sh_syntax_check(t_list *tknlst);
+bool	sh_is_accesible(char *cmd_name);
 int		sh_cmd_validation(t_cmd *cmd);
 void	*sh_calloc(size_t num, size_t size);
 void	*sh_ralloc(void *old, size_t new_sizeof);

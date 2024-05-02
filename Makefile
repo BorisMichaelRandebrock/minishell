@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/05/02 12:20:07 by fmontser         ###   ########.fr        #
+#    Updated: 2024/05/02 17:36:45 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ OBJ_DIR			:= obj/
 BIN_DIR			:= bin/
 NAME			:= minishell
 HDRS 			:= minishell.h
-SRCS 			:=	main.c shell.c environment.c memutils.c tokenization.c expansion.c\
+SRCS 			:=	main.c shell.c environment.c memutils.c tokenization.c\
+					expansion.c validation.c\
 					pipeline.c exception.c execution.c heredoc.c signal.c\
 					command.c cleanutils.c cleanutils2.c fileutils.c io.c\
 					__echo.c __export.c __env.c __unset.c __pwd.c __exit.c\

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/04/27 17:54:17 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 16:17:47 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,11 @@
 #include <fcntl.h>
 #include "minishell.h"
 
-#define NUL_SZ 			1
+#define NUL_SZ			1
 #define FILE_FOUND		0
 #define IDX_OFFSET		1
-#define	FILE_ERROR		-1
+#define FILE_ERROR		-1
 #define FILE_ERROR_MSG	"File error"
-
-/* int	sh_open(char *filename, int options)
-{
-	int	status;
-
-	status = open(filename, options, 0777);
-	if (status == FILE_ERROR)
-		sh_perror(FILE_ERROR_MSG, false);
-	return (status);
-} */
 
 char	*sh_get_dir_name(char *filename)
 {

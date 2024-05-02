@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 18:19:28 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/01 13:03:36 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 16:20:26 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "readline/readline.h"
 #include "minishell.h"
 
-static void _handle_args(int argc, char *argv[])
+static void	_handle_args(int argc, char *argv[])
 {
 	int		tty_fd;
 
