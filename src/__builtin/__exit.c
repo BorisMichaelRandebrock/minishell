@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:16:31 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/02 12:52:47 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 16:16:26 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 #include <stdio.h>
 #include "minishell.h"
 
-#define	NON_NUMERIC_ARG_ECODE	255
+#define NON_NUMERIC_ARG_ECODE	255
 
 static bool	_contains_non_digit(char *str)
 {
-	while(*str)
+	while (*str)
 	{
 		if ((*str < '0' || *str > '9') && *str != '-')
 			return (true);
@@ -32,7 +32,7 @@ int	__exit(t_list *args)
 	t_shell	*sh;
 	t_token	*tkn;
 	int		exit_code;
-	
+
 	sh = get_shell();
 	exit_code = 0;
 	if (args)

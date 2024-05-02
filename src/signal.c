@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 14:07:13 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/01 12:52:24 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 16:20:45 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	_sh_ctrlc_handler(int signal)
 
 void	sh_ctrld_handler(void)
 {
-		sh_free_exit(EXIT_SUCCESS);
+	sh_free_exit(EXIT_SUCCESS);
 }
 
 void	sh_init_handlers(void)

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/02 12:45:44 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/02 14:11:24 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ void	try_process(t_cmd *cmd)
 	pid = fork();
 	if (pid == 0)
 	{
-		//TODO env | exit
-		//deberia salir el hijo, no el programa,
 		sh_restore_stdio();
 		execve(exec_path, exec_args, get_shell()->env);
 	}
