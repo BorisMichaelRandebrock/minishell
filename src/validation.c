@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 16:25:30 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/03 13:05:13 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/07 14:08:57 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,14 @@
 #define CMD_ERROR_MSG		"Command error"
 #define OPERATORS			2
 
+//TODO //BUG mala logica 
 bool	sh_is_accesible(char *cmd_name)
 {
 	char	**splitted;
 	int		i;
 	char	buffer[BUF_1KB + NUL_SZ];
 
-	if (access(cmd_name, F_OK) == SUCCESS)
-		if (access(cmd_name, X_OK) != SUCCESS)
-			return (false);
-	return (true);
+	sh_cmd_accesible(cmd_name);
 	ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
 	splitted = sh_guard(ft_split(get_evar("PATH="), ':'), NULL);
 	i = 0;
@@ -90,9 +88,10 @@ static int	_validate_rdrin(t_list	*rdr_in)
 			sh_perror(SYNTAX_ERROR_MSG, false);
 			return (FAILURE);
 		}
-		if (tkn->type == RDIN && access(tkn->str, F_OK | R_OK) != SUCCESS)
+		if (tkn->type != RDHDOC && access(tkn->str, F_OK | R_OK) != SUCCESS)
 		{
 			sh_perror(FILE_ERROR_MSG, false);
+			set_evar("?=", "1");
 			return (FAILURE);
 		}
 		rdr_in = rdr_in->next;
@@ -115,11 +114,11 @@ static int	_validate_rdrout(t_list	*rdr_out)
 			return (FAILURE);
 		}
 		dir_name = sh_get_dir_name(tkn->str);
-		if (access(dir_name, W_OK) != SUCCESS
-			|| (access(tkn->str, F_OK) == SUCCESS
-				&& access(tkn->str, W_OK) != SUCCESS))
+		if (access(dir_name, W_OK) != SUCCESS || (access(tkn->str, F_OK)
+				== SUCCESS && access(tkn->str, W_OK) != SUCCESS))
 		{
 			sh_perror(FILE_ERROR_MSG, false);
+			set_evar("?=", "1");
 			sh_free(&dir_name);
 			return (FAILURE);
 		}
