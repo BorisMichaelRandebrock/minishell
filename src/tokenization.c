@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:08 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/27 14:29:32 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/07 12:11:10 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,11 @@ static int	_extract_token(char *start, char dlmt)
 		if ((start[i] == '>' || start[i] == '<' || start[i] == '|')
 			&& (dlmt != '\'' && dlmt != '\"'))
 			break ;
+		buffer[i] = start[i];
+		i++;
+	}
+	if (dlmt != ' ')
+	{
 		buffer[i] = start[i];
 		i++;
 	}
