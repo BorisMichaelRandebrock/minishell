@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 16:25:30 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/07 14:08:57 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/07 16:00:15 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@
 #define CMD_ERROR_MSG		"Command error"
 #define OPERATORS			2
 
-//TODO //BUG mala logica 
 bool	sh_is_accesible(char *cmd_name)
 {
 	char	**splitted;
 	int		i;
 	char	buffer[BUF_1KB + NUL_SZ];
 
-	sh_cmd_accesible(cmd_name);
+	if (sh_check_current_dir(cmd_name))
+		return (true);
 	ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
 	splitted = sh_guard(ft_split(get_evar("PATH="), ':'), NULL);
 	i = 0;

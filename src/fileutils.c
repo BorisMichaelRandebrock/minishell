@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/07 14:26:24 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/07 16:03:05 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@ char	*sh_get_dir_name(char *filename)
 	return (dir_name);
 }
 
-bool	sh_cmd_accesible(char *cmd_name)
+bool	sh_check_current_dir(char *cmd_name)
 {
 	if (access(cmd_name, F_OK) == SUCCESS)
 	{
-		if (access(cmd_name, X_OK) != SUCCESS)
-			return (false);
+		if (access(cmd_name, X_OK) == SUCCESS)
+			return (true);
 	}
-	return (true);
+	return (false);
 }
 
 bool	sh_fexists(char *filename)
