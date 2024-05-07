@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/02 18:08:14 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:11:03 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	try_process(t_cmd *cmd)
 	pid = fork();
 	if (pid == 0)
 	{
-		sh_restore_stdio();
+		//sh_restore_stdio(); //TODO inception
 		execve(exec_path, exec_args, get_shell()->env);
 	}
 	else
