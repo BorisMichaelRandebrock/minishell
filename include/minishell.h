@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/02 17:06:36 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/07 14:09:11 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	*sh_guard(void *alloc, void *nullable_old);
 void	sh_perror(char *error_msg, bool exit);
 char	*sh_get_dir_name(char *filename);
 bool	sh_fexists(char *filename);
+bool	sh_cmd_accesible(char *cmd_name);
 void	sh_fprelay(char *filename, int pipe_wr);
 void	sh_pprelay(int pipe_rd, int pipe_wr);
 void	sh_ctrld_handler(void);

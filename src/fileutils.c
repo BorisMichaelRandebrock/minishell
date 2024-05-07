@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/02 18:08:51 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/07 14:26:24 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,16 @@ char	*sh_get_dir_name(char *filename)
 	dir_name = sh_calloc(1, (path_size + NUL_SZ) * sizeof(char));
 	ft_strlcpy(dir_name, filename, path_size);
 	return (dir_name);
+}
+
+bool	sh_cmd_accesible(char *cmd_name)
+{
+	if (access(cmd_name, F_OK) == SUCCESS)
+	{
+		if (access(cmd_name, X_OK) != SUCCESS)
+			return (false);
+	}
+	return (true);
 }
 
 bool	sh_fexists(char *filename)
