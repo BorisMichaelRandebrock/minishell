@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 16:25:30 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/02 17:46:02 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/03 13:05:13 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,14 @@ static int	_validate_rdrin(t_list	*rdr_in)
 	while (rdr_in)
 	{
 		tkn = rdr_in->content;
+
 		if (ft_strlen(tkn->str) > NAME_MAX)
 		{
 			errno = ENAMETOOLONG;
 			sh_perror(SYNTAX_ERROR_MSG, false);
 			return (FAILURE);
 		}
-		if (access(tkn->str, F_OK | R_OK) != SUCCESS)
+		if (tkn->type == RDIN && access(tkn->str, F_OK | R_OK) != SUCCESS)
 		{
 			sh_perror(FILE_ERROR_MSG, false);
 			return (FAILURE);

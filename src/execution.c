@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/02 18:08:14 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/03 13:36:48 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	try_process(t_cmd *cmd)
 	pid = fork();
 	if (pid == 0)
 	{
+		//TODO esta linea arregla inception, pero se carga el resto de procesos...
 		sh_restore_stdio();
 		execve(exec_path, exec_args, get_shell()->env);
 	}
