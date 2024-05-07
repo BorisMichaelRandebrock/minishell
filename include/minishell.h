@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/07 15:59:26 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/07 17:47:44 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_shell
 	t_trmcfg	trmcfgbackup;
 	t_list		*tknlst;
 	t_list		*ppln;
+	bool		_abort;
 	int			_stdout;
 	int			_stdin;
 }	t_shell;
@@ -89,7 +90,9 @@ int		__exit(t_list *args);
 int		__history(t_list *args);
 int		sh_syntax_check(t_list *tknlst);
 bool	sh_is_accesible(char *cmd_name);
-int		sh_cmd_validation(t_cmd *cmd);
+bool	validate_rdrin(t_token	*_rdr);
+bool	validate_cmd(t_cmd *cmd);
+bool	validate_rdrout(t_token	*_rdr);
 void	*sh_calloc(size_t num, size_t size);
 void	*sh_ralloc(void *old, size_t new_sizeof);
 void	sh_free(void *content);

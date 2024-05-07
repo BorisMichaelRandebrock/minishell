@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/02 18:09:47 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/07 17:49:07 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,11 @@ static void	_process_rd_out(t_list *rdrs_out, int rx_rd)
 	while (rdrs_out)
 	{
 		_rdr = rdrs_out->content;
+		if (!validate_rdrout(_rdr))
+		{
+			get_shell()->_abort = true;	
+			return ;
+		}
 		if (_rdr->type == RDOUT)
 			fd = open(_rdr->str, O_TRUNC | O_CREAT | O_RDWR, 0777);
 		else if (_rdr->type == RDAPP)
@@ -75,6 +80,11 @@ static void	_process_rd_in(t_list *rdrs_in, int tx_wr)
 	while (rdrs_in)
 	{
 		_rdr = rdrs_in->content;
+		if (!validate_rdrin(_rdr))
+		{
+			get_shell()->_abort = true;
+			return ;
+		}
 		if (_rdr->type == RDIN && !rdrs_in->next)
 			sh_fprelay(_rdr->str, tx_wr);
 		else if (_rdr->type == RDHDOC)
@@ -100,6 +110,8 @@ static int	_exec_cmd(t_cmd *cmd, int bx_rd)
 		_process_rd_in(cmd->rdrs_in, txp[WR]);
 	else
 		sh_pprelay(bx_rd, txp[WR]);
+	if (get_shell()->_abort || !validate_cmd(cmd))
+		return (rxp[RD]); //TODO check
 	close(txp[WR]);
 	sh_redirect_stdout(rxp[WR]);
 	sh_redirect_stdin(txp[RD]);
@@ -120,9 +132,8 @@ void	exec_pipeline(t_list *ppln)
 	pipe(bxp);
 	while (ppln)
 	{
+		get_shell()->_abort = false;
 		cmd = ppln->content;
-		if (sh_cmd_validation(cmd) == FAILURE)
-			return ;
 		close(bxp[WR]);
 		rx_rd = _exec_cmd(cmd, bxp[RD]);
 		close(bxp[RD]);

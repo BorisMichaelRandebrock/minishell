@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/05/07 14:00:52 by fmontser         ###   ########.fr        #
+#    Updated: 2024/05/07 16:44:34 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -97,8 +97,5 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
+#TODO norm check
 #TODO CLEAN retirar .vscode de git
-#TODO export PATH=
-#TODO echo > "asda"
-#TODO 42Minishell/::> echo "holadola"
-					#"holadola "

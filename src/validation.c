@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 16:25:30 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/07 16:00:15 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/07 17:48:47 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@
 #define FILE_ERROR_MSG		"File error"
 #define CMD_ERROR_MSG		"Command error"
 #define OPERATORS			2
+
+
+//TODO cambiar forma de gestionar las validaciones, se valida POR comando y previo a su propia ejecucion...
+// echo hola > gg > ff > uu | cat -e < uu ((uu no existe aun...))
+// cada comando (pipe) va por separado y en orden de izq a derecha.
+// la validacion no DETIENE EL PIPELINE!!!!
 
 bool	sh_is_accesible(char *cmd_name)
 {
@@ -51,7 +57,7 @@ bool	sh_is_accesible(char *cmd_name)
 	return (true);
 }
 
-static int	_validate_cmd(t_cmd *cmd)
+bool	validate_cmd(t_cmd *cmd)
 {
 	char	*cmd_name;
 
@@ -62,80 +68,54 @@ static int	_validate_cmd(t_cmd *cmd)
 		{
 			errno = ENAMETOOLONG;
 			sh_perror(SYNTAX_ERROR_MSG, false);
-			return (FAILURE);
+			return (false);
 		}
 		if (!is_builtin(cmd_name) && !sh_is_accesible(cmd_name))
 		{
 			set_evar("?=", CMD_NOT_FOUND_ECODE);
 			sh_perror(CMD_ERROR_MSG, false);
-			return (FAILURE);
+			return (false);
 		}
 	}
-	return (SUCCESS);
+	return (true);
 }
 
-static int	_validate_rdrin(t_list	*rdr_in)
+bool	validate_rdrin(t_token	*_rdr)
 {
-	t_token	*tkn;
-
-	while (rdr_in)
+	if (ft_strlen(_rdr->str) > NAME_MAX)
 	{
-		tkn = rdr_in->content;
-
-		if (ft_strlen(tkn->str) > NAME_MAX)
-		{
-			errno = ENAMETOOLONG;
-			sh_perror(SYNTAX_ERROR_MSG, false);
-			return (FAILURE);
-		}
-		if (tkn->type != RDHDOC && access(tkn->str, F_OK | R_OK) != SUCCESS)
-		{
-			sh_perror(FILE_ERROR_MSG, false);
-			set_evar("?=", "1");
-			return (FAILURE);
-		}
-		rdr_in = rdr_in->next;
+		errno = ENAMETOOLONG;
+		sh_perror(SYNTAX_ERROR_MSG, false);
+		return (false);
 	}
-	return (SUCCESS);
+	if (_rdr->type != RDHDOC && access(_rdr->str, F_OK | R_OK) != SUCCESS)
+	{
+		sh_perror(FILE_ERROR_MSG, false);
+		set_evar("?=", "1");
+		return (false);
+	}
+	return (true);
 }
 
-static int	_validate_rdrout(t_list	*rdr_out)
+bool	validate_rdrout(t_token	*_rdr)
 {
 	char	*dir_name;
-	t_token	*tkn;
 
-	while (rdr_out)
+	if (ft_strlen(_rdr->str) > NAME_MAX)
 	{
-		tkn = rdr_out->content;
-		if (ft_strlen(tkn->str) > NAME_MAX)
-		{
-			errno = ENAMETOOLONG;
-			sh_perror(SYNTAX_ERROR_MSG, false);
-			return (FAILURE);
-		}
-		dir_name = sh_get_dir_name(tkn->str);
-		if (access(dir_name, W_OK) != SUCCESS || (access(tkn->str, F_OK)
-				== SUCCESS && access(tkn->str, W_OK) != SUCCESS))
-		{
-			sh_perror(FILE_ERROR_MSG, false);
-			set_evar("?=", "1");
-			sh_free(&dir_name);
-			return (FAILURE);
-		}
-		sh_free(&dir_name);
-		rdr_out = rdr_out->next;
+		errno = ENAMETOOLONG;
+		sh_perror(SYNTAX_ERROR_MSG, false);
+		return (false);
 	}
-	return (SUCCESS);
-}
-
-// Validates commands
-int	sh_cmd_validation(t_cmd *cmd)
-{
-	if (_validate_cmd(cmd) == FAILURE)
-		return (FAILURE);
-	if (_validate_rdrin(cmd->rdrs_in) == FAILURE)
-		return (FAILURE);
-	if (_validate_rdrout(cmd->rdrs_out) == FAILURE)
-		return (FAILURE);
-	return (SUCCESS);
+	dir_name = sh_get_dir_name(_rdr->str);
+	if (access(dir_name, W_OK) != SUCCESS || (access(_rdr->str, F_OK)
+			== SUCCESS && access(_rdr->str, W_OK) != SUCCESS))
+	{
+		sh_perror(FILE_ERROR_MSG, false);
+		set_evar("?=", "1");
+		sh_free(&dir_name);
+		return (false);
+	}
+	sh_free(&dir_name);
+	return (true);
 }
