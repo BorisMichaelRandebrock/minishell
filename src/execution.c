@@ -93,7 +93,8 @@ void	try_process(t_cmd *cmd)
 	pid = fork();
 	if (pid == 0)
 	{
-		//sh_restore_stdio(); //TODO inception
+		//TODO esta linea arregla inception, pero se carga el resto de procesos...
+		sh_restore_stdio();
 		execve(exec_path, exec_args, get_shell()->env);
 	}
 	else

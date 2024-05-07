@@ -98,3 +98,7 @@ re: fclean all
 .PHONY: all clean fclean re
 
 #TODO CLEAN retirar .vscode de git
+#TODO export PATH=
+#TODO echo > "asda"
+#TODO 42Minishell/::> echo "holadola"
+					#"holadola "

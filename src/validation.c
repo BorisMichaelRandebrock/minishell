@@ -81,6 +81,7 @@ static int	_validate_rdrin(t_list	*rdr_in)
 	while (rdr_in)
 	{
 		tkn = rdr_in->content;
+
 		if (ft_strlen(tkn->str) > NAME_MAX)
 		{
 			errno = ENAMETOOLONG;
