@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/07 16:27:40 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/13 13:53:07 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,28 +82,12 @@ void	try_process(t_cmd *cmd)
 {
 	char	*exec_path;
 	char	**exec_args;
-	pid_t	pid;
-	int		child_status;
-	char	*child_exit_code;
 
 	if (!cmd->tkn)
 		return ;
 	exec_args = _args_to_array(cmd);
 	exec_path = _build_path(cmd->tkn->str);
-	pid = fork();
-	if (pid == 0)
-	{
-		//TODO esta linea arregla inception, pero se carga el resto de procesos...
-		//sh_restore_stdio();
-		execve(exec_path, exec_args, get_shell()->env);
-	}
-	else
-	{
-		wait3(&child_status, 0, NULL);
-		child_exit_code = ft_itoa(WEXITSTATUS(child_status));
-		set_evar("?=", child_exit_code);
-		sh_free(&child_exit_code);
-	}
-	sh_free(&exec_args);
+	execve(exec_path, exec_args, get_shell()->env);
+	sh_free(&exec_args); //TODO leak!!!!
 	sh_free(&exec_path);
 }

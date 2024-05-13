@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/07 17:47:44 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/13 13:29:16 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,6 @@ typedef struct s_shell
 	t_trmcfg	trmcfgbackup;
 	t_list		*tknlst;
 	t_list		*ppln;
-	bool		_abort;
-	int			_stdout;
-	int			_stdin;
 }	t_shell;
 
 t_shell	*get_shell(void);
