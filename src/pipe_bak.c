@@ -1,15 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipeline.c                                         :+:      :+:    :+:   */
+/*   pipe_bak.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/15 21:03:40 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/15 20:11:10 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//TODO borrar pipe_bak
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -84,20 +85,20 @@ static bool	_process_rd_in(t_list *rdrs_in, int pp_wr)
 	return (true);
 }
 
-static void	_process_rd_out(t_list *rdrs_out)
+static int	_process_rd_out(t_list *rdrs_out, int pp_wr)
 {
 	t_token	*_rdr;
 	int		fd;
 
 	if (!rdrs_out)
-		return ;
+		return (-1);
 	while (rdrs_out)
 	{
 		_rdr = rdrs_out->content;
 		if (!validate_rdrout(_rdr))
 		{
 			//get_shell()->_abort = true;	
-			return ;
+			return (-1);
 		}
 		if (_rdr->type == RDOUT)
 			fd = open(_rdr->str, O_TRUNC | O_CREAT | O_RDWR, 0777);
@@ -105,84 +106,141 @@ static void	_process_rd_out(t_list *rdrs_out)
 			fd = open(_rdr->str, O_APPEND | O_CREAT | O_RDWR, 0777);
 		rdrs_out = rdrs_out->next;
 	}
-	dup2(fd, STDOUT_FILENO);
+	dup2(fd, pp_wr);
+	return (fd);
 }
 
 
 
 
-//TODO @@@@@@@@ cerrar el FD las redirecciones de salida!
+
 void	exec_pipeline(t_list *ppln)
 {
 	int		pp[1024][2];
 	t_cmd	*cmd;
 	pid_t	pid;
-	int		ppid;
+
 	bool	gets_pipe;
 	bool	sets_pipe;
 
-	int		nproc = ft_lstsize(ppln);
+	//TODO @@@@@@@@ cerrar el FD las redirecciones de salida??
 
-	ppid = 0;
-	pipe(pp[ppid]);
+	pipe(pp[0]);
+	cmd = ppln->content;
+		
+	pipe(pp[1]);
+
 	gets_pipe = false;
-	sets_pipe = false;
-	while (ppln)
+	sets_pipe = true;
+	pid = fork();
+	if (pid == CHILD_PID)
 	{
-		cmd = ppln->content;
-		if (ppln->next)
-			sets_pipe = true;
-		else
-			sets_pipe = false;
-		pipe(pp[ppid + 1]);
-		if (!try_builtin(cmd, pp, ppln))
-			try_process(cmd);
-		//TODO @@@@ continuar aqui 
-
-		pid = fork();
-		if (pid == CHILD_PID)
+ 		if (cmd->rdrs_in)
 		{
-			//IN
-			if (cmd->rdrs_in)
-			{
-				pipe(pp[ppid]);
-				_process_rd_in(cmd->rdrs_in, pp[ppid][WR]);
-				gets_pipe = true;
-			}
-			close(pp[ppid][WR]);
-			if (gets_pipe)
-				dup2(pp[ppid][RD], STDIN_FILENO);
-			else
-				close(pp[ppid][RD]);
-				
-			//OUT
-			if (cmd->rdrs_out)
-			{
-				_process_rd_out(cmd->rdrs_out);
-				close(pp[ppid + 1][RD]);
-				close(pp[ppid + 1][WR]);
-			}
-			else
-			{
-				close(pp[ppid + 1][RD]);
-				if (sets_pipe)
-					dup2(pp[ppid + 1][WR], STDOUT_FILENO);
-				else
-					close(pp[ppid + 1][WR]);
-			}
-			try_process(cmd);
+			pipe(pp[0]);
+			_process_rd_in(cmd->rdrs_in, pp[0][WR]);
+			gets_pipe = true;
 		}
-		close(pp[ppid][WR]);
-		close(pp[ppid][RD]);
-		gets_pipe = true;
-		ppid++;
-		ppln = ppln->next;
-	}
-	close(pp[ppid][WR]);
-	close(pp[ppid][RD]);
+		close(pp[0][WR]);
+		if (gets_pipe)
+			dup2(pp[0][RD], STDIN_FILENO);
+		else
+			close(pp[0][RD]);
 
-	while (nproc--)
-		wait(NULL);
+
+
+		if (cmd->rdrs_out)
+		{
+			_process_rd_out(cmd->rdrs_out, pp[1][WR]);
+			sets_pipe = true;
+		}
+		close(pp[1][RD]);
+		if (sets_pipe)
+			dup2(pp[1][WR], STDOUT_FILENO);
+		else
+			close(pp[1][WR]);
+
+		try_process(cmd);
+	}
+	close(pp[0][WR]);
+	close(pp[0][RD]);
+
+	cmd = ppln->next->content;
+	pipe(pp[2]);
+
+	gets_pipe = true;
+	sets_pipe = true;
+	pid = fork();
+	if (pid == CHILD_PID)
+	{
+		if (cmd->rdrs_in)
+		{
+			pipe(pp[1]);
+			_process_rd_in(cmd->rdrs_in, pp[1][WR]);
+			gets_pipe = true;
+		}
+		close(pp[1][WR]);
+		if (gets_pipe)
+			dup2(pp[1][RD], STDIN_FILENO);
+		else
+			close(pp[1][RD]);
+
+		if (cmd->rdrs_out)
+		{
+			_process_rd_out(cmd->rdrs_out, pp[2][WR]);
+			sets_pipe = true;
+		}
+		close(pp[2][RD]);
+		if (sets_pipe)
+			dup2(pp[2][WR], STDOUT_FILENO);
+		else
+			close(pp[2][WR]);
+		try_process(cmd);
+	}
+	close(pp[1][WR]);
+	close(pp[1][RD]);
+
+
+	cmd = ppln->next->next->content;
+	pipe(pp[3]);
+
+	gets_pipe = true;
+	sets_pipe = false;
+	pid = fork();
+	if (pid == CHILD_PID)
+	{
+		if (cmd->rdrs_in)
+		{
+			pipe(pp[2]);
+			_process_rd_in(cmd->rdrs_in, pp[2][WR]);
+			gets_pipe = true;
+		}
+		close(pp[2][WR]);
+		if (gets_pipe)
+			dup2(pp[2][RD], STDIN_FILENO);
+		else
+			close(pp[2][RD]);
+
+		if (cmd->rdrs_out)
+		{
+			_process_rd_out(cmd->rdrs_out, pp[3][WR]);
+			sets_pipe = true;
+		}
+		close(pp[3][RD]);
+		if (sets_pipe)
+			dup2(pp[3][WR], STDOUT_FILENO);
+		else
+			close(pp[3][WR]);
+		try_process(cmd);
+	}
+	close(pp[2][WR]);
+	close(pp[2][RD]);
+	close(pp[3][WR]);
+	close(pp[3][RD]);
+	
+	wait(NULL);
+	wait(NULL);
+	wait(NULL);
 }
 
 

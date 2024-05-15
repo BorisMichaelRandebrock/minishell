@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/14 20:56:17 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/15 20:59:48 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_bltin	is_builtin(t_cmd *cmd)
 	return (NULL);
 }
 
-bool	try_builtin(t_cmd *cmd, int pp[2][2], t_list *ppln)
+bool	try_builtin(t_cmd *cmd, int *pp, t_list *ppln)
 {
 	t_bltin	bltin;
 	(void)pp;
