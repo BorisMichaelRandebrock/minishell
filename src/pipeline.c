@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/15 18:20:44 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/15 20:09:53 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,20 +84,20 @@ static bool	_process_rd_in(t_list *rdrs_in, int pp_wr)
 	return (true);
 }
 
-static void	_process_rd_out(t_list *rdrs_out, int pp_wr)
+static int	_process_rd_out(t_list *rdrs_out, int pp_wr)
 {
 	t_token	*_rdr;
 	int		fd;
 
 	if (!rdrs_out)
-		return ;
+		return (-1);
 	while (rdrs_out)
 	{
 		_rdr = rdrs_out->content;
 		if (!validate_rdrout(_rdr))
 		{
 			//get_shell()->_abort = true;	
-			return ;
+			return (-1);
 		}
 		if (_rdr->type == RDOUT)
 			fd = open(_rdr->str, O_TRUNC | O_CREAT | O_RDWR, 0777);
@@ -106,16 +106,23 @@ static void	_process_rd_out(t_list *rdrs_out, int pp_wr)
 		rdrs_out = rdrs_out->next;
 	}
 	dup2(fd, pp_wr);
+	return (fd);
 }
+
+
+
+
 
 void	exec_pipeline(t_list *ppln)
 {
 	int		pp[1024][2];
 	t_cmd	*cmd;
 	pid_t	pid;
+
 	bool	gets_pipe;
 	bool	sets_pipe;
 
+	//TODO @@@@@@@@ cerrar el FD las redirecciones de salida??
 
 	pipe(pp[0]);
 	cmd = ppln->content;
@@ -157,17 +164,11 @@ void	exec_pipeline(t_list *ppln)
 	close(pp[0][WR]);
 	close(pp[0][RD]);
 
-	close(pp[1][WR]);
-	close(pp[1][RD]);
-
-	wait(NULL);
-/* 
 	cmd = ppln->next->content;
 	pipe(pp[2]);
 
-
 	gets_pipe = true;
-	sets_pipe = false;
+	sets_pipe = true;
 	pid = fork();
 	if (pid == CHILD_PID)
 	{
@@ -196,11 +197,9 @@ void	exec_pipeline(t_list *ppln)
 		try_process(cmd);
 	}
 	close(pp[1][WR]);
-	close(pp[1][RD]); */
+	close(pp[1][RD]);
 
-/* 	close(pp[2][WR]);
-	close(pp[2][RD]); */
-/*
+
 	cmd = ppln->next->next->content;
 	pipe(pp[3]);
 
@@ -209,13 +208,23 @@ void	exec_pipeline(t_list *ppln)
 	pid = fork();
 	if (pid == CHILD_PID)
 	{
-		//gets_pipe = _process_rd_in(cmd->rdrs_in, pp[2][WR]); //tst rdrin
+		if (cmd->rdrs_in)
+		{
+			pipe(pp[2]);
+			_process_rd_in(cmd->rdrs_in, pp[2][WR]);
+			gets_pipe = true;
+		}
 		close(pp[2][WR]);
 		if (gets_pipe)
 			dup2(pp[2][RD], STDIN_FILENO);
 		else
 			close(pp[2][RD]);
 
+		if (cmd->rdrs_out)
+		{
+			_process_rd_out(cmd->rdrs_out, pp[3][WR]);
+			sets_pipe = true;
+		}
 		close(pp[3][RD]);
 		if (sets_pipe)
 			dup2(pp[3][WR], STDOUT_FILENO);
@@ -226,11 +235,11 @@ void	exec_pipeline(t_list *ppln)
 	close(pp[2][WR]);
 	close(pp[2][RD]);
 	close(pp[3][WR]);
-	close(pp[3][RD]);*/
+	close(pp[3][RD]);
 	
-	//wait(NULL);
-	//wait(NULL);
-	//wait(NULL);
+	wait(NULL);
+	wait(NULL);
+	wait(NULL);
 }
 
 
