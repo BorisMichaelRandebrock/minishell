@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/13 13:53:07 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/14 20:56:17 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,45 @@ static char	**_args_to_array(t_cmd *cmd)
 	return (args);
 }
 
+
+t_bltin	is_builtin(t_cmd *cmd)
+{
+	static t_bltin	bltn_ptr[8] = {__echo, __export, __cd, __pwd,
+		__unset, __env, __exit, NULL};
+	static char		*bltn_id[8] = {"echo", "export", "cd", "pwd",
+		"unset", "env", "exit", NULL};
+	int				i;
+	size_t			cmp_sz;
+
+	i = 0;
+	if (!cmd->tkn)
+		return (NULL);
+	while (bltn_id[i])
+	{
+		cmp_sz = ft_strlen(bltn_id[i]) + NUL_SZ;
+		if (!ft_strncmp(cmd->tkn->str, bltn_id[i], cmp_sz))
+			return (bltn_ptr[i]);
+		i++;
+	}
+	return (NULL);
+}
+
+bool	try_builtin(t_cmd *cmd, int pp[2][2], t_list *ppln)
+{
+	t_bltin	bltin;
+	(void)pp;
+	(void)ppln;
+	
+	if (!cmd->tkn)
+		return (false);
+	bltin = is_builtin(cmd);
+	if(!bltin)
+		return (false);
+	//TODO @@@@@ logica y lanzamiento del bultiin.
+
+	return (true);
+}
+
 void	try_process(t_cmd *cmd)
 {
 	char	*exec_path;
@@ -88,6 +127,6 @@ void	try_process(t_cmd *cmd)
 	exec_args = _args_to_array(cmd);
 	exec_path = _build_path(cmd->tkn->str);
 	execve(exec_path, exec_args, get_shell()->env);
-	sh_free(&exec_args); //TODO leak!!!!
+	sh_free(&exec_args); //TODO leaks!!!!
 	sh_free(&exec_path);
 }

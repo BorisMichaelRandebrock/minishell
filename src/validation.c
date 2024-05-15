@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 16:25:30 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/07 17:48:47 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/14 20:01:23 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ bool	validate_cmd(t_cmd *cmd)
 			sh_perror(SYNTAX_ERROR_MSG, false);
 			return (false);
 		}
-		if (!is_builtin(cmd_name) && !sh_is_accesible(cmd_name))
+		if (!is_builtin(cmd) && !sh_is_accesible(cmd_name))
 		{
 			set_evar("?=", CMD_NOT_FOUND_ECODE);
 			sh_perror(CMD_ERROR_MSG, false);

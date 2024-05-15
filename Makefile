@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/05/13 13:53:16 by fmontser         ###   ########.fr        #
+#    Updated: 2024/05/15 14:55:11 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,12 @@ BIN_DIR			:= bin/
 NAME			:= minishell
 HDRS 			:= minishell.h
 SRCS 			:=	main.c shell.c environment.c memutils.c tokenization.c\
-					expansion.c validation.c\
-					pipeline.c exception.c execution.c heredoc.c signal.c\
-					command.c cleanutils.c cleanutils2.c fileutils.c\
+					expansion.c validation.c fileutils.c dirutils.c pipeline.c\
+					exception.c execution.c heredoc.c signal.c command.c\
+					cleanutils.c cleanutils2.c\
 					__echo.c __export.c __env.c __unset.c __pwd.c __exit.c\
 					__cd.c
-							
+
 OBJS			:= $(SRCS:.c=.o)
 
 LIBFT_DIR		:= src/libft
@@ -68,13 +68,17 @@ $(NAME): $(OBJS) $(LIBFT) $(LIBRL)
 	@echo "$(COLOR_GREEN)write file: $(OBJ_DIR)$@ $(COLOR_END)"
 
 $(LIBFT):
+	@echo "$(COLOR_BLUE)Compliling libft...$(COLOR_END)"
 	@make -C $(LIBFT_DIR)
 
 $(LIBRL):
+	@echo "$(COLOR_BLUE)Compliling readline library...$(COLOR_END)"
 	@make -C $(LIBRL_DIR)
+	@echo "$(COLOR_BLUE)Installing readline library...$(COLOR_END)"
 	@make install -C $(LIBRL_DIR)
 
 configure:
+	@echo "$(COLOR_BLUE)Configuring readline library...$(COLOR_END)"
 	@cd $(CURDIR)/$(LIBRL_DIR) && ./configure --prefix=$(CURDIR)/$(LIBRL_DIR) --with-curses
 
 test: all
@@ -97,5 +101,4 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-#TODO norm check
 #TODO CLEAN retirar .vscode de git

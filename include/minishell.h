@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/13 13:29:16 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:57:23 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ typedef struct s_shell
 t_shell	*get_shell(void);
 t_shell	*new_shell(char **sys_env);
 void	set_prompt(void);
-bool	is_builtin(char *cmd_name);
 void	new_env(t_shell *sh, char **sys_env);
 char	*get_evar(char *var_name);
 void	set_evar(char *var_name, char *value);
@@ -76,6 +75,8 @@ void	dequote_token(t_token *tkn);
 void	build_commands(t_list *tknlst, t_list **ppln);
 void	exec_pipeline(t_list *ppln);
 void	invoke_heredoc(char *dlmt, int to_proc_fd);
+t_bltin	is_builtin(t_cmd *cmd);
+bool	try_builtin(t_cmd *cmd, int pp[2][2], t_list *ppln);
 void	try_process(t_cmd *cmd);
 int		__echo(t_list *args);
 int		__cd(t_list *args);
@@ -104,6 +105,7 @@ bool	sh_fexists(char *filename);
 bool	sh_check_current_dir(char *cmd_name);
 void	sh_fprelay(char *filename, int pipe_wr);
 void	sh_pprelay(int pipe_rd, int pipe_wr);
+void	sh_ppflush(int pipe_rd);
 void	sh_ctrld_handler(void);
 void	sh_init_handlers(void);
 void	sh_store_stdio(void);
