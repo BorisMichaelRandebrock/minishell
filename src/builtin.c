@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 13:22:25 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 15:46:20 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:52:35 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_bltin	is_builtin(t_cmd *cmd)
 	return (NULL);
 }
 
-bool	try_builtin(t_cmd *cmd, int pp[1024][2], int sets_pipe, int ppid)
+bool	try_builtin(t_cmd *cmd, int **pp, int sets_pipe, int ppid)
 {
 	t_bltin	bltin;
 	int		_stdout;

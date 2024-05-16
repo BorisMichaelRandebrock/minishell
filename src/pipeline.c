@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 15:45:58 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:40:10 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #define RD			0
 #define WR			1
 
-//TODO reservar pipes dinamicamente
+
 static void _wait_execs(int nproc)
 {
 	int		child_status;
@@ -36,14 +36,21 @@ static void _wait_execs(int nproc)
 
 void	exec_pipeline(t_list *ppln)
 {
-	int		pp[1024][2];
+
+	int		**pp;
 	t_cmd	*cmd;
 	int		ppid;
 	bool	gets_pipe;
 	bool	sets_pipe;
+	int		nproc;
 
-	int		nproc = ft_lstsize(ppln);
+	nproc = ft_lstsize(ppln) + 1;
+	ppid = 0;	
+	pp = sh_calloc(nproc, sizeof(int *));
+	while (ppid < nproc)
+		pp[ppid++] = sh_calloc(2, sizeof(int));
 	ppid = 0;
+	
 	pipe(pp[ppid]);
 	gets_pipe = false;
 	sets_pipe = false;
@@ -67,4 +74,9 @@ void	exec_pipeline(t_list *ppln)
 	close(pp[ppid][WR]);
 	close(pp[ppid][RD]);
 	_wait_execs(nproc);
+
+	while (nproc)
+		sh_free(&pp[nproc--]);
+	sh_free(&pp[nproc]);
+	sh_free(&pp);
 }

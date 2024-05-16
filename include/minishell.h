@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 15:30:03 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:52:51 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void	build_commands(t_list *tknlst, t_list **ppln);
 void	exec_pipeline(t_list *ppln);
 void	invoke_heredoc(char *dlmt, int to_proc_fd);
 t_bltin	is_builtin(t_cmd *cmd);
-bool	try_builtin(t_cmd *cmd, int pp[1024][2], int sets_pipe, int ppid);
-void	try_process(t_cmd *cmd, int pp[1024][2], int gets_pipe, int sets_pipe, int ppid);
+bool	try_builtin(t_cmd *cmd, int **pp, int sets_pipe, int ppid);
+void	try_process(t_cmd *cmd, int **pp, int gets_pipe, int sets_pipe, int ppid);
 int		__echo(t_list *args);
 int		__cd(t_list *args);
 int		__pwd(t_list *args);
