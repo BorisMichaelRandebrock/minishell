@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/05/15 20:00:17 by fmontser         ###   ########.fr        #
+#    Updated: 2024/05/16 14:21:06 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ HDRS 			:= minishell.h
 SRCS 			:=	main.c shell.c environment.c memutils.c tokenization.c\
 					expansion.c validation.c fileutils.c dirutils.c pipeline.c\
 					exception.c execution.c heredoc.c signal.c command.c\
-					cleanutils.c cleanutils2.c\
+					cleanutils.c cleanutils2.c builtin.c redirs.c\
 					__echo.c __export.c __env.c __unset.c __pwd.c __exit.c\
 					__cd.c
 

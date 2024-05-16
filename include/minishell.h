@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/15 14:57:23 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:20:55 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void	build_commands(t_list *tknlst, t_list **ppln);
 void	exec_pipeline(t_list *ppln);
 void	invoke_heredoc(char *dlmt, int to_proc_fd);
 t_bltin	is_builtin(t_cmd *cmd);
-bool	try_builtin(t_cmd *cmd, int pp[2][2], t_list *ppln);
-void	try_process(t_cmd *cmd);
+bool	try_builtin(t_cmd *cmd, int pp[1024][2], int sets_pipe, int ppid);
+void	try_process(t_cmd *cmd, int pp[1024][2], int gets_pipe, int sets_pipe, int ppid);
 int		__echo(t_list *args);
 int		__cd(t_list *args);
 int		__pwd(t_list *args);
@@ -88,6 +88,8 @@ int		__exit(t_list *args);
 int		__history(t_list *args);
 int		sh_syntax_check(t_list *tknlst);
 bool	sh_is_accesible(char *cmd_name);
+bool	process_rd_in(t_list *rdrs_in, int pp_wr);
+void	process_rd_out(t_list *rdrs_out);
 bool	validate_rdrin(t_token	*_rdr);
 bool	validate_cmd(t_cmd *cmd);
 bool	validate_rdrout(t_token	*_rdr);

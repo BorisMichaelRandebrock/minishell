@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/15 16:15:28 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:07:08 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,4 @@ void	sh_pprelay(int pipe_rd, int pipe_wr)
 		if (consumed > 0)
 			write(pipe_wr, buffer, consumed);
 	}
-}
-
-//TODO eliminar?
-void	sh_ppflush(int pipe_rd)
-{
-	ssize_t	consumed;
-	char	buffer[BUF_1KB + NUL_SZ];
-	int		block_mode;
-
-	block_mode = 1;
-	ioctl(pipe_rd, FIONBIO, &block_mode);
-	consumed = 1;
-	while (consumed > 0)
-		consumed = read(pipe_rd, buffer, BUF_1KB);
-	block_mode = 0;
-	ioctl(pipe_rd, FIONBIO, &block_mode);
 }

@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/15 20:59:48 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:20:08 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #define TO_SHELL	1
 #define RD			0
 #define WR			1
+#define CHILD_PID	0
+#define NUL_FD		-1
 
 static char	*_build_path(char *cmd_name)
 {
@@ -79,46 +81,9 @@ static char	**_args_to_array(t_cmd *cmd)
 }
 
 
-t_bltin	is_builtin(t_cmd *cmd)
+void	try_process(t_cmd *cmd, int pp[1024][2], int gets_pipe, int sets_pipe, int ppid)
 {
-	static t_bltin	bltn_ptr[8] = {__echo, __export, __cd, __pwd,
-		__unset, __env, __exit, NULL};
-	static char		*bltn_id[8] = {"echo", "export", "cd", "pwd",
-		"unset", "env", "exit", NULL};
-	int				i;
-	size_t			cmp_sz;
-
-	i = 0;
-	if (!cmd->tkn)
-		return (NULL);
-	while (bltn_id[i])
-	{
-		cmp_sz = ft_strlen(bltn_id[i]) + NUL_SZ;
-		if (!ft_strncmp(cmd->tkn->str, bltn_id[i], cmp_sz))
-			return (bltn_ptr[i]);
-		i++;
-	}
-	return (NULL);
-}
-
-bool	try_builtin(t_cmd *cmd, int *pp, t_list *ppln)
-{
-	t_bltin	bltin;
-	(void)pp;
-	(void)ppln;
-	
-	if (!cmd->tkn)
-		return (false);
-	bltin = is_builtin(cmd);
-	if(!bltin)
-		return (false);
-	//TODO @@@@@ logica y lanzamiento del bultiin.
-
-	return (true);
-}
-
-void	try_process(t_cmd *cmd)
-{
+	pid_t	pid;
 	char	*exec_path;
 	char	**exec_args;
 
@@ -126,7 +91,39 @@ void	try_process(t_cmd *cmd)
 		return ;
 	exec_args = _args_to_array(cmd);
 	exec_path = _build_path(cmd->tkn->str);
-	execve(exec_path, exec_args, get_shell()->env);
-	sh_free(&exec_args); //TODO leaks!!!!
+	pid = fork();
+	if (pid == CHILD_PID)
+	{
+		//IN
+		if (cmd->rdrs_in)
+		{
+			pipe(pp[ppid]);
+			process_rd_in(cmd->rdrs_in, pp[ppid][WR]);
+			gets_pipe = true;
+		}
+		close(pp[ppid][WR]);
+		if (gets_pipe)
+			dup2(pp[ppid][RD], STDIN_FILENO);
+		else
+			close(pp[ppid][RD]);
+			
+		//OUT
+		if (cmd->rdrs_out)
+		{
+			process_rd_out(cmd->rdrs_out);
+			close(pp[ppid + 1][RD]);
+			close(pp[ppid + 1][WR]);
+		}
+		else
+		{
+			close(pp[ppid + 1][RD]);
+			if (sets_pipe)
+				dup2(pp[ppid + 1][WR], STDOUT_FILENO);
+			else
+				close(pp[ppid + 1][WR]);
+		}
+		execve(exec_path, exec_args, get_shell()->env);
+	}
+	sh_free(&exec_args);
 	sh_free(&exec_path);
 }
