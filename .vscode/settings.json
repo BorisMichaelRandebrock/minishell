@@ -58,7 +58,14 @@
 		"cdefs.h": "c",
 		"limits.h": "c",
 		"string.h": "c",
-		"syslimits.h": "c"
+		"syslimits.h": "c",
+		"ioctl.h": "c",
+		"ioccom.h": "c",
+		"ioctl_compat.h": "c",
+		"filio.h": "c",
+		"sockio.h": "c",
+		"ulimit.h": "c",
+		"resource.h": "c"
 	},
 	"todo-tree.tree.showBadges": false
 }

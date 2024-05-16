@@ -2,4 +2,3 @@
 *.o
 *.a
 *.tmp
-src/readline

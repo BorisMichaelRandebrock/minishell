@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/07 13:11:03 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:54:16 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #define TO_SHELL	1
 #define RD			0
 #define WR			1
+#define CHILD_PID	0
+#define NUL_FD		-1
 
 static char	*_build_path(char *cmd_name)
 {
@@ -78,31 +80,49 @@ static char	**_args_to_array(t_cmd *cmd)
 	return (args);
 }
 
-void	try_process(t_cmd *cmd)
+
+void	try_process(t_cmd *cmd, int **pp, int gets_pipe, int sets_pipe, int ppid)
 {
+	pid_t	pid;
 	char	*exec_path;
 	char	**exec_args;
-	pid_t	pid;
-	int		child_status;
-	char	*child_exit_code;
 
 	if (!cmd->tkn)
 		return ;
 	exec_args = _args_to_array(cmd);
 	exec_path = _build_path(cmd->tkn->str);
 	pid = fork();
-	if (pid == 0)
+	if (pid == CHILD_PID)
 	{
-		//TODO esta linea arregla inception, pero se carga el resto de procesos...
-		sh_restore_stdio();
+		//IN
+		if (cmd->rdrs_in)
+		{
+			pipe(pp[ppid]);
+			process_rd_in(cmd->rdrs_in, pp[ppid][WR]);
+			gets_pipe = true;
+		}
+		close(pp[ppid][WR]);
+		if (gets_pipe)
+			dup2(pp[ppid][RD], STDIN_FILENO);
+		else
+			close(pp[ppid][RD]);
+			
+		//OUT
+		if (cmd->rdrs_out)
+		{
+			process_rd_out(cmd->rdrs_out);
+			close(pp[ppid + 1][RD]);
+			close(pp[ppid + 1][WR]);
+		}
+		else
+		{
+			close(pp[ppid + 1][RD]);
+			if (sets_pipe)
+				dup2(pp[ppid + 1][WR], STDOUT_FILENO);
+			else
+				close(pp[ppid + 1][WR]);
+		}
 		execve(exec_path, exec_args, get_shell()->env);
-	}
-	else
-	{
-		wait3(&child_status, 0, NULL);
-		child_exit_code = ft_itoa(WEXITSTATUS(child_status));
-		set_evar("?=", child_exit_code);
-		sh_free(&child_exit_code);
 	}
 	sh_free(&exec_args);
 	sh_free(&exec_path);

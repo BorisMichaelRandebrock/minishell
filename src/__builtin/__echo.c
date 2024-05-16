@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:34:05 by brandebr          #+#    #+#             */
-/*   Updated: 2024/04/27 18:00:17 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:05:38 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 
 static bool	_n_opt_check(t_token *tkn, t_list **_args)
 {
+	char	*degbug = tkn->str;
+	(void)degbug;
+
 	if (!ft_strncmp(tkn->str, N_OPT, 3))
 	{
 		*_args = (*_args)->next;
@@ -38,7 +41,8 @@ int	__echo(t_list *args)
 		return (SUCCESS);
 	}
 	_args = args;
-	nflag = _n_opt_check(_args->content, &_args);
+	tkn = _args->content;
+	nflag = _n_opt_check(tkn, &_args);
 	while (_args)
 	{
 		tkn = _args->content;
