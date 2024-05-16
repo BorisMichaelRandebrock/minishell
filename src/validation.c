@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 16:25:30 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 14:09:15 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:43:13 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,6 @@
 #define FILE_ERROR_MSG		"File error"
 #define CMD_ERROR_MSG		"Command error"
 #define OPERATORS			2
-
-
-//TODO cambiar forma de gestionar las validaciones, se valida POR comando y previo a su propia ejecucion...
-// echo hola > gg > ff > uu | cat -e < uu ((uu no existe aun...))
-// cada comando (pipe) va por separado y en orden de izq a derecha.
-// la validacion no DETIENE EL PIPELINE!!!!
 
 bool	sh_is_accesible(char *cmd_name)
 {

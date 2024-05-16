@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 13:22:25 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 14:22:12 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:46:20 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ t_bltin	is_builtin(t_cmd *cmd)
 	return (NULL);
 }
 
-//TODO añadir validacion de los outputs
 bool	try_builtin(t_cmd *cmd, int pp[1024][2], int sets_pipe, int ppid)
 {
 	t_bltin	bltin;
@@ -49,9 +48,14 @@ bool	try_builtin(t_cmd *cmd, int pp[1024][2], int sets_pipe, int ppid)
 	bltin = is_builtin(cmd);
 	if(!bltin)
 		return (false);
-	if (sets_pipe)
+	if (cmd->rdrs_out)
 	{
-		//TODO @@@@@@@@@@@@@@@@@@@ implementar la redireccion de salida
+		if (process_rd_out(cmd->rdrs_out))
+			(bltin)(cmd->args);
+		dup2(_stdout, STDOUT_FILENO);
+	}
+	else if (sets_pipe)
+	{
 		dup2(pp[ppid + 1][WR], STDOUT_FILENO);
 		(bltin)(cmd->args);
 		dup2(_stdout, STDOUT_FILENO);

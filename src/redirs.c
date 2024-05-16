@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 14:18:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 14:20:14 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:29:40 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,18 @@ bool	process_rd_in(t_list *rdrs_in, int pp_wr)
 	return (true);
 }
 
-void	process_rd_out(t_list *rdrs_out)
+bool	process_rd_out(t_list *rdrs_out)
 {
 	t_token	*_rdr;
 	int		fd;
 
 	if (!rdrs_out)
-		return ;
+		return (false);
 	while (rdrs_out)
 	{
 		_rdr = rdrs_out->content;
 		if (!validate_rdrout(_rdr))
-		{
-
-			return ;
-		}
+			return (false);
 		if (_rdr->type == RDOUT)
 			fd = open(_rdr->str, O_TRUNC | O_CREAT | O_RDWR, 0777);
 		else if (_rdr->type == RDAPP)
@@ -64,4 +61,5 @@ void	process_rd_out(t_list *rdrs_out)
 		rdrs_out = rdrs_out->next;
 	}
 	dup2(fd, STDOUT_FILENO);
+	return (true);
 }
