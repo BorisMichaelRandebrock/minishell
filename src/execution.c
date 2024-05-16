@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 16:54:16 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:57:38 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static char	**_args_to_array(t_cmd *cmd)
 	return (args);
 }
 
-
+//TODO Ante un comando invalido, las redirecciones de SALIDA deben aplicarse igualmente, haya pipe o no.
 void	try_process(t_cmd *cmd, int **pp, int gets_pipe, int sets_pipe, int ppid)
 {
 	pid_t	pid;

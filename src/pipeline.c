@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 18:36:41 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:42:52 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	exec_pipeline(t_list *ppln)
 		else
 			sets_pipe = false;
 		pipe(pp[ppid + 1]);
-		validate_cmd(cmd);
 		if (!try_builtin(cmd, pp, sets_pipe, ppid))
 			try_process(cmd, pp, gets_pipe, sets_pipe, ppid);
 		close(pp[ppid][WR]);
