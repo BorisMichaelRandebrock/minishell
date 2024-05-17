@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/05/17 16:17:41 by fmontser         ###   ########.fr        #
+#    Updated: 2024/05/17 16:59:05 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,6 +79,8 @@ $(LIBRL):
 
 configure:
 	@echo "$(COLOR_BLUE)Configuring readline library...$(COLOR_END)"
+	@rm -rf src/readline
+	@tar -xvf res/readline-8.2.tar.gz && mv readline-8.2 src/readline
 	@cd $(CURDIR)/$(LIBRL_DIR) && ./configure --prefix=$(CURDIR)/$(LIBRL_DIR) --with-curses
 
 test: all
@@ -96,6 +98,10 @@ fclean: clean
 	@$(foreach item,$(FCLEAN_TARGETS),echo "$(COLOR_RED)delete file: $(item)$(COLOR_END)"; rm $(item);)
 	@make fclean -C $(LIBFT_DIR)
 	@make clean -C $(LIBRL_DIR)
+
+purge: fclean
+	@rm -rf src/readline
+	@echo "$(COLOR_RED)purge dir: src/readline$(COLOR_END)"
 
 re: fclean all
 
