@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 16:52:51 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/17 13:02:12 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_shell
 {
 	char		*input;
 	char		**env;
+	char		**sys_env;
 	t_trmcfg	trmcfg;
 	t_trmcfg	trmcfgbackup;
 	t_list		*tknlst;
@@ -90,6 +91,7 @@ int		sh_syntax_check(t_list *tknlst);
 bool	sh_is_accesible(char *cmd_name);
 bool	process_rd_in(t_list *rdrs_in, int pp_wr);
 bool	process_rd_out(t_list *rdrs_out);
+bool	process_rd_out_empty(t_list *rdrs_out);
 bool	validate_rdrin(t_token	*_rdr);
 bool	validate_cmd(t_cmd *cmd);
 bool	validate_rdrout(t_token	*_rdr);

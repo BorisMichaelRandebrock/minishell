@@ -6,13 +6,12 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 11:23:36 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 14:07:08 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/17 12:38:29 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <fcntl.h>
-#include <sys/ioctl.h>
 #include <errno.h>
 #include "minishell.h"
 

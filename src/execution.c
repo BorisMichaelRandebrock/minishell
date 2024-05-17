@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 18:57:38 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/17 13:03:48 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,17 @@ static char	**_args_to_array(t_cmd *cmd)
 	return (args);
 }
 
-//TODO Ante un comando invalido, las redirecciones de SALIDA deben aplicarse igualmente, haya pipe o no.
 void	try_process(t_cmd *cmd, int **pp, int gets_pipe, int sets_pipe, int ppid)
 {
 	pid_t	pid;
 	char	*exec_path;
 	char	**exec_args;
 
-	if (!cmd->tkn)
+	if (!cmd->tkn || !validate_cmd(cmd))
+	{
+		process_rd_out_empty(cmd->rdrs_out);
 		return ;
+	}
 	exec_args = _args_to_array(cmd);
 	exec_path = _build_path(cmd->tkn->str);
 	pid = fork();
@@ -98,7 +100,8 @@ void	try_process(t_cmd *cmd, int **pp, int gets_pipe, int sets_pipe, int ppid)
 		if (cmd->rdrs_in)
 		{
 			pipe(pp[ppid]);
-			process_rd_in(cmd->rdrs_in, pp[ppid][WR]);
+			if (!process_rd_in(cmd->rdrs_in, pp[ppid][WR]))
+				sh_free_exit(FAILURE);
 			gets_pipe = true;
 		}
 		close(pp[ppid][WR]);
@@ -106,11 +109,12 @@ void	try_process(t_cmd *cmd, int **pp, int gets_pipe, int sets_pipe, int ppid)
 			dup2(pp[ppid][RD], STDIN_FILENO);
 		else
 			close(pp[ppid][RD]);
-			
+
 		//OUT
 		if (cmd->rdrs_out)
 		{
-			process_rd_out(cmd->rdrs_out);
+			if (!process_rd_out(cmd->rdrs_out))
+				sh_free_exit(FAILURE);
 			close(pp[ppid + 1][RD]);
 			close(pp[ppid + 1][WR]);
 		}
@@ -122,7 +126,7 @@ void	try_process(t_cmd *cmd, int **pp, int gets_pipe, int sets_pipe, int ppid)
 			else
 				close(pp[ppid + 1][WR]);
 		}
-		execve(exec_path, exec_args, get_shell()->env);
+		execve(exec_path, exec_args, get_shell()->sys_env);
 	}
 	sh_free(&exec_args);
 	sh_free(&exec_path);

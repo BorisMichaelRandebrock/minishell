@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 14:18:42 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 15:29:40 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/17 12:20:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ bool	process_rd_in(t_list *rdrs_in, int pp_wr)
 {
 	t_token	*_rdr;
 
-	if (!rdrs_in)
-		return (false);
 	while (rdrs_in)
 	{
 		_rdr = rdrs_in->content;
@@ -47,8 +45,6 @@ bool	process_rd_out(t_list *rdrs_out)
 	t_token	*_rdr;
 	int		fd;
 
-	if (!rdrs_out)
-		return (false);
 	while (rdrs_out)
 	{
 		_rdr = rdrs_out->content;
@@ -61,5 +57,24 @@ bool	process_rd_out(t_list *rdrs_out)
 		rdrs_out = rdrs_out->next;
 	}
 	dup2(fd, STDOUT_FILENO);
+	return (true);
+}
+
+bool	process_rd_out_empty(t_list *rdrs_out)
+{
+	t_token	*_rdr;
+	int		fd;
+
+	while (rdrs_out)
+	{
+		_rdr = rdrs_out->content;
+		if (!validate_rdrout(_rdr))
+			return (false);
+		if (_rdr->type == RDOUT)
+			fd = open(_rdr->str, O_TRUNC | O_CREAT | O_RDWR, 0777);
+		else if (_rdr->type == RDAPP)
+			fd = open(_rdr->str, O_APPEND | O_CREAT | O_RDWR, 0777);
+		rdrs_out = rdrs_out->next;
+	}
 	return (true);
 }
