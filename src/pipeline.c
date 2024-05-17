@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/17 14:54:58 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:49:03 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ static void	_exec_cmd(t_list *ppln, bool *status, int **pp, int *ppid)
 	else
 		status[PP_SET] = false;
 	pipe(pp[_ppid + 1]);
-	if (!try_builtin(cmd, pp, status[PP_SET], _ppid))
-		try_process(cmd, pp, status[PP_GET], status[PP_SET], _ppid);
+	if (!try_builtin(cmd, pp, status, _ppid))
+		try_process(cmd, pp, status, _ppid);
 	close(pp[_ppid][WR]);
 	close(pp[_ppid][RD]);
 	status[PP_GET] = true;
