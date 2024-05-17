@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 13:22:25 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 16:52:35 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/17 13:57:58 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool	try_builtin(t_cmd *cmd, int **pp, int sets_pipe, int ppid)
 	if (!cmd->tkn)
 		return (false);
 	bltin = is_builtin(cmd);
-	if(!bltin)
+	if (!bltin)
 		return (false);
 	if (cmd->rdrs_out)
 	{
