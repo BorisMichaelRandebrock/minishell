@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/05/16 14:21:06 by fmontser         ###   ########.fr        #
+#    Updated: 2024/05/17 15:41:06 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -102,3 +102,8 @@ re: fclean all
 .PHONY: all clean fclean re
 
 #TODO CLEAN retirar .vscode de git
+#TODO BUG 42minishell/::> echo hola > a | cat -e < a
+			#Command error: No such file or directory
+			# solo aveces, despues de make test...¿?¿?
+
+#TODO BUG     echo hola > a | cat -e | cat -e | cat -e < a | cat -e

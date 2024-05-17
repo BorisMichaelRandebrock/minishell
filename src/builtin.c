@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 13:22:25 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 16:52:35 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:51:06 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "minishell.h"
 
 #define WR	1
+#define PP_SET		1
 
 t_bltin	is_builtin(t_cmd *cmd)
 {
@@ -37,7 +38,7 @@ t_bltin	is_builtin(t_cmd *cmd)
 	return (NULL);
 }
 
-bool	try_builtin(t_cmd *cmd, int **pp, int sets_pipe, int ppid)
+bool	try_builtin(t_cmd *cmd, int **pp, bool *status, int ppid)
 {
 	t_bltin	bltin;
 	int		_stdout;
@@ -46,7 +47,7 @@ bool	try_builtin(t_cmd *cmd, int **pp, int sets_pipe, int ppid)
 	if (!cmd->tkn)
 		return (false);
 	bltin = is_builtin(cmd);
-	if(!bltin)
+	if (!bltin)
 		return (false);
 	if (cmd->rdrs_out)
 	{
@@ -54,7 +55,7 @@ bool	try_builtin(t_cmd *cmd, int **pp, int sets_pipe, int ppid)
 			(bltin)(cmd->args);
 		dup2(_stdout, STDOUT_FILENO);
 	}
-	else if (sets_pipe)
+	else if (status[PP_SET])
 	{
 		dup2(pp[ppid + 1][WR], STDOUT_FILENO);
 		(bltin)(cmd->args);
