@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:29:08 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/17 13:03:48 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/17 13:42:05 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static char	*_build_path(char *cmd_name)
 
 	if (sh_fexists(cmd_name))
 		return (sh_guard(ft_strdup(cmd_name), NULL));
+	if (!get_evar("PATH="))
+		return (sh_guard(ft_strdup(""), NULL));
 	ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
 	splitted = sh_guard(ft_split(get_evar("PATH="), ':'), NULL);
 	i = 0;

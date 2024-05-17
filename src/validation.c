@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 16:25:30 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/16 15:43:13 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/17 13:44:17 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ bool	sh_is_accesible(char *cmd_name)
 	if (sh_check_current_dir(cmd_name))
 		return (true);
 	ft_memset(buffer, '\0', BUF_1KB + NUL_SZ);
+	if (!get_evar("PATH="))
+		return (false);
 	splitted = sh_guard(ft_split(get_evar("PATH="), ':'), NULL);
 	i = 0;
 	while (splitted[i] && !sh_fexists(buffer))
