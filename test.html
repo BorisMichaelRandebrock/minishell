@@ -23,11 +23,6 @@
             text-align: center;
             margin: 5px;
             position: relative;
-            /* Added to make the ::before pseudo-element position relative to this */
-        }
-
-        .checkbox-label input {
-            display: none;
         }
 
         .checkbox-label .icon {
@@ -37,14 +32,7 @@
         }
 
         .yes-button {
-            display: inline-block;
-            padding: 10px;
-            border-radius: 5px;
             width: calc(45% - 10px);
-            font-size: 16px;
-            cursor: pointer;
-            text-align: center;
-            margin: 5px;
             background-color: green;
             color: white;
         }
@@ -55,29 +43,7 @@
             color: white;
         }
 
-        /* Adjusted to display the ✔ symbol when the input is checked */
-        .checkbox-label input:checked+.icon::before {
-            content: '✔';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            /* Adjust as needed */
-            transform: translateX(-50%);
-        }
-
-        /* Added to style the radio marker */
-        .checkbox-label input[type="radio"]:checked+.icon::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: black;
-        }
-
+        /* Hide all radio buttons */
         .btn-group.block input[type="radio"] {
             display: none;
         }
@@ -85,25 +51,49 @@
         /* Styling for the "Yes" button when selected */
         input[type="radio"]:checked+label.yes-button {
             background-color: green;
-            /* Bright green color when selected */
         }
 
         /* Styling for the "No" button when selected */
         input[type="radio"]:checked+label.no-button {
             background-color: red;
-            /* Bright red color when selected */
         }
 
         /* Styling for the "Yes" button when not selected */
         label.yes-button {
             background-color: rgb(130, 213, 130);
-            /* Lighter gray color when not selected */
+            /* Default light green color when not selected */
+            color: white;
+            position: relative;
         }
 
         /* Styling for the "No" button when not selected */
         label.no-button {
             background-color: #f68181;
-            /* Lighter gray color when not selected */
+            /* Default light red color when not selected */
+            color: white;
+            position: relative;
+        }
+
+        /* Add the checkmark symbol when the "Yes" radio button is checked */
+        input[type="radio"]:checked+label.yes-button .icon-check::before {
+            content: '✔';
+            position: absolute;
+            top: 50%;
+            left: 45%;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+            color: white;
+        }
+
+        /* Add the checkmark symbol when the "No" radio button is checked */
+        input[type="radio"]:checked+label.no-button .icon-times::before {
+            content: '✘';
+            position: absolute;
+            top: 50%;
+            left: 45%;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+            color: white;
         }
     </style>
 </head>
