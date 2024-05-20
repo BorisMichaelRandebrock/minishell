@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 14:07:13 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/17 12:48:11 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:30:53 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static void	_sh_ctrlc_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		rl_replace_line("", 0);
 		write(STDOUT_FILENO, "\n", 1);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 		set_evar("?=", "1");

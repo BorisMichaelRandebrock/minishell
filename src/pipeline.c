@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:26:04 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/17 15:49:03 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/20 11:54:40 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,24 @@
 #define PP_SET		1
 #define HEADER_PIPE	1
 
-static void	_wait_execs(int nproc)
+static void	_wait_execs(void)
 {
+	int		_nproc_nb;
+	t_list	*_ppln;
+	t_cmd	*_cmd;
 	int		child_status;
 	char	*child_exit_code;
 
-	while (nproc--)
+	_ppln = get_shell()->ppln;
+	_nproc_nb = 0;
+	while (_ppln)
+	{
+		_cmd = _ppln->content;
+		if (!is_builtin(_cmd))
+			_nproc_nb++;
+		_ppln = _ppln->next;
+	}
+	while (_nproc_nb--)
 	{
 		wait3(&child_status, 0, NULL);
 		child_exit_code = ft_itoa(WEXITSTATUS(child_status));
@@ -100,6 +112,6 @@ void	exec_pipeline(t_list *ppln)
 	}
 	close(pp[ppid][WR]);
 	close(pp[ppid][RD]);
-	_wait_execs(nproc);
+	_wait_execs();
 	_free_pipes(pp, nproc);
 }

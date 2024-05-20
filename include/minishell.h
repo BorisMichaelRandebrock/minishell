@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/17 15:48:17 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/20 11:28:59 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_shell
 
 t_shell	*get_shell(void);
 t_shell	*new_shell(char **sys_env);
+void	set_bltin_exit_code(int exit_code);
 void	set_prompt(void);
 void	new_env(t_shell *sh, char **sys_env);
 char	*get_evar(char *var_name);

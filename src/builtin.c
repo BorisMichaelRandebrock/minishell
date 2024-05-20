@@ -6,7 +6,7 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 13:22:25 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/17 15:51:06 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/20 11:42:39 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,16 @@ bool	try_builtin(t_cmd *cmd, int **pp, bool *status, int ppid)
 	if (cmd->rdrs_out)
 	{
 		if (process_rd_out(cmd->rdrs_out))
-			(bltin)(cmd->args);
+			set_bltin_exit_code((bltin)(cmd->args));
 		dup2(_stdout, STDOUT_FILENO);
 	}
 	else if (status[PP_SET])
 	{
 		dup2(pp[ppid + 1][WR], STDOUT_FILENO);
-		(bltin)(cmd->args);
+		set_bltin_exit_code((bltin)(cmd->args));
 		dup2(_stdout, STDOUT_FILENO);
 	}
 	else
-		(bltin)(cmd->args);
+		set_bltin_exit_code((bltin)(cmd->args));
 	return (true);
 }

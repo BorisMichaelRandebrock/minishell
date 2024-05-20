@@ -6,12 +6,21 @@
 /*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:00:44 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/17 13:03:08 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:32:00 by fmontser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "minishell.h"
+
+void	set_bltin_exit_code(int exit_code)
+{
+	char	*child_exit_code;
+
+	child_exit_code = ft_itoa(exit_code);
+	set_evar("?=", child_exit_code);
+	sh_free(&child_exit_code);
+}
 
 void	set_prompt(void)
 {

@@ -6,7 +6,7 @@
 #    By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 17:53:17 by fmontser          #+#    #+#              #
-#    Updated: 2024/05/17 16:59:05 by fmontser         ###   ########.fr        #
+#    Updated: 2024/05/20 12:32:22 by fmontser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ LIBRL			:= src/readline/lib
 CC				:= gcc
 PERF_FLAGS		:= #-O3
 CC_FLAGS		:= -Wall -Werror -Wextra -g -c $(PERF_FLAGS) -D READLINE_LIBRARY=READLINE_LIBRARY
-STD_LIBS		:= -lreadline
+STD_LIBS		:= -lreadline -ltermcap
 TEST_LEAKS		:= leaks -atExit --
 
 CLEAN_TARGETS	= $(wildcard $(addprefix $(OBJ_DIR), $(OBJS)))
@@ -68,11 +68,11 @@ $(NAME): $(OBJS) $(LIBFT) $(LIBRL)
 	@echo "$(COLOR_GREEN)write file: $(OBJ_DIR)$@ $(COLOR_END)"
 
 $(LIBFT):
-	@echo "$(COLOR_BLUE)Compliling libft...$(COLOR_END)"
+	@echo "$(COLOR_BLUE)Compiling libft...$(COLOR_END)"
 	@make -C $(LIBFT_DIR)
 
 $(LIBRL):
-	@echo "$(COLOR_BLUE)Compliling readline library...$(COLOR_END)"
+	@echo "$(COLOR_BLUE)Compiling readline library...$(COLOR_END)"
 	@make -C $(LIBRL_DIR)
 	@echo "$(COLOR_BLUE)Installing readline library...$(COLOR_END)"
 	@make install -C $(LIBRL_DIR)
