@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontser <fmontser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brandebr <brandebr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:29:12 by fmontser          #+#    #+#             */
-/*   Updated: 2024/05/20 11:28:59 by fmontser         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:28:38 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <termios.h>
 # include "libft.h"
 
-typedef int	(*t_bltin)(t_list *args);
-typedef	struct termios t_trmcfg;
+typedef struct termios	t_trmcfg;
+typedef int(*t_bltin)(t_list *args);
 
 typedef enum e_tkntype
 {
